@@ -127,3 +127,6 @@ STATIC_URL = '/static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'Kafgir_API.User'
+
+MEDIA_ROOT = BASE_DIR / 'uploads'
+MEDIA_URL = '/files/'
