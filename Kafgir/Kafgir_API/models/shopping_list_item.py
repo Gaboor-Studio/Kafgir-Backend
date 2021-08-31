@@ -17,8 +17,8 @@ class ShoppingListItem(models.Model):
         (Liter,"Liter")
     )
 
-    title = models.CharField(max_length=255)
-    done = models.BooleanField()
-    amount = models.IntegerField()
+    title = models.CharField(default='' ,max_length=255)
+    done = models.BooleanField(default=False)
+    amount = models.IntegerField(default=0)
     unit = models.CharField(max_length=255, choices=CHOICES, default=kg)
     user = models.ForeignKey(User, on_delete=SET_NULL, null=True, related_name='shopping_list')

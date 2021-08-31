@@ -6,8 +6,8 @@ from .food import Food
 from .user import User
 
 class FoodPlan(models.Model):
-    date_time = models.DateTimeField()
-    breakfast = models.ForeignKey(Food, on_delete=SET_NULL, null=True)
-    lunch = models.ForeignKey(Food, on_delete=SET_NULL, null=True)
-    dinner = models.ForeignKey(Food, on_delete=SET_NULL, null=True)
+    date_time = models.DateTimeField(auto_now=False, auto_now_add=False, null=True)
+    breakfast = models.ForeignKey(Food, on_delete=SET_NULL, null=True,related_name='breakfast')
+    lunch = models.ForeignKey(Food, on_delete=SET_NULL, null=True ,related_name='lunch')
+    dinner = models.ForeignKey(Food, on_delete=SET_NULL, null=True,related_name='dinner')
     user = models.ForeignKey(User, on_delete=SET_NULL, null=True, related_name='food_plan')
