@@ -12,7 +12,7 @@ class ShoppingListRepository(ABC):
         pass
 
     @abstractmethod
-    def find_all_items(self) -> List[ShoppingListItem]:
+    def find_all_items(self, id: int) -> List[ShoppingListItem]:
         pass
 
     @abstractmethod

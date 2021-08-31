@@ -9,8 +9,8 @@ class SoppingListRepositoryImpl(ShoppingListRepository):
     def find_item_by_id(self, id: int) -> ShoppingListItem:
         return ShoppingListItem.objects.get(pk=id)
 
-    def find_all_items(self) -> List[ShoppingListItem]:
-        return list(ShoppingListItem.objects.all())
+    def find_all_items(self, id: int) -> List[ShoppingListItem]:
+        return list(ShoppingListItem.objects.filter(user=id))
 
     def save_item(self, shopping_list_item: ShoppingListItem) -> None:
         shopping_list_item.save()
