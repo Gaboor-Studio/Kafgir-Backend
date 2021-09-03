@@ -2,6 +2,7 @@ from dependency_injector import containers, providers
 
 from ..services.member.shopping_list_services import *
 from ..services.auth.authentication_services import *
+from ..services.auth.token_generator_service import *
 
 from .repo_container import RepoContainer
 from .mapper_container import MapperContainer
@@ -18,6 +19,11 @@ class UsecaseContainer(containers.DeclarativeContainer):
     authentication_usecase = providers.Singleton(
         AuthenticationService,
         user_repo=RepoContainer.user_repo
+    )
+
+    token_generator_usecase = providers.Singleton(
+        TokenGeneratorService,
+        user_repo= RepoContainer.user_repo
     )
 
 

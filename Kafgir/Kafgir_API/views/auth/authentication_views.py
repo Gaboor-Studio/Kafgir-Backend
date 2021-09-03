@@ -1,6 +1,7 @@
 from rest_framework.decorators import api_view
 from dependency_injector.wiring import inject, Provide
 from rest_framework import status
+from rest_framework import viewsets
 from rest_framework.settings import api_settings
 from rest_framework.response import Response
 import cattr
@@ -8,8 +9,8 @@ import cattr
 from rest_framework.authtoken.views import ObtainAuthToken
 
 from ...usecases.auth.authentication_usecases import AuthenticationUsecase
-from ...serializers.auth_serializers import UserRegisterSerializer
-from ...dto.auth_dto import UserRegisterInput
+from ...serializers.auth_serializers import UserRegisterSerializer, SendEmailSerializer, VerifyEmailSerializer
+from ...dto.auth_dto import UserRegisterInput, SendEmailInput, VerifyEmailInput
 from ...exceptions.common import ValidationError
 
 @api_view(['POST'])
@@ -23,7 +24,7 @@ def register_view(request, authentication_usecase: AuthenticationUsecase = Provi
         authentication_usecase.register_user(input)
         return Response(data={}, status=status.HTTP_200_OK)
     else:
-        return ValidationError()
+        return Response(data={'error': 'Invalid data!', 'err': seri.errors}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class LoginApiView(ObtainAuthToken):
@@ -32,3 +33,33 @@ class LoginApiView(ObtainAuthToken):
     '''
 
     renderer_classes = api_settings.DEFAULT_RENDERER_CLASSES
+
+class AuthenticationView(viewsets.ViewSet):
+
+    @inject
+    def __init__(self, authentication_usecase: AuthenticationUsecase = Provide['authentication_usecase'], **kwargs) -> None:
+        self.authentication_usecase = authentication_usecase
+        super().__init__(**kwargs)
+
+    send_email_serializer = SendEmailSerializer
+    verify_email_serializer = VerifyEmailSerializer
+
+    def send_email(self, request):
+        seri = self.send_email_serializer(data=request.data)
+
+        if seri.is_valid():
+            input = cattr.structure(request.data, SendEmailInput)
+            self.authentication_usecase.send_email(input)
+            return Response(data={'message': 'email was successfully sent!'}, status=status.HTTP_200_OK)
+
+        return Response(data={'error': 'Invalid data!', 'err': seri.errors}, status=status.HTTP_400_BAD_REQUEST)
+
+    def verify_email(self, request):
+        seri = self.verify_email_serializer(data=request.data)
+
+        if seri.is_valid():
+            input = cattr.structure(request.data, VerifyEmailInput)
+            self.authentication_usecase.confirm_email(input)
+            return Response(data={'message': 'your account was successfully activated!'}, status=status.HTTP_200_OK)
+
+        return Response(data={'error': 'Invalid data!', 'err': seri.errors}, status=status.HTTP_400_BAD_REQUEST)

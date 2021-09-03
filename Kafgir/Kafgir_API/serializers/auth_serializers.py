@@ -8,3 +8,10 @@ class UserRegisterSerializer(serializers.Serializer):
     last_name = serializers.CharField(max_length=255)
     password = serializers.CharField(max_length=4096)
 
+
+class VerifyEmailSerializer(serializers.Serializer):
+    confirm_code = serializers.CharField(max_length=5)
+    email = serializers.EmailField()
+
+class SendEmailSerializer(serializers.Serializer):
+    email = serializers.EmailField()
