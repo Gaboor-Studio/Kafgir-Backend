@@ -1,9 +1,10 @@
 from abc import ABC, abstractmethod
+from ...models.user import User
 
 class TokenGeneratorUsecase(ABC):
 
     @abstractmethod
-    def generate_auth_token(self, id: int) -> str:
+    def generate_auth_token(self, user: User) -> str:
         pass
 
     @abstractmethod

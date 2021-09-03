@@ -9,9 +9,8 @@ import cattr
 from rest_framework.authtoken.views import ObtainAuthToken
 
 from ...usecases.auth.authentication_usecases import AuthenticationUsecase
-from ...serializers.auth_serializers import UserRegisterSerializer, SendEmailSerializer, VerifyEmailSerializer
-from ...dto.auth_dto import UserRegisterInput, SendEmailInput, VerifyEmailInput
-from ...exceptions.common import ValidationError
+from ...serializers.auth_serializers import UserRegisterSerializer, SendEmailSerializer, VerifyEmailSerializer, GetResetTokenSerializer, ResetPasswordSerializer
+from ...dto.auth_dto import UserRegisterInput, SendEmailInput, VerifyEmailInput, GetResetTokenInput, ResetPasswordInput
 
 @api_view(['POST'])
 @inject
@@ -43,6 +42,9 @@ class AuthenticationView(viewsets.ViewSet):
 
     send_email_serializer = SendEmailSerializer
     verify_email_serializer = VerifyEmailSerializer
+    get_reset_token_serializer = GetResetTokenSerializer
+    reset_password_serializer = ResetPasswordSerializer
+
 
     def send_email(self, request):
         seri = self.send_email_serializer(data=request.data)
@@ -63,3 +65,24 @@ class AuthenticationView(viewsets.ViewSet):
             return Response(data={'message': 'your account was successfully activated!'}, status=status.HTTP_200_OK)
 
         return Response(data={'error': 'Invalid data!', 'err': seri.errors}, status=status.HTTP_400_BAD_REQUEST)
+
+    def get_reset_token(self, request):
+        seri = self.get_reset_token_serializer(data= request.data)
+
+        if seri.is_valid():
+            input = cattr.structure(request.data, GetResetTokenInput)
+            output = self.authentication_usecase.get_reset_token(input)
+            serialized_output = cattr.unstructure(output)
+            return Response(data=serialized_output, status=status.HTTP_200_OK)
+        else:
+            return Response(data={'error': 'Invalid data!', 'err': seri.errors}, status=status.HTTP_400_BAD_REQUEST)
+
+    def reset_password(self, request):
+        seri = self.reset_password_serializer(data= request.data)
+
+        if seri.is_valid():
+            input = cattr.structure(request.data, ResetPasswordInput)
+            self.authentication_usecase.reset_password(input)
+            return Response(data={'message': 'your password has been successfully changed'}, status=status.HTTP_200_OK)
+        else:
+            return Response(data={'error': 'Invalid data!', 'err': seri.errors}, status=status.HTTP_400_BAD_REQUEST)

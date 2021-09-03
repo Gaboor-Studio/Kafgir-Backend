@@ -45,3 +45,18 @@ class WrongPasscode(APIException):
     status_code = 400
     default_detail = 'your entered passcode is wrong!'
     default_code = 'bad_request'
+
+class ResetTokenIsNotSet(APIException):
+    status_code = 400
+    default_detail = 'user has not requested for a token yet'
+    default_code = 'bad_request'
+
+class ResetTokenIsExpired(APIException):
+    status_code = 400
+    default_detail = 'your reset token is already expired!'
+    default_code = 'bad_request'
+
+class WrongResetToken(APIException):
+    status_code = 400
+    default_detail = 'your entered reset token is wrong!'
+    default_code = 'bad_request'

@@ -39,6 +39,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     favorite_foods = models.ManyToManyField(Food, related_name="favorite_of")
     requested_otp_password = models.CharField(max_length=5, null=True)
     requested_otp_time = models.DateTimeField(null=True)
+    requested_token_time = models.DateTimeField(null=True)
 
     objects = UserProfileManager()
 

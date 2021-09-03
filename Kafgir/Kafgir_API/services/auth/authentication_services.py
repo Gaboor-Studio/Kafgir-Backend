@@ -6,12 +6,12 @@ import pytz
 from dateutil.relativedelta import relativedelta
 from smtplib import SMTPException
 
-from ...dto.auth_dto import UserRegisterInput, VerifyEmailInput, SendEmailInput
+from ...dto.auth_dto import UserRegisterInput, VerifyEmailInput, SendEmailInput, GetResetTokenInput, ResetPasswordInput, PasswordResetTokenOutput
 from ...usecases.auth.authentication_usecases import AuthenticationUsecase
 from ...usecases.auth.token_generator_usecase import TokenGeneratorUsecase
-from ...exceptions.bad_request import UserAlreadyExistsException, OptPasswordIsntSet, UserIsAlreadyActivated, PasscodeIsExpired, WrongPasscode
+from ...exceptions.bad_request import UserAlreadyExistsException, OptPasswordIsntSet, UserIsAlreadyActivated, PasscodeIsExpired, WrongPasscode, ResetTokenIsNotSet, ResetTokenIsExpired, WrongResetToken
 from ...exceptions.not_found import UserNotFoundException
-from ...exceptions.common import CannotGenerateCode, CannotGetCurrentTime, CannotSendEmail
+from ...exceptions.common import CannotGenerateCode, CannotGetCurrentTime, CannotSendEmail, CannotGenerateToken
 from ...repositories.user_repo import UserRepository
 
 class AuthenticationService(AuthenticationUsecase):
@@ -43,8 +43,6 @@ class AuthenticationService(AuthenticationUsecase):
         except self.model.DoesNotExist:
             raise UserNotFoundException(detail=f'user with email={input.email} does not exist!')
 
-        if user.is_active:
-            raise UserIsAlreadyActivated()
 
         passcode = self.token_generator_usecase.generate_random_str(5)
 
@@ -94,4 +92,59 @@ class AuthenticationService(AuthenticationUsecase):
                 
         else:
             raise OptPasswordIsntSet()
+        
+    def get_reset_token(self, input: GetResetTokenInput) -> PasswordResetTokenOutput:
+        
+        try: 
+            user = self.user_repo.get_user_by_email(input.email)
+        except self.model.DoesNotExist:
+            raise UserNotFoundException(detail=f'user with email={input.email} does not exist!')
+
+        if user.requested_otp_password is not None:
+
+            deadline = user.requested_otp_time + relativedelta(minutes=5)
+
+            if input.confirm_code != user.requested_otp_password:
+                raise WrongPasscode()
+
+            if datetime.now().replace(tzinfo=self.utc) > deadline.replace(tzinfo=self.utc):
+                raise PasscodeIsExpired()
+        
+            token = self.token_generator_usecase.generate_auth_token(user)
+
+            if token is None:
+                raise CannotGenerateToken()
+            
+            user.requested_token_time = datetime.now()
+            self.user_repo.save_user(user)
+            return PasswordResetTokenOutput(token= token)
+                
+        else:
+            raise OptPasswordIsntSet()
+
+
+
+    def reset_password(self, input: ResetPasswordInput) -> None:
+        
+        try: 
+            user = self.user_repo.get_user_by_email(input.email)
+        except self.model.DoesNotExist:
+            raise UserNotFoundException(detail=f'user with email={input.email} does not exist!')
+
+        if user.requested_token_time is None:
+            raise ResetTokenIsNotSet()
+
+        deadline = user.requested_token_time + relativedelta(minutes=5)
+
+        if datetime.now().replace(tzinfo=self.utc) > deadline.replace(tzinfo=self.utc):
+            raise ResetTokenIsExpired()
+
+        correct_token = self.token_generator_usecase.generate_auth_token(user)
+
+        if correct_token != input.reset_token:
+            raise WrongResetToken()
+
+        user.set_password(input.new_password)
+        self.user_repo.save_user(user)
+
         

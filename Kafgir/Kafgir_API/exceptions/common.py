@@ -16,3 +16,7 @@ class CannotGenerateCode(APIException):
 class CannotSendEmail(APIException):
     status_code = 400
     default_detail = 'there was a problem sending the email'
+
+class CannotGenerateToken(APIException):
+    status_code = 400
+    default_detail = 'there was a problem generating a token for you!'

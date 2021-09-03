@@ -23,7 +23,6 @@ class UsecaseContainer(containers.DeclarativeContainer):
 
     token_generator_usecase = providers.Singleton(
         TokenGeneratorService,
-        user_repo= RepoContainer.user_repo
     )
 
 
