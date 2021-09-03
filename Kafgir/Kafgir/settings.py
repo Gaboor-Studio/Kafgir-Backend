@@ -32,6 +32,8 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'Kafgir_API',
+    'drf_yasg',
+    'rest_framework',
     'rest_framework.authtoken',
     'django.contrib.admin',
     'django.contrib.auth',
