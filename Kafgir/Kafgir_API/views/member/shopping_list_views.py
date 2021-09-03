@@ -11,7 +11,10 @@ from ...usecases.member.shopping_list_usecases import MemberShoppingListUsecase
 from ...serializers.shopping_list_serializer import ShopingListInputSerializer
 from ...dto.shopping_list_dto import ShoppingListItemOutput, ShoppingListItemInput
 
-
+from drf_yasg.utils import swagger_auto_schema
+from typing import List
+import attr
+from ...util.dto_util import dto_to_swagger_json_output
 class MemberShoppingListView(ViewSet):
 
     authentication_classes = [TokenAuthentication]
@@ -23,12 +26,18 @@ class MemberShoppingListView(ViewSet):
     def __init__(self, member_shopping_list_usecase: MemberShoppingListUsecase = Provide['member_shopping_list_usecase']):
         self.member_shopping_list_usecase = member_shopping_list_usecase
 
+    @swagger_auto_schema(responses=dto_to_swagger_json_output(ShoppingListItemOutput, many=True))
     def get_shopping_list(self, request):
+        ''' Gets user shopping list.'''
+        
         outputs = self.member_shopping_list_usecase.find_shopping_list(request.user.id)
         serialized_outputs = list(map(cattr.unstructure, outputs))
         return Response(data=serialized_outputs, status=status.HTTP_200_OK)
-    
+
+    @swagger_auto_schema(request_body=shopping_list_serializer, responses=dto_to_swagger_json_output(None))    
     def create_new_shopping_list_item(self, request):
+        ''' Creates new shopping list item.'''
+
         seri = self.shopping_list_serializer(data=request.data)
         if seri.is_valid():
             input = cattr.structure(request.data, ShoppingListItemInput)
@@ -37,7 +46,10 @@ class MemberShoppingListView(ViewSet):
             return Response(data=serialized_output, status=status.HTTP_200_OK)
         return Response(data={'error': 'Invalid data!', 'err': seri.errors}, status=status.HTTP_400_BAD_REQUEST)
 
+    @swagger_auto_schema(request_body=shopping_list_serializer(many=True), responses=dto_to_swagger_json_output(None))
     def create_new_shopping_list(self, request):
+        ''' Adds all items to the shopping list.'''
+
         seri = self.shopping_list_serializer(data=request.data, many=True)
         if seri.is_valid():
             input = cattr.structure(request.data, List[ShoppingListItemInput])
@@ -45,7 +57,10 @@ class MemberShoppingListView(ViewSet):
             return Response(status=status.HTTP_200_OK)
         return Response(data={'error': 'Invalid data!', 'err': seri.errors}, status=status.HTTP_400_BAD_REQUEST)
 
+    @swagger_auto_schema(request_body=shopping_list_serializer(many=True), responses=dto_to_swagger_json_output(None))
     def update_shopping_list_item(self, request, item_id=None):
+        ''' Updates a shopping list item.'''
+
         seri = self.shopping_list_serializer(data=request.data)
         if seri.is_valid():
             input = cattr.structure(request.data, ShoppingListItemInput)
@@ -53,15 +68,25 @@ class MemberShoppingListView(ViewSet):
             return Response(status=status.HTTP_200_OK)
         return Response(data={'error': 'Invalid data!', 'err': seri.errors}, status=status.HTTP_400_BAD_REQUEST)
 
+
+    @swagger_auto_schema(responses=dto_to_swagger_json_output(None))
     def done(self, request, item_id=None):
+        ''' Sets a shopping list item to done status.'''
+
         self.member_shopping_list_usecase.done(item_id)
-        return Response(data={}, status=status.HTTP_200_OK)        
+        return Response(data=None, status=status.HTTP_200_OK)        
 
+    @swagger_auto_schema(responses=dto_to_swagger_json_output(None))
     def undone(self, request, item_id=None):
-        self.member_shopping_list_usecase.undone(item_id)
-        return Response(data={}, status=status.HTTP_200_OK)
+        ''' Sets a shopping list item to undone status.'''
 
+        self.member_shopping_list_usecase.undone(item_id)
+        return Response(data=None, status=status.HTTP_200_OK)
+
+    @swagger_auto_schema(responses=dto_to_swagger_json_output(None))
     def remove_shopping_list_item(self, request, item_id=None):
+        ''' Removes a shopping list item from the shopping list.'''
+
         self.member_shopping_list_usecase.remove_shopping_list_item(item_id)
-        return Response(data={}, status=status.HTTP_200_OK)
+        return Response(data=None, status=status.HTTP_200_OK)
     
