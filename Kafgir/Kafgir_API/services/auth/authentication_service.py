@@ -2,32 +2,33 @@ from dependency_injector.wiring import inject, Provide
 from django.contrib.auth import get_user_model
 from django.core.mail import send_mail
 from datetime import datetime
-import pytz
 from dateutil.relativedelta import relativedelta
 from smtplib import SMTPException
 
 from ...dto.auth_dto import UserRegisterInput, VerifyEmailInput, SendEmailInput, GetResetTokenInput, ResetPasswordInput, PasswordResetTokenOutput
-from ...usecases.auth.authentication_usecases import AuthenticationUsecase
-from ...usecases.auth.token_generator_usecase import TokenGeneratorUsecase
-from ...exceptions.bad_request import UserAlreadyExistsException, OptPasswordIsntSet, UserIsAlreadyActivated, PasscodeIsExpired, WrongPasscode, ResetTokenIsNotSet, ResetTokenIsExpired, WrongResetToken
+from ...usecases.auth.authentication_usecase import AuthenticationUsecase
+from ...usecases.auth.generate_token_usecase import GenerateTokenUsecase
+from ...exceptions.bad_request import UserAlreadyExistsException, OptPasswordIsntSet, PasscodeIsExpired, WrongPasscode, ResetTokenIsNotSet, ResetTokenIsExpired, WrongResetToken
 from ...exceptions.not_found import UserNotFoundException
 from ...exceptions.common import CannotGenerateCode, CannotGetCurrentTime, CannotSendEmail, CannotGenerateToken
 from ...repositories.user_repo import UserRepository
+from ...util.service_util import generate_random_str, is_expired
 
 class AuthenticationService(AuthenticationUsecase):
 
     model = get_user_model()
 
-    utc=pytz.UTC
-
     @inject
     def __init__(self, user_repo: UserRepository = Provide['user_repo']
-                     , token_generator_usecase: TokenGeneratorUsecase = Provide['token_generator_usecase']):
+                     , generate_token_usecase: GenerateTokenUsecase = Provide['generate_token_usecase']):
         self.user_repo = user_repo
-        self.token_generator_usecase = token_generator_usecase
+        self.generate_token_usecase = generate_token_usecase
     
     def register_user(self, input: UserRegisterInput) -> None:
         
+        if self.user_repo.exist_user_by_username(input.username):
+            raise UserAlreadyExistsException(detail=f'User(username={input.username}) already exists!')           
+
         if self.user_repo.exist_user_by_email(input.email):
             raise UserAlreadyExistsException(detail=f'User(email={input.email}) already exists!')
 
@@ -44,7 +45,7 @@ class AuthenticationService(AuthenticationUsecase):
             raise UserNotFoundException(detail=f'user with email={input.email} does not exist!')
 
 
-        passcode = self.token_generator_usecase.generate_random_str(5)
+        passcode = generate_random_str(5)
 
         if passcode is None:
             raise CannotGenerateCode()
@@ -79,12 +80,10 @@ class AuthenticationService(AuthenticationUsecase):
 
         if user.requested_otp_password is not None:
 
-            deadline = user.requested_otp_time + relativedelta(minutes=5)
-
             if input.confirm_code != user.requested_otp_password:
                 raise WrongPasscode()
 
-            if datetime.now().replace(tzinfo=self.utc) > deadline.replace(tzinfo=self.utc):
+            if is_expired(user.requested_otp_time, 5):
                 raise PasscodeIsExpired()
 
             user.is_active = True
@@ -102,15 +101,13 @@ class AuthenticationService(AuthenticationUsecase):
 
         if user.requested_otp_password is not None:
 
-            deadline = user.requested_otp_time + relativedelta(minutes=5)
-
             if input.confirm_code != user.requested_otp_password:
                 raise WrongPasscode()
 
-            if datetime.now().replace(tzinfo=self.utc) > deadline.replace(tzinfo=self.utc):
+            if is_expired(user.requested_otp_time, 5):
                 raise PasscodeIsExpired()
         
-            token = self.token_generator_usecase.generate_auth_token(user)
+            token = self.generate_token_usecase.generate_token(user)
 
             if token is None:
                 raise CannotGenerateToken()
@@ -134,12 +131,10 @@ class AuthenticationService(AuthenticationUsecase):
         if user.requested_token_time is None:
             raise ResetTokenIsNotSet()
 
-        deadline = user.requested_token_time + relativedelta(minutes=5)
-
-        if datetime.now().replace(tzinfo=self.utc) > deadline.replace(tzinfo=self.utc):
+        if is_expired(user.requested_token_time, 30):
             raise ResetTokenIsExpired()
 
-        correct_token = self.token_generator_usecase.generate_auth_token(user)
+        correct_token = self.generate_token_usecase.generate_token(user)
 
         if correct_token != input.reset_token:
             raise WrongResetToken()

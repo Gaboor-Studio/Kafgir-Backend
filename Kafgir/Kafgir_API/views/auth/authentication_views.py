@@ -8,7 +8,7 @@ import cattr
 
 from rest_framework.authtoken.views import ObtainAuthToken
 
-from ...usecases.auth.authentication_usecases import AuthenticationUsecase
+from ...usecases.auth.authentication_usecase import AuthenticationUsecase
 from ...serializers.auth_serializers import UserRegisterSerializer, SendEmailSerializer, VerifyEmailSerializer, GetResetTokenSerializer, ResetPasswordSerializer
 from ...dto.auth_dto import UserRegisterInput, SendEmailInput, VerifyEmailInput, GetResetTokenInput, ResetPasswordInput
 
