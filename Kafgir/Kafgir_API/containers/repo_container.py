@@ -2,6 +2,7 @@ from dependency_injector import containers, providers
 
 from ..repositories_impl.shopping_list_repo import *
 from ..repositories_impl.user_repo import *
+from ..repositories_impl.food_planning_repo import *
 
 class RepoContainer(containers.DeclarativeContainer):
      
@@ -13,6 +14,10 @@ class RepoContainer(containers.DeclarativeContainer):
 
     user_repo = providers.Singleton(
         UserRepositoryImpl
+    )
+
+    food_plan_repo = providers.Singleton(
+        FoodPlanningRepositoryImpl
     )
 
 
