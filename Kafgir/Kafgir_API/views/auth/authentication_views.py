@@ -15,6 +15,7 @@ from ...serializers.auth_serializers import UserRegisterSerializer, SendEmailSer
 from ...dto.auth_dto import UserRegisterInput, SendEmailInput, VerifyEmailInput, GetResetTokenInput, ResetPasswordInput, PasswordResetTokenOutput
 
 @api_view(['POST'])
+@swagger_auto_schema(request_body=UserRegisterSerializer, responses=dto_to_swagger_json_output(None)) 
 @inject
 def register_view(request, authentication_usecase: AuthenticationUsecase = Provide['authentication_usecase']):
     ''' This is a view for registering user '''
