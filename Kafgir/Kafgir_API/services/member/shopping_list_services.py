@@ -10,7 +10,6 @@ from ...repositories.shopping_list_repo import ShoppingListRepository
 from ...mappers.shopping_list_mapper import ShoppingListItemOutputMapper
 from ...exceptions.not_found import ShoppingListItemNotFoundException
 
-
 from typing import List
 
 class MemberShoppingListService(MemberShoppingListUsecase):
