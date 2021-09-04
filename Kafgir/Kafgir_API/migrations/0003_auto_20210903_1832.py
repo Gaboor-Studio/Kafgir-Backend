@@ -6,7 +6,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('Kafgir_API', '0002_auto_20210831_1113'),
+        ('Kafgir_API', '0001_initial'),
     ]
 
     operations = [
