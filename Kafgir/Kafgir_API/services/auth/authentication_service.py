@@ -1,7 +1,7 @@
 from dependency_injector.wiring import inject, Provide
 from django.contrib.auth import get_user_model
 from django.core.mail import send_mail
-from datetime import datetime
+from django.utils import timezone
 from dateutil.relativedelta import relativedelta
 from smtplib import SMTPException
 
@@ -25,6 +25,7 @@ class AuthenticationService(AuthenticationUsecase):
         self.generate_token_usecase = generate_token_usecase
     
     def register_user(self, input: UserRegisterInput) -> None:
+        ''' creates a row in user table if and only if no user with the given username and email exists already '''
         
         if self.user_repo.exist_user_by_username(input.username):
             raise UserAlreadyExistsException(detail=f'User(username={input.username}) already exists!')           
@@ -38,7 +39,7 @@ class AuthenticationService(AuthenticationUsecase):
         self.user_repo.save_user(user)
 
     def send_email(self, input: SendEmailInput) -> None:
-        
+        ''' sends a 5 digit code to the user's email (could be used in account activation or setting the password) '''
         try: 
             user = self.user_repo.get_user_by_email(input.email)
         except self.model.DoesNotExist:
@@ -50,7 +51,7 @@ class AuthenticationService(AuthenticationUsecase):
         if passcode is None:
             raise CannotGenerateCode()
 
-        create_time = datetime.now()
+        create_time = timezone.now()
 
         if create_time is None:
             raise CannotGetCurrentTime()
@@ -72,7 +73,7 @@ class AuthenticationService(AuthenticationUsecase):
         self.user_repo.save_user(user)
 
     def confirm_email(self, input: VerifyEmailInput) -> None:
-        
+        ''' given the 5 digit code, activates the account if the email matches with the code and the code is still valid'''
         try: 
             user = self.user_repo.get_user_by_email(input.email)
         except self.model.DoesNotExist:
@@ -93,7 +94,7 @@ class AuthenticationService(AuthenticationUsecase):
             raise OptPasswordIsntSet()
         
     def get_reset_token(self, input: GetResetTokenInput) -> PasswordResetTokenOutput:
-        
+        ''' given the 5 digit code, generates a token to be used for password reset operation if the code is still valid'''
         try: 
             user = self.user_repo.get_user_by_email(input.email)
         except self.model.DoesNotExist:
@@ -112,7 +113,7 @@ class AuthenticationService(AuthenticationUsecase):
             if token is None:
                 raise CannotGenerateToken()
             
-            user.requested_token_time = datetime.now()
+            user.requested_token_time = timezone.now()
             self.user_repo.save_user(user)
             return PasswordResetTokenOutput(token= token)
                 
@@ -122,7 +123,7 @@ class AuthenticationService(AuthenticationUsecase):
 
 
     def reset_password(self, input: ResetPasswordInput) -> None:
-        
+        ''' given the reset_token, allows the user to set a new password if the token is valid '''
         try: 
             user = self.user_repo.get_user_by_email(input.email)
         except self.model.DoesNotExist:
