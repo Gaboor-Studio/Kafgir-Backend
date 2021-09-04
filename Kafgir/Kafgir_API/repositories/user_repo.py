@@ -5,7 +5,15 @@ from ..models.user import User
 class UserRepository(ABC):
 
     @abstractmethod
+    def exist_user_by_username(self, username: str) -> bool:
+        pass
+
+    @abstractmethod
     def exist_user_by_email(self, email: str) -> bool:
+        pass
+
+    @abstractmethod
+    def get_user_by_email(self, email: str) -> User:
         pass
 
     @abstractmethod

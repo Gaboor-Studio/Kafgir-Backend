@@ -20,6 +20,7 @@ class UserProfileManager(BaseUserManager):
     def create_superuser(self, username, email, name, last_name, password):
         user = self.create_user(username, email, name, last_name, password)
 
+        user.is_active = True
         user.is_superuser = True
         user.is_staff = True
         user.save(using=self._db)
@@ -32,10 +33,13 @@ class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(max_length=255, unique=True)
     name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
-    is_active = models.BooleanField(default=True)
+    is_active = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
     image = models.ImageField(upload_to="users")
     favorite_foods = models.ManyToManyField(Food, related_name="favorite_of")
+    requested_otp_password = models.CharField(max_length=5, null=True)
+    requested_otp_time = models.DateTimeField(null=True)
+    requested_token_time = models.DateTimeField(null=True)
 
     objects = UserProfileManager()
 
