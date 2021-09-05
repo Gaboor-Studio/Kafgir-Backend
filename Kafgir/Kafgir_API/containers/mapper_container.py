@@ -5,6 +5,7 @@ from ..mappers.food_plan_mapper import *
 from ..mappers.food_mapper import *
 from ..mappers.ingredient_piece_mapper import *
 from ..mappers.recipe_item_mapper import *
+from ..mappers.profile_mapper import *
 
 
 class MapperContainer(containers.DeclarativeContainer):
@@ -37,6 +38,10 @@ class MapperContainer(containers.DeclarativeContainer):
 
     food_in_food_plan_mapper = providers.Singleton(
         FoodInFoodPlanMapper
+    )
+
+    profile_output_mapper = providers.Singleton(
+        ProfileOutputMapper
     )
 
 container = MapperContainer()

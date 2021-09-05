@@ -10,6 +10,10 @@ class CannotUseOldPasswordException(APIException):
     default_detail = 'new password cannot be the same as the old one!'
     default_code = 'bad_request'
 
+class PasswordRepeatDidNotMatch(APIException):
+    status_code = 400
+    default_detail = 'the password and it\'s repeat does not match'
+    default_code = 'bad_request'    
 
 class AuthenticationError(APIException):
     status_code = 400
