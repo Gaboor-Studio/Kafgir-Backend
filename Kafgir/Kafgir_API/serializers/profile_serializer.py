@@ -1,18 +1,11 @@
 from rest_framework import serializers
 
-class ProfileInput(serializers.Serializer):
-    username = serializers.CharField(max_length=64)
+class ProfileSerializer(serializers.Serializer):
+    # username = serializers.CharField(max_length=64)
     name = serializers.CharField(max_length=255)
     last_name = serializers.CharField(max_length=255)
 
-class ProfileOutput(serializers.Serializer):
-    username = serializers.CharField(max_length=64)
-    email = serializers.EmailField(max_length=255)
-    name = serializers.CharField(max_length=255)
-    last_name = serializers.CharField(max_length=255)
-    image = serializers.ImageField()
-
-class ProfilePasswordChangeInput(serializers.Serializer):
+class ProfilePasswordChangeSerializer(serializers.Serializer):
     old_password = serializers.CharField(max_length=128)
     new_password = serializers.CharField(max_length=128)
     new_password_rep = serializers.CharField(max_length=128)
@@ -24,9 +17,9 @@ class ProfilePasswordChangeInput(serializers.Serializer):
 
         return super().validate(attrs)
 
-class ProfileSetEmailInput(serializers.Serializer): 
+class ProfileSetEmailSerializer(serializers.Serializer): 
     email = serializers.EmailField(max_length=255)
 
-class ProfileSetPictureInput(serializers.Serializer):
+class ProfileSetPictureSerializer(serializers.Serializer):
     image = serializers.ImageField()
 

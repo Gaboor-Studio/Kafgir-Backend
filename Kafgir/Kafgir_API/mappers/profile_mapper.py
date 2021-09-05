@@ -14,5 +14,5 @@ class ProfileOutputMapper:
                              email=model.email,
                              name=model.name,
                              last_name=model.last_name,
-                             image=model.image
+                             image=model.get_image()
                             )

@@ -3,7 +3,7 @@ import typing
 
 @attr.s
 class ProfileInput:
-    username: str = attr.ib()
+    # username: str = attr.ib()
     name: str = attr.ib()
     last_name: str = attr.ib()
 

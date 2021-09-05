@@ -3,6 +3,10 @@ from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseU
 
 from .food import Food
 
+def user_directory_path(instance, filename):
+    # file will be uploaded to MEDIA_ROOT/user.username/<filename>
+    return 'profiles/user_{0}/{1}'.format(instance.username, filename)
+
 class UserProfileManager(BaseUserManager):
 
     def create_user(self,username, email, name, last_name, password=None):
@@ -35,7 +39,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     last_name = models.CharField(max_length=255)
     is_active = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
-    image = models.ImageField(upload_to="users")
+    image = models.ImageField(upload_to=user_directory_path)
     favorite_foods = models.ManyToManyField(Food, related_name="favorite_of")
     requested_otp_password = models.CharField(max_length=5, null=True)
     requested_otp_time = models.DateTimeField(null=True)
@@ -51,3 +55,8 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.email
+
+    def get_image(self):
+        if not self.image :
+            return 'no-image'
+        return self.image.url
