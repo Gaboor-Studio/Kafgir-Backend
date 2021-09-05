@@ -49,7 +49,8 @@ class UsecaseContainer(containers.DeclarativeContainer):
         ingredient_repo= RepoContainer.ingredient_repo,
         ingredient_piece_repo=RepoContainer.ingredient_piece_repo,
         recipe_item_repo=RepoContainer.reciple_item_repo
-        
+    )
+    
     profile_usecase = providers.Singleton(
         ProfileService,
         user_repo = RepoContainer.user_repo,
