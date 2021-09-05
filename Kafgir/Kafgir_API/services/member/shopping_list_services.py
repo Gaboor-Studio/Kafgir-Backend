@@ -27,12 +27,12 @@ class MemberShoppingListService(MemberShoppingListUsecase):
         return list(map(self.shopping_list_output_mapper.from_model, self.shopping_list_repo.find_all_items(id=id)))
 
     def add_new_shopping_list_item(self, input:  ShoppingListItemInput, user: User) -> None: 
-        shopping_list_item = ShoppingListItem(title=input.title, done=input.done, amount=input.amount, unit=input.unit, user=user)
+        shopping_list_item = ShoppingListItem(title=input.title, amount=input.amount, user=user)
         shopping_list_item.save()
 
     def add_new_shopping_list(self, inputs:  List[ShoppingListItemInput], user: User) -> None:
         for input in inputs:
-            shopping_list_item = ShoppingListItem(title=input.title, done=input.done, amount=input.amount, unit=input.unit, user=user)
+            shopping_list_item = ShoppingListItem(title=input.title, amount=input.amount, user=user)
             shopping_list_item.save()
 
     def update_shopping_list_item(self, item_id: int, input:  ShoppingListItemInput) -> None:
@@ -40,9 +40,7 @@ class MemberShoppingListService(MemberShoppingListUsecase):
             shopping_list_item = self.shopping_list_repo.find_item_by_id(item_id)
             
             shopping_list_item.title = input.title
-            shopping_list_item.done = input.done
             shopping_list_item.amount = input.amount
-            shopping_list_item.unit = input.unit
 
             shopping_list_item.save()
         

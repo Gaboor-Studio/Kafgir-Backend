@@ -10,6 +10,5 @@ class ShoppingListItemOutputMapper:
         return ShoppingListItemOutput(  id=model.pk,
                                         title=model.title,
                                         done=model.done,
-                                        amount=model.amount,
-                                        unit=model.unit)
+                                        amount=model.amount)
 
