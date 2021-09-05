@@ -12,5 +12,10 @@ class UserNotFoundException(APIException):
 
 class FoodPlanNotFoundException(APIException):
     status_code = 404
-    default_detail = 'user not found!'
+    default_detail = 'food plan not found!'
+    default_code = 'not_found'
+
+class FoodNotFoundException(APIException):
+    status_code = 404
+    default_detail = 'food not found!'
     default_code = 'not_found'

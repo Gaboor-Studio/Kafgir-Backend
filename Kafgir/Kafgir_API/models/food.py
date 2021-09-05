@@ -11,8 +11,11 @@ class FoodUnit(models.TextChoices):
     
 class Food(models.Model):
 
+    #TODO: add image
+
     title = models.CharField(max_length=255)
     rating = models.FloatField(default=0)
+    rating_count = models.IntegerField(default=0)
     level = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(3)])
     cooking_time = models.IntegerField(validators=[MinValueValidator(1)])
     
