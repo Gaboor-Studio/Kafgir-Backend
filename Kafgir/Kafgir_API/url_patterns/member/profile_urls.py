@@ -18,9 +18,14 @@ edit_profile = ProfileView.as_view({
     'put': 'edit_profile'
 })
 
+log_out = ProfileView.as_view({
+    'get': 'log_out'
+})
+
 urlpatterns = [
     path('', get_profile),
     path('set-password/', set_password),
     path('set-picture/', set_picture),
-    path('edit-profile/', edit_profile)
+    path('edit-profile/', edit_profile),
+    path('log-out/', log_out)
 ]

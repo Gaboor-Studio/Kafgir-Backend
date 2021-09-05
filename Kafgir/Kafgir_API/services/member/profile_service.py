@@ -76,3 +76,15 @@ class ProfileService(ProfileUsecase):
         user.image = input.image
 
         self.user_repo.save_user(user)
+
+    def logout(self, id: int) -> None:
+        ''' logs out '''
+
+        try:
+            user = self.user_repo.get_user_by_id(id)
+        except self.model.DoesNotExist:
+            raise UserNotFoundException(detail=f'user with (id={id}) was not found!')
+
+        user.auth_token.delete()
+
+        self.user_repo.save_user(user)

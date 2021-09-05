@@ -18,3 +18,7 @@ class ProfileUsecase(ABC):
     @abstractmethod
     def set_photo(self, id: int, input: ProfileSetPictureInput) -> None:
         pass
+
+    @abstractmethod
+    def logout(self, id: int) -> None:
+        pass

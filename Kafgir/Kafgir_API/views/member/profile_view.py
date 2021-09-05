@@ -76,3 +76,12 @@ class ProfileView(ViewSet):
             return Response(data={'message': 'your profile picture has been set successfully'}, status=status.HTTP_200_OK)
         else:
             return Response(data={'error': 'Invalid data!', 'err': seri.errors}, status=status.HTTP_400_BAD_REQUEST)
+
+    @swagger_auto_schema(responses=dto_to_swagger_json_output(None))
+    def log_out(self, request):
+        ''' log out of the account '''
+
+        id = request.user.id
+        self.profile_usecase.logout(id)
+        return Response(data={'message': 'logged out of the account successfully'}, status=status.HTTP_200_OK)
+
