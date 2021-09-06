@@ -13,7 +13,7 @@ class RepoContainer(containers.DeclarativeContainer):
     # Repositories 
 
     shopping_list_repo = providers.Singleton(
-        SoppingListRepositoryImpl
+        ShoppingListRepositoryImpl
     )
 
     user_repo = providers.Singleton(

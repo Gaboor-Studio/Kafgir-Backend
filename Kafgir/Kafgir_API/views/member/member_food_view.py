@@ -20,7 +20,7 @@ from ...util.dto_util import dto_to_swagger_json_output
 class MemberFoodView(ViewSet):
 
 
-    authentication_classes = []
+    authentication_classes = [TokenAuthentication]
     permission_classes = []
 
     food_serializer = FoodSerializer
@@ -37,5 +37,11 @@ class MemberFoodView(ViewSet):
         serialized_output = cattr.unstructure(output)
         return Response(data=serialized_output, status=status.HTTP_200_OK)
 
-    #TODO: add ingredenit of foods to list must be added
-    
+    @swagger_auto_schema(responses=dto_to_swagger_json_output(None))
+    def add_ingredients_to_list(self, request, food_id=None):
+        ''' Gets informations of a food.'''
+
+        self.member_food_usecase.add_ingredients_to_list(food_id=food_id, user=request.user)
+        return Response(data=None, status=status.HTTP_200_OK)
+
+

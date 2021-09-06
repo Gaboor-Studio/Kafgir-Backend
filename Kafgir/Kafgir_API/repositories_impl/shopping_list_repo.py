@@ -4,7 +4,7 @@ from ..models.shopping_list_item import ShoppingListItem
 
 from typing import List
 
-class SoppingListRepositoryImpl(ShoppingListRepository):
+class ShoppingListRepositoryImpl(ShoppingListRepository):
 
     def find_item_by_id(self, id: int) -> ShoppingListItem:
         return ShoppingListItem.objects.get(pk=id)
