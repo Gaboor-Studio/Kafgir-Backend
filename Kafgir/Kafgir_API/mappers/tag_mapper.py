@@ -1,6 +1,6 @@
 from ..models.tag import Tag
 from ..models.food import Food
-from ..dto.tag_dto import TagOutput, MainTagOutput
+from ..dto.tag_dto import TagOutput, MainTagOutput, PrimaryTagOutput
 
 from .food_mapper import FoodInFoodPlanMapper
 
@@ -20,6 +20,17 @@ class TagMapper:
                             is_primary=model.is_primary,
                             display_order=model.display_order)
 
+class PrimaryTagMapper:
+
+    def from_model(self, model: Tag) -> PrimaryTagOutput:
+        if model == None:
+            return None
+
+        return PrimaryTagOutput(   id=model.pk,
+                                    title=model.title,
+                                    display_order=model.display_order)
+
+
 
 class MainTagMapper:
 
@@ -34,5 +45,6 @@ class MainTagMapper:
 
         return MainTagOutput(   id=model.pk,
                                 title=model.title,
-                                foods=list(map(self.food_in_food_plan_mapper.from_model, foods))
+                                foods=list(map(self.food_in_food_plan_mapper.from_model, foods)),
+                                display_order=model.display_order
                                 )               

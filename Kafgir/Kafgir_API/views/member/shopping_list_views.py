@@ -58,7 +58,7 @@ class MemberShoppingListView(ViewSet):
             return Response(status=status.HTTP_200_OK)
         return Response(data={'error': 'Invalid data!', 'err': seri.errors}, status=status.HTTP_400_BAD_REQUEST)
 
-    @swagger_auto_schema(request_body=shopping_list_serializer(many=True), responses=dto_to_swagger_json_output(None))
+    @swagger_auto_schema(request_body=shopping_list_serializer, responses=dto_to_swagger_json_output(None))
     def update_shopping_list_item(self, request, item_id=None):
         ''' Updates a shopping list item.'''
 

@@ -53,5 +53,9 @@ class MapperContainer(containers.DeclarativeContainer):
         ProfileOutputMapper
     )
 
+    primary_tag_mapper = providers.Singleton(
+        PrimaryTagMapper
+    )
+
 container = MapperContainer()
 # container.init_resources()

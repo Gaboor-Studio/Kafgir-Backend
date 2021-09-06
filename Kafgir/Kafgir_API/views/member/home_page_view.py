@@ -15,6 +15,8 @@ from ...util.dto_util import dto_to_swagger_json_output
 
 class MemberHomePageView(ViewSet):
 
+    authentication_classes = [TokenAuthentication]
+
     @inject
     def __init__(self, member_home_page_usecase: MemberHomePageUsecase = Provide['member_home_page_usecase']):
         self.member_home_page_usecase = member_home_page_usecase
@@ -26,19 +28,19 @@ class MemberHomePageView(ViewSet):
     
         if number_of_foods is not None:
             if request.user.is_authenticated:
-                outputs = self.member_home_page_usecase.load_home_page(id=request.user.id,num=number_of_foods)
-                serialized_outputs = list(map(cattr.unstructure, outputs))
+                output = self.member_home_page_usecase.load_home_page(id=request.user.id,num=number_of_foods)
+                serialized_outputs = cattr.unstructure(output)
                 return Response(data=serialized_outputs, status=status.HTTP_200_OK)
             else:
-                outputs = self.member_home_page_usecase.load_home_page(id=None,num=number_of_foods)
-                serialized_outputs = list(map(cattr.unstructure, outputs))
+                output = self.member_home_page_usecase.load_home_page(id=None,num=number_of_foods)
+                serialized_outputs = cattr.unstructure(output)
                 return Response(data=serialized_outputs, status=status.HTTP_200_OK)
         else:
             if request.user.is_authenticated:
-                outputs = self.member_home_page_usecase.load_home_page(id=request.user.id,num=6)
-                serialized_outputs = list(map(cattr.unstructure, outputs))
+                output = self.member_home_page_usecase.load_home_page(id=request.user.id,num=6)
+                serialized_outputs = cattr.unstructure(output)
                 return Response(data=serialized_outputs, status=status.HTTP_200_OK)
             else:
-                outputs = self.member_home_page_usecase.load_home_page(id=None,num=6)
-                serialized_outputs = list(map(cattr.unstructure, outputs))
+                output = self.member_home_page_usecase.load_home_page(id=None,num=6)
+                serialized_outputs = cattr.unstructure(output)
                 return Response(data=serialized_outputs, status=status.HTTP_200_OK)

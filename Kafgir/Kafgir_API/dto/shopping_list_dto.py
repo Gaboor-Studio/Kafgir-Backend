@@ -11,11 +11,9 @@ class ShoppingListItemOutput:
 class ShoppingListItemInput:
     title: str = attr.ib()
     done: bool = attr.ib()
-    amount: int = attr.ib()
-    unit: str = attr.ib()
+    amount: str = attr.ib()
 
 @attr.s
 class ShoppingListItemBriefInput:
     title: str = attr.ib()
-    amount: int = attr.ib()
-    unit: str = attr.ib()
+    amount: str = attr.ib()

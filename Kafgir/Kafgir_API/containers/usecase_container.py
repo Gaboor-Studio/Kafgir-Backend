@@ -7,6 +7,7 @@ from ..services.member.food_planning_services import *
 from ..services.member.member_home_page_service import *
 from ..services.member.member_food_services import MemberFoodService
 from ..services.admin.admin_food_service import AdminFoodService
+from ..services.admin.admin_tag_service import AdminTagServices
 from ..services.member.profile_service import *
 
 
@@ -34,7 +35,8 @@ class UsecaseContainer(containers.DeclarativeContainer):
     member_food_plan_usecase = providers.Singleton(
         MemberFoodPlanService,
         food_plan_repo = RepoContainer.food_plan_repo,
-        food_plan_output_mapper = MapperContainer.food_plan_output_mapper
+        food_plan_output_mapper = MapperContainer.food_plan_output_mapper,
+        food_repo = RepoContainer.food_repo
     )
 
     member_home_page_usecase = providers.Singleton(
@@ -44,7 +46,8 @@ class UsecaseContainer(containers.DeclarativeContainer):
         food_plan_repo=RepoContainer.food_plan_repo,
         food_plan_output_mapper=MapperContainer.food_plan_output_mapper,
         main_tag_mapper=MapperContainer.main_tag_mapper,
-        tag_mapper=MapperContainer.tag_mapper,        
+        tag_mapper=MapperContainer.tag_mapper, 
+        primary_tag_mapper= MapperContainer.primary_tag_mapper      
     )
 
     member_food_usecase = providers.Singleton(
@@ -67,6 +70,12 @@ class UsecaseContainer(containers.DeclarativeContainer):
         ProfileService,
         user_repo = RepoContainer.user_repo,
         profile_output_mapper = MapperContainer.profile_output_mapper
+    )
+
+    admin_tag_usecase = providers.Singleton(
+        AdminTagServices,
+        tag_repo = RepoContainer.tag_repo,
+        tag_mapper= MapperContainer.tag_mapper
     )
 
 

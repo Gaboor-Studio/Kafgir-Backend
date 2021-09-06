@@ -9,12 +9,13 @@ member_food_plan_create = MemberFoodPlanView.as_view({
     'post': 'create_new_food_plan'
 })
 
-member_food_plan_remove = MemberFoodPlanView.as_view({
-    'delete': 'remove_food_plan'
+member_food_plan_remove_edit = MemberFoodPlanView.as_view({
+    'delete': 'remove_food_plan',
+    'put': 'update_food_plan'
 })
 
 urlpatterns = [
-    path('<str:start_date>/<str:end_date>/', member_get_food_plan_by_date),
+    path('get-by-date/', member_get_food_plan_by_date),
     path('', member_food_plan_create),
-    path('<int:plan_id>/', member_food_plan_remove),
+    path('<int:plan_id>/', member_food_plan_remove_edit),
 ]

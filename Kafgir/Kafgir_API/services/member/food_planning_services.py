@@ -5,8 +5,9 @@ from ...models.food_plan import FoodPlan
 from ...models.user import User
 
 from ...usecases.member.food_planning_usecases import MemberFoodPlanUsecase
-from ...dto.food_plan_dto import FoodPlanOutput,FoodPlanInput
+from ...dto.food_plan_dto import FoodPlanInput,FoodPlanOutput,FoodPlanBriefInput
 from ...repositories.food_planning_repo import FoodPlanningRepository
+from ...repositories.food_repo import FoodRepository
 from ...mappers.food_plan_mapper import FoodPlanOutputMapper
 from ...exceptions.not_found import FoodPlanNotFoundException
 
@@ -17,10 +18,12 @@ class MemberFoodPlanService(MemberFoodPlanUsecase):
 
     @inject
     def __init__(self, food_plan_repo: FoodPlanningRepository = Provide['food_plan_repo'],
+                       food_repo: FoodRepository = Provide['food_repo'],
                        food_plan_output_mapper: FoodPlanOutputMapper = Provide['food_plan_output_mapper']):
 
         self.food_plan_repo = food_plan_repo
         self.food_plan_output_mapper = food_plan_output_mapper
+        self.food_repo = food_repo
 
     def find_food_plan_by_date(self, id: int, start_date: str, end_date: str) -> List[FoodPlanOutput]:
         inputs1 = start_date.split("-")
@@ -33,8 +36,29 @@ class MemberFoodPlanService(MemberFoodPlanUsecase):
     def add_new_food_plan(self, input: FoodPlanInput, user: User) -> None:
         inputs = input.date_time.split("-")
         date_time = date(int(inputs[0]),int(inputs[1]),int(inputs[2]))
-        food_plan = FoodPlan(date_time=date_time, breakfast=input.breakfast, lunch=input.lunch, dinner=input.dinner, user=user)
+        breakfast = self.food_repo.find_by_id(input.breakfast)
+        lunch = self.food_repo.find_by_id(input.lunch)
+        dinner = self.food_repo.find_by_id(input.dinner)
+        food_plan = FoodPlan(date_time=date_time, breakfast=breakfast, lunch=lunch, dinner=dinner, user=user)
         food_plan.save()
     
+
+    def update_food_plan(self, plan_id: int, input:  FoodPlanBriefInput) -> None:
+        try:
+            food_plan = self.food_plan_repo.find_food_plan_by_id(plan_id)
+            breakfast = self.food_repo.find_by_id(input.breakfast)
+            lunch = self.food_repo.find_by_id(input.lunch)
+            dinner = self.food_repo.find_by_id(input.dinner)
+
+            food_plan.breakfast = breakfast
+            food_plan.lunch = lunch
+            food_plan.dinner = dinner
+            food_plan.save()
+        
+        except FoodPlan.DoesNotExist:
+            raise FoodPlanNotFoundException(
+                detail=f'food plan with plan_id={plan_id} does not exist!')
+
+
     def remove_food_plan(self, plan_id: int) -> None:
         self.food_plan_repo.delete_food_plan(plan_id)
