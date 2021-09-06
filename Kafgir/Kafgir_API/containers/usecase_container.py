@@ -4,9 +4,11 @@ from ..services.member.shopping_list_services import *
 from ..services.auth.authentication_service import *
 from ..services.auth.sha1_generate_token_service import *
 from ..services.member.food_planning_services import *
+from ..services.member.member_home_page_service import *
 from ..services.member.member_food_services import MemberFoodService
 from ..services.admin.admin_food_service import AdminFoodService
 from ..services.member.profile_service import *
+
 
 from .repo_container import RepoContainer
 from .mapper_container import MapperContainer
@@ -33,6 +35,16 @@ class UsecaseContainer(containers.DeclarativeContainer):
         MemberFoodPlanService,
         food_plan_repo = RepoContainer.food_plan_repo,
         food_plan_output_mapper = MapperContainer.food_plan_output_mapper
+    )
+
+    member_home_page_usecase = providers.Singleton(
+        MemberHomePageService,
+        user_repo=RepoContainer.user_repo,
+        tag_repo=RepoContainer.tag_repo,
+        food_plan_repo=RepoContainer.food_plan_repo,
+        food_plan_output_mapper=MapperContainer.food_plan_output_mapper,
+        main_tag_mapper=MapperContainer.main_tag_mapper,
+        tag_mapper=MapperContainer.tag_mapper,        
     )
 
     member_food_usecase = providers.Singleton(

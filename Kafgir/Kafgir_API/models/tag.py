@@ -1,4 +1,5 @@
 from django.db import models
+from .food import Food
 
 class Tag(models.Model):
 
@@ -8,3 +9,4 @@ class Tag(models.Model):
     is_main = models.BooleanField(default=False)
     is_primary = models.BooleanField(default=False)
     display_order = models.IntegerField(default=0)
+    food = models.ManyToManyField(Food, related_name="tags")

@@ -7,6 +7,7 @@ from ..repositories_impl.food_repo_impl import *
 from ..repositories_impl.ingredient_repo_impl import *
 from ..repositories_impl.ingredient_piece_repo_impl import *
 from ..repositories_impl.recipe_item_repo_impl import *
+from ..repositories_impl.tag_repo import *
 
 class RepoContainer(containers.DeclarativeContainer):
      
@@ -38,6 +39,10 @@ class RepoContainer(containers.DeclarativeContainer):
 
     reciple_item_repo = providers.Singleton(
         RecipeItemRepositoryImpl
+    )
+
+    tag_repo = providers.Singleton(
+        TagRepository
     )
 
 
