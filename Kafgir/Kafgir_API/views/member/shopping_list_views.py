@@ -8,8 +8,8 @@ import cattr
 from typing import List
 
 from ...usecases.member.shopping_list_usecases import MemberShoppingListUsecase
-from ...serializers.shopping_list_serializer import ShopingListInputSerializer
-from ...dto.shopping_list_dto import ShoppingListItemOutput, ShoppingListItemInput
+from ...serializers.shopping_list_serializer import ShopingListInputSerializer, CreateShopingListInputSerializer
+from ...dto.shopping_list_dto import ShoppingListItemOutput, ShoppingListItemInput, ShoppingListItemBriefInput
 
 from drf_yasg.utils import swagger_auto_schema
 from typing import List
@@ -21,6 +21,7 @@ class MemberShoppingListView(ViewSet):
     permission_classes = [IsAuthenticated]
 
     shopping_list_serializer = ShopingListInputSerializer
+    create_shopping_list_serializer = CreateShopingListInputSerializer
 
     @inject
     def __init__(self, member_shopping_list_usecase: MemberShoppingListUsecase = Provide['member_shopping_list_usecase']):
@@ -34,25 +35,25 @@ class MemberShoppingListView(ViewSet):
         serialized_outputs = list(map(cattr.unstructure, outputs))
         return Response(data=serialized_outputs, status=status.HTTP_200_OK)
 
-    @swagger_auto_schema(request_body=shopping_list_serializer, responses=dto_to_swagger_json_output(None))    
+    @swagger_auto_schema(request_body=create_shopping_list_serializer, responses=dto_to_swagger_json_output(None))    
     def create_new_shopping_list_item(self, request):
         ''' Creates new shopping list item.'''
 
-        seri = self.shopping_list_serializer(data=request.data)
+        seri = self.create_shopping_list_serializer(data=request.data)
         if seri.is_valid():
-            input = cattr.structure(request.data, ShoppingListItemInput)
+            input = cattr.structure(request.data, ShoppingListItemBriefInput)
             output = self.member_shopping_list_usecase.add_new_shopping_list_item(input=input,user=request.user)
             serialized_output = cattr.unstructure(output)
             return Response(data=serialized_output, status=status.HTTP_200_OK)
         return Response(data={'error': 'Invalid data!', 'err': seri.errors}, status=status.HTTP_400_BAD_REQUEST)
 
-    @swagger_auto_schema(request_body=shopping_list_serializer(many=True), responses=dto_to_swagger_json_output(None))
+    @swagger_auto_schema(request_body=create_shopping_list_serializer(many=True), responses=dto_to_swagger_json_output(None))
     def create_new_shopping_list(self, request):
         ''' Adds all items to the shopping list.'''
 
-        seri = self.shopping_list_serializer(data=request.data, many=True)
+        seri = self.create_shopping_list_serializer(data=request.data, many=True)
         if seri.is_valid():
-            input = cattr.structure(request.data, List[ShoppingListItemInput])
+            input = cattr.structure(request.data, List[ShoppingListItemBriefInput])
             self.member_shopping_list_usecase.add_new_shopping_list(inputs=input,user=request.user)
             return Response(status=status.HTTP_200_OK)
         return Response(data={'error': 'Invalid data!', 'err': seri.errors}, status=status.HTTP_400_BAD_REQUEST)

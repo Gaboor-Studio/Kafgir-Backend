@@ -5,7 +5,7 @@ from ...models.shopping_list_item import ShoppingListItem
 from ...models.user import User
 
 from ...usecases.member.shopping_list_usecases import MemberShoppingListUsecase
-from ...dto.shopping_list_dto import ShoppingListItemInput,ShoppingListItemOutput
+from ...dto.shopping_list_dto import ShoppingListItemInput,ShoppingListItemOutput,ShoppingListItemBriefInput
 from ...repositories.shopping_list_repo import ShoppingListRepository
 from ...mappers.shopping_list_mapper import ShoppingListItemOutputMapper
 from ...exceptions.not_found import ShoppingListItemNotFoundException
@@ -26,13 +26,13 @@ class MemberShoppingListService(MemberShoppingListUsecase):
     def find_shopping_list(self, id: int) -> List[ShoppingListItemOutput]:
         return list(map(self.shopping_list_output_mapper.from_model, self.shopping_list_repo.find_all_items(id=id)))
 
-    def add_new_shopping_list_item(self, input:  ShoppingListItemInput, user: User) -> None: 
-        shopping_list_item = ShoppingListItem(title=input.title, done=input.done, amount=input.amount, unit=input.unit, user=user)
+    def add_new_shopping_list_item(self, input:  ShoppingListItemBriefInput, user: User) -> None: 
+        shopping_list_item = ShoppingListItem(title=input.title, done=False, amount=input.amount, unit=input.unit, user=user)
         shopping_list_item.save()
 
-    def add_new_shopping_list(self, inputs:  List[ShoppingListItemInput], user: User) -> None:
+    def add_new_shopping_list(self, inputs:  List[ShoppingListItemBriefInput], user: User) -> None:
         for input in inputs:
-            shopping_list_item = ShoppingListItem(title=input.title, done=input.done, amount=input.amount, unit=input.unit, user=user)
+            shopping_list_item = ShoppingListItem(title=input.title, done=False, amount=input.amount, unit=input.unit, user=user)
             shopping_list_item.save()
 
     def update_shopping_list_item(self, item_id: int, input:  ShoppingListItemInput) -> None:

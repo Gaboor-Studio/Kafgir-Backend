@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from ...dto.shopping_list_dto import ShoppingListItemInput,ShoppingListItemOutput
+from ...dto.shopping_list_dto import ShoppingListItemInput,ShoppingListItemOutput,ShoppingListItemBriefInput
 from ...models.user import User
 
 from typing import List
@@ -12,11 +12,11 @@ class MemberShoppingListUsecase(ABC):
         pass 
 
     @abstractmethod
-    def add_new_shopping_list_item(self, input:  ShoppingListItemInput, user: User) -> None:
+    def add_new_shopping_list_item(self, input:  ShoppingListItemBriefInput, user: User) -> None:
         pass
 
     @abstractmethod
-    def add_new_shopping_list(self, inputs:  List[ShoppingListItemInput], user: User) -> None:
+    def add_new_shopping_list(self, inputs:  List[ShoppingListItemBriefInput], user: User) -> None:
         pass
 
     @abstractmethod
