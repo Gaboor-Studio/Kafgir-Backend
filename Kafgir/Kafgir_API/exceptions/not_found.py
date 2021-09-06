@@ -19,3 +19,8 @@ class FoodNotFoundException(APIException):
     status_code = 404
     default_detail = 'food not found!'
     default_code = 'not_found'
+
+class TagNotFoundException(APIException):
+    status_code = 404
+    default_detail = 'tag not found!'
+    default_code = 'not_found'
