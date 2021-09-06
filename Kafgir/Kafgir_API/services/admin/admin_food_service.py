@@ -19,7 +19,7 @@ from ...exceptions.not_found import FoodNotFoundException
 
 from dependency_injector.wiring import inject, Provide
 
-class AdminFoodUsecase(AdminFoodUsecase):
+class AdminFoodService(AdminFoodUsecase):
 
     @inject
     def __init__(self, food_repo: FoodRepository = Provide['food_repo'],
@@ -45,7 +45,8 @@ class AdminFoodUsecase(AdminFoodUsecase):
 
     def load_all(self) -> List[FoodBriefOutput]:
         foods = self.food_repo.find_all()
-        return list(map(self.food_brief_mapper.from_model, foods))
+
+        # return list(map(self.food_brief_mapper.from_model, foods))
 
     def delete_by_id(self, id: int) -> None:
         self.food_repo.delete_by_id(id)
@@ -68,5 +69,6 @@ class AdminFoodUsecase(AdminFoodUsecase):
         for recipe in input.recipe:
             recipe_item = RecipeItem(food=food, text=recipe.text, step=recipe.step)
             self.recipe_item_repo.save(recipe_item)
-        
+
+
         return self.food_mapper.from_model(food)

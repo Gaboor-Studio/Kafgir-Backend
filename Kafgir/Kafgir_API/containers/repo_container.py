@@ -30,15 +30,15 @@ class RepoContainer(containers.DeclarativeContainer):
     )
 
     ingredient_repo = providers.Singleton(
-        IngredientRepository
+        IngredientRepositoryImpl
     )
 
     ingredient_piece_repo = providers.Singleton(
-        IngredientPieceRepository
+        IngredientPieceRepositoryImpl
     )
 
     reciple_item_repo = providers.Singleton(
-        RecipeItemRepository
+        RecipeItemRepositoryImpl
     )
 
     tag_repo = providers.Singleton(

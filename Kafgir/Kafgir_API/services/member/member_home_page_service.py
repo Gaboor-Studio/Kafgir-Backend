@@ -52,16 +52,16 @@ class MemberHomePageService(MemberHomePageUsecase):
     def get_categories(self) -> List[TagOutput]:
         return list(map(self.tag_mapper.from_model, self.tag_repo.find_primary_tag()))
 
-    def load_home_page_for_user(self, id: int, num: int) -> HomePageOutput:
+    def load_home_page(self, id: int, num: int) -> HomePageOutput:
+        if (id == None):
+            main_tags = self.get_some_food_by_tag_id(num)
+            categories = self.get_categories()
+            return HomePageOutput(food_plan=None, main_tags=main_tags, categories=categories)
+
         main_tags = self.get_some_food_by_tag_id(num)
         food_plan = self.get_food_plan(id)
         categories = self.get_categories()
         return HomePageOutput(food_plan=food_plan, main_tags=main_tags, categories=categories)
-
-    def load_home_page_for_guest(self, num: int) -> HomePageOutput:
-        main_tags = self.get_some_food_by_tag_id(num)
-        categories = self.get_categories()
-        return HomePageOutput(food_plan=None, main_tags=main_tags, categories=categories)
 
 
 

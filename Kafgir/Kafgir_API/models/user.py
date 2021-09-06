@@ -3,6 +3,10 @@ from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseU
 
 from .food import Food
 
+def user_directory_path(instance, filename):
+    # file will be uploaded to MEDIA_ROOT/user.username/<filename>
+    return 'profiles/user_{0}/{1}'.format(instance.username, filename)
+
 class UserProfileManager(BaseUserManager):
 
     def create_user(self,username, email, name, last_name, password=None):
@@ -13,7 +17,6 @@ class UserProfileManager(BaseUserManager):
         user = self.model(username=username, email=email, name=name, last_name=last_name)
 
         user.set_password(password)
-        user.save(using=self._db)
 
         return user
 
@@ -23,19 +26,17 @@ class UserProfileManager(BaseUserManager):
         user.is_active = True
         user.is_superuser = True
         user.is_staff = True
-        user.save(using=self._db)
 
         return user
-
 
 class User(AbstractBaseUser, PermissionsMixin):
     username = models.CharField(max_length=64, unique=True)
     email = models.EmailField(max_length=255, unique=True)
-    name = models.CharField(max_length=255)
-    last_name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, null=True)
+    last_name = models.CharField(max_length=255, null=True)
     is_active = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
-    image = models.ImageField(upload_to="users")
+    image = models.ImageField(upload_to=user_directory_path)
     favorite_foods = models.ManyToManyField(Food, related_name="favorite_of")
     requested_otp_password = models.CharField(max_length=5, null=True)
     requested_otp_time = models.DateTimeField(null=True)
@@ -51,3 +52,8 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.email
+
+    def get_image(self):
+        if not self.image :
+            return 'no-image'
+        return self.image.url

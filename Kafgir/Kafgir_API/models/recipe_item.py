@@ -8,4 +8,4 @@ class RecipeItem(models.Model):
 
     food = models.ForeignKey(Food, on_delete=models.CASCADE, related_name='recipe_items')
     text = models.TextField(null=False)
-    step = models.IntegerField()
+    step = models.IntegerField(null=False)

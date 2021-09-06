@@ -25,10 +25,7 @@ class FoodMapper:
                           level=model.level,
                           ingredients=list(
                               map(self.ingredient_piece_mapper.from_model, list(model.ingredient_pieces.all()))),
-                          recipe=list(map(self.recipe_item_mapper.from_model), list(
-                              model.recipe_items.all()))
-                          )
-
+                          recipe=list(map(self.recipe_item_mapper.from_model, list(model.recipe_items.all()))))
 
 class FoodBriefMapper:
 
