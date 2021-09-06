@@ -63,8 +63,9 @@ class AdminFoodService(AdminFoodUsecase):
                 ingredient = Ingredient(name=ingredient_piece.name)
                 self.ingredient_repo.save(ingredient)
             
-            ingredient_piece_obj = IngredientPiece(ingredient=ingredient, food=food, amount=ingredient_piece.amount)
-            ingredient_piece_obj.save()
+            if not self.ingredient_piece_repo.is_duplicate(food=food,ingredient=ingredient):
+                ingredient_piece_obj = IngredientPiece(ingredient=ingredient, food=food, amount=ingredient_piece.amount)
+                ingredient_piece_obj.save()
         
         for recipe in input.recipe:
             recipe_item = RecipeItem(food=food, text=recipe.text, step=recipe.step)
