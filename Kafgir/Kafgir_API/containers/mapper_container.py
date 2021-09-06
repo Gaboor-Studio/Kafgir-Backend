@@ -4,6 +4,7 @@ from ..mappers.shopping_list_mapper import *
 from ..mappers.food_plan_mapper import *
 from ..mappers.food_mapper import *
 from ..mappers.ingredient_piece_mapper import *
+from ..mappers.ingredient_mapper import *
 from ..mappers.recipe_item_mapper import *
 from ..mappers.tag_mapper import *
 from ..mappers.profile_mapper import *
@@ -55,6 +56,10 @@ class MapperContainer(containers.DeclarativeContainer):
 
     primary_tag_mapper = providers.Singleton(
         PrimaryTagMapper
+    )
+
+    ingredient_mapper = providers.Singleton(
+        IngredientMapper
     )
 
 container = MapperContainer()

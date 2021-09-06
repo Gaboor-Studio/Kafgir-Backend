@@ -5,6 +5,7 @@ from ..services.auth.authentication_service import *
 from ..services.auth.sha1_generate_token_service import *
 from ..services.member.food_planning_services import *
 from ..services.member.member_home_page_service import *
+from ..services.member.member_ingredient_services import *
 from ..services.member.member_food_services import MemberFoodService
 from ..services.admin.admin_food_service import AdminFoodService
 from ..services.admin.admin_tag_service import AdminTagServices
@@ -76,6 +77,12 @@ class UsecaseContainer(containers.DeclarativeContainer):
         AdminTagServices,
         tag_repo = RepoContainer.tag_repo,
         tag_mapper= MapperContainer.tag_mapper
+    )
+
+    member_ingredient_usecase = providers.Singleton(
+        MemberIngredientService,
+        ingredient_repo = RepoContainer.ingredient_repo,
+        ingredient_mapper= MapperContainer.ingredient_mapper
     )
 
 

@@ -10,8 +10,11 @@ class IngredientRepositoryImpl(IngredientRepository):
     def find_by_id(self, id: int) -> Ingredient:
         return Ingredient.objects.get(pk=id)
 
+    def find_all(self) -> None:
+        return Ingredient.objects.all()
+
     def find_all_starting_with(self, name: str) -> None:
-        return Ingredient.objects.filter(name__istartingwith=name)
+        return Ingredient.objects.filter(name__istartswith=name)
 
     def find_by_name(self, name: str) -> Ingredient:
         return Ingredient.objects.get(name__exact=name)

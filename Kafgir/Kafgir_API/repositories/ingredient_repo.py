@@ -12,6 +12,10 @@ class IngredientRepository(ABC):
         pass
 
     @abstractmethod
+    def find_all(self) -> List[Ingredient]:
+        pass
+
+    @abstractmethod
     def find_all_starting_with(self, name: str) -> List[Ingredient]:
         pass
 

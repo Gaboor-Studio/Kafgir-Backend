@@ -24,3 +24,8 @@ class TagNotFoundException(APIException):
     status_code = 404
     default_detail = 'tag not found!'
     default_code = 'not_found'
+
+class IngredientNotFoundException(APIException):
+    status_code = 404
+    default_detail = 'ingredient not found!'
+    default_code = 'not_found'

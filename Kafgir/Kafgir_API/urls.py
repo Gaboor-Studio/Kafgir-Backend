@@ -12,6 +12,7 @@ from .url_patterns.auth.authentication_urls import urlpatterns as auth_url_patte
 from .url_patterns.admin.admin_food_urls import urlpatterns as admin_food_url_patterns
 from .url_patterns.member.member_food_urls import urlpatterns as member_food_url_patterns
 from .url_patterns.admin.admin_tag_urls import urlpatterns as admin_tag_url_patterns
+from .url_patterns.member.member_ingredient_urls import urlpatterns as member_ingredient_url_patterns
 
 urlpatterns = [
     path('auth/', include(auth_url_patterns)),
@@ -23,6 +24,8 @@ urlpatterns = [
     path('member/home-page/', include(member_home_page_url_patterns)),
 
     path('member/food/', include(member_food_url_patterns)),
+
+    path('member/ingredient/', include(member_ingredient_url_patterns)),
 
     path('admin/food/', include(admin_food_url_patterns)),
 
