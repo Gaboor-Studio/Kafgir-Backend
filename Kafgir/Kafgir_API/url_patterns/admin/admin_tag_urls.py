@@ -17,5 +17,5 @@ member_tag_remove_edit = AdminTagView.as_view({
 urlpatterns = [
     path('tags/', admin_get_tags),
     path('', admin_create_tag),
-    path('<int:plan_id>/', member_tag_remove_edit),
+    path('<int:tag_id>/', member_tag_remove_edit),
 ]
