@@ -4,8 +4,8 @@ from rest_framework import serializers
 class UserRegisterSerializer(serializers.Serializer):
     username = serializers.CharField(max_length=255)
     email = serializers.EmailField(max_length=255)
-    name = serializers.CharField(max_length=255, required=False)
-    last_name = serializers.CharField(max_length=255, required=False)
+    name = serializers.CharField(max_length=255, required=False, allow_blank=True)
+    last_name = serializers.CharField(max_length=255, required=False, allow_blank=True)
     password = serializers.CharField(max_length=4096)
 
 
