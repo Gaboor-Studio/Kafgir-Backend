@@ -42,7 +42,7 @@ class RepoContainer(containers.DeclarativeContainer):
     )
 
     tag_repo = providers.Singleton(
-        TagRepository
+        TagRepositoryImpl
     )
 
 
