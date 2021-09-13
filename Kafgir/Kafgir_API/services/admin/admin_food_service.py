@@ -45,8 +45,7 @@ class AdminFoodService(AdminFoodUsecase):
 
     def load_all(self) -> List[FoodBriefOutput]:
         foods = self.food_repo.find_all()
-
-        # return list(map(self.food_brief_mapper.from_model, foods))
+        return list(map(self.food_brief_mapper.from_model, foods))
 
     def delete_by_id(self, id: int) -> None:
         self.food_repo.delete_by_id(id)
