@@ -20,10 +20,10 @@ class TagRepositoryImpl(TagRepository):
         Tag.objects.filter(id=id).delete()
 
     def find_main_tag(self) -> List[Tag]:
-        return list(Tag.objects.filter(is_main=True))
+        return list(Tag.objects.filter(is_main=True).order_by('display_order'))
 
     def find_primary_tag(self) -> List[Tag]:
-        return list(Tag.objects.filter(is_primary=True))
+        return list(Tag.objects.filter(is_primary=True).order_by('display_order'))
 
     def get_some_food_by_tag_id(self, id: int, num: int) -> List[Food]:
         foods = Tag.objects.get(pk=id).food

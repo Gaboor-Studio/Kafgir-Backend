@@ -15,7 +15,6 @@ class TagOutput:
 class PrimaryTagOutput:
     id: int = attr.ib()
     title: str = attr.ib()
-    display_order: int = attr.ib()
 
 @attr.s
 class TagInput:
@@ -29,4 +28,3 @@ class MainTagOutput:
     id: int = attr.ib()
     title: str = attr.ib()
     foods: List[FoodInFoodPlanOutput] = attr.ib()
-    display_order: int = attr.ib()

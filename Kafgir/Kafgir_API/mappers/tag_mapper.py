@@ -27,8 +27,8 @@ class PrimaryTagMapper:
             return None
 
         return PrimaryTagOutput(   id=model.pk,
-                                    title=model.title,
-                                    display_order=model.display_order)
+                                    title=model.title
+                                    )
 
 
 
@@ -45,6 +45,5 @@ class MainTagMapper:
 
         return MainTagOutput(   id=model.pk,
                                 title=model.title,
-                                foods=list(map(self.food_in_food_plan_mapper.from_model, foods)),
-                                display_order=model.display_order
+                                foods=list(map(self.food_in_food_plan_mapper.from_model, foods))
                                 )               

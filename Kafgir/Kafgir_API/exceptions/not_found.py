@@ -29,3 +29,8 @@ class IngredientNotFoundException(APIException):
     status_code = 404
     default_detail = 'ingredient not found!'
     default_code = 'not_found'
+
+class CommentNotFoundException(APIException):
+    status_code = 404
+    default_detail = 'comment not found!'
+    default_code = 'not_found'
