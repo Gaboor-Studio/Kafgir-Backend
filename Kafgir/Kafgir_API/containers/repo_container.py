@@ -1,7 +1,7 @@
 from dependency_injector import containers, providers
 
 from ..repositories_impl.shopping_list_repo import *
-from ..repositories_impl.user_repo import *
+from ..repositories_impl.user_repo_impl import *
 from ..repositories_impl.food_planning_repo import *
 from ..repositories_impl.food_repo_impl import *
 from ..repositories_impl.ingredient_repo_impl import *
