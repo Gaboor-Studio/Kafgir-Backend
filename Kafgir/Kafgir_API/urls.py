@@ -13,6 +13,7 @@ from .url_patterns.admin.admin_food_urls import urlpatterns as admin_food_url_pa
 from .url_patterns.member.member_food_urls import urlpatterns as member_food_url_patterns
 from .url_patterns.admin.admin_tag_urls import urlpatterns as admin_tag_url_patterns
 from .url_patterns.member.member_ingredient_urls import urlpatterns as member_ingredient_url_patterns
+from .url_patterns.member.search_urls import urlpatterns as member_search_url_patterns
 
 urlpatterns = [
     path('auth/', include(auth_url_patterns)),
@@ -31,6 +32,9 @@ urlpatterns = [
 
     path('admin/tag/', include(admin_tag_url_patterns)),
 
-    path('member/profile/', include(profile_url_patterns))
+    path('member/profile/', include(profile_url_patterns)),
+
+    path('member/search/', include(member_search_url_patterns)),
+    
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

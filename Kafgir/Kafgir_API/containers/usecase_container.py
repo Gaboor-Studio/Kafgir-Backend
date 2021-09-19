@@ -10,6 +10,7 @@ from ..services.member.member_food_services import MemberFoodService
 from ..services.admin.admin_food_service import AdminFoodService
 from ..services.admin.admin_tag_service import AdminTagServices
 from ..services.member.profile_service import *
+from ..services.member.search_service import *
 
 
 from .repo_container import RepoContainer
@@ -83,6 +84,11 @@ class UsecaseContainer(containers.DeclarativeContainer):
         MemberIngredientService,
         ingredient_repo = RepoContainer.ingredient_repo,
         ingredient_mapper= MapperContainer.ingredient_mapper
+    )
+
+    search_usecase = providers.Singleton(
+        SearchService,
+        food_brief_mapper= MapperContainer.food_brief_mapper
     )
 
 
