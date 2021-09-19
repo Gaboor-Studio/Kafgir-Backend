@@ -11,6 +11,7 @@ from ..services.admin.admin_food_service import AdminFoodService
 from ..services.admin.admin_tag_service import AdminTagServices
 from ..services.member.profile_service import *
 from ..services.member.search_service import *
+from ..services.admin.admin_management_service import AdminManagementService
 
 
 from .repo_container import RepoContainer
@@ -91,6 +92,12 @@ class UsecaseContainer(containers.DeclarativeContainer):
         food_brief_mapper= MapperContainer.food_brief_mapper
     )
 
+    admin_management_usecase = providers.Singleton(
+        AdminManagementService,
+        user_repo = RepoContainer.user_repo,
+        admin_mapper = MapperContainer.admin_mapper,
+        admin_brief_mapper = MapperContainer.admin_brief_mapper 
+    )
 
 container = UsecaseContainer()
 # container.init_resources()
