@@ -10,6 +10,8 @@ from ...exceptions.common import CannotParseToInt
 
 
 class SearchService(SearchUsecase):
+    ''' This class contains all different ways to do a search for any entity in database'''
+
 
     @inject
     def __init__(self, food_brief_mapper: FoodBriefMapper = Provide['food_brief_mapper']) -> None:
@@ -17,14 +19,17 @@ class SearchService(SearchUsecase):
         self.food_brief_mapper = food_brief_mapper
 
     def search_for_food(self, title: str, category: int, ingredients: List[str], level: int, cooking_time: int) -> List[FoodBriefOutput]:
+        ''' Search for a group of specific foods using their names, category, ingredients, level and cooking time'''
 
         query_set = Food.objects
         
+        ''' title is the only required field '''
         if title is None:
             raise SearchFieldMissing(detail="food title you're looking for is being missed")
         else :
             query_set = query_set.filter(title__icontains=title)\
 
+        ''' rest of attributes are not required so we apply filters if and only if they exist '''
         if level is not None:
             try:
                 temp_level = int(level)
