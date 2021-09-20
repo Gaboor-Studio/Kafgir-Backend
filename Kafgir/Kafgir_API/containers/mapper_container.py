@@ -10,6 +10,7 @@ from ..mappers.tag_mapper import *
 from ..mappers.profile_mapper import *
 from ..mappers.comment_mapper import *
 from ..mappers.admin_management_mapper import *
+from ..mappers.user_management_mapper import *
 
 class MapperContainer(containers.DeclarativeContainer):
      
@@ -73,6 +74,10 @@ class MapperContainer(containers.DeclarativeContainer):
 
     admin_mapper = providers.Singleton(
         AdminMapper
+    )
+
+    user_management_profile_mapper = providers.Singleton(
+        UserManagementProfileMapper
     )
     
 
