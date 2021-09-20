@@ -34,3 +34,8 @@ class CommentNotFoundException(APIException):
     status_code = 404
     default_detail = 'comment not found!'
     default_code = 'not_found'
+
+class AdminNotFoundException(APIException):
+    status_code = 404
+    default_detail = 'admin not found!'
+    default_code = 'not_found'

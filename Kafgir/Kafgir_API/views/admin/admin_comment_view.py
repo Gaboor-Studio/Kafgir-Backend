@@ -25,14 +25,14 @@ class AdminCommentView(ViewSet):
     commentid_list_serializer = CommentIdListSerializer
 
     @inject
-    def __init__(self, Admin_comment_usecase: AdminCommentUsecase = Provide['Admin_comment_usecase']):
-        self.Admin_comment_usecase = Admin_comment_usecase
+    def __init__(self, admin_comment_usecase: AdminCommentUsecase = Provide['admin_comment_usecase']):
+        self.admin_comment_usecase = admin_comment_usecase
 
     @swagger_auto_schema(responses=dto_to_swagger_json_output(CommentOutput, many=True))
     def get_some_unconfirmed_comments(self, request, num = None):
         ''' receives a number and sends the same number of unconfirmed comments.'''
         
-        outputs = self.Admin_comment_usecase.get_some_unconfirmed_comments(num=num)
+        outputs = self.admin_comment_usecase.get_some_unconfirmed_comments(num=num)
         serialized_outputs = list(map(cattr.unstructure, outputs))
         return Response(data=serialized_outputs, status=status.HTTP_200_OK)
 
@@ -40,7 +40,7 @@ class AdminCommentView(ViewSet):
     def confirm_the_comment(self, request, comment_id = None):
         ''' confirm the comment.'''
 
-        output = self.Admin_comment_usecase.confirm_the_comment(comment_id=comment_id)
+        output = self.admin_comment_usecase.confirm_the_comment(comment_id=comment_id)
         serialized_output = cattr.unstructure(output)
         return Response(data=serialized_output, status=status.HTTP_200_OK)
 
@@ -51,7 +51,7 @@ class AdminCommentView(ViewSet):
         seri = self.commentid_list_serializer(data=request.data)
         if seri.is_valid():
             input = cattr.structure(request.data, CommentIdListInput)
-            output = self.Admin_comment_usecase.confirm_comments(comments=input)
+            output = self.admin_comment_usecase.confirm_comments(comments=input)
             serialized_output = cattr.unstructure(output)
             return Response(data=serialized_output, status=status.HTTP_200_OK)
         return Response(data={'error': 'Invalid data!', 'err': seri.errors}, status=status.HTTP_400_BAD_REQUEST)
@@ -60,7 +60,7 @@ class AdminCommentView(ViewSet):
     def get_some_food_comments(self, request, food_id = None, num = None):
         ''' receives a number and sends the same number of comments.'''
         
-        outputs = self.Admin_comment_usecase.get_some_food_comments(food_id=food_id,num=num)
+        outputs = self.admin_comment_usecase.get_some_food_comments(food_id=food_id,num=num)
         serialized_outputs = list(map(cattr.unstructure, outputs))
         return Response(data=serialized_outputs, status=status.HTTP_200_OK)
 
@@ -68,7 +68,7 @@ class AdminCommentView(ViewSet):
     def get_food_comments(self, request, food_id = None):
         ''' Gets all comments..'''
         
-        outputs = self.Admin_comment_usecase.get_food_comments(food_id=food_id)
+        outputs = self.admin_comment_usecase.get_food_comments(food_id=food_id)
         serialized_outputs = list(map(cattr.unstructure, outputs))
         return Response(data=serialized_outputs, status=status.HTTP_200_OK)
 
@@ -79,7 +79,7 @@ class AdminCommentView(ViewSet):
         seri = self.update_comment_serializer(data=request.data)
         if seri.is_valid():
             input = cattr.structure(request.data, CommentBriefInput)
-            output = self.Admin_comment_usecase.update_comment(input=input,comment_id=comment_id)
+            output = self.admin_comment_usecase.update_comment(input=input,comment_id=comment_id)
             serialized_output = cattr.unstructure(output)
             return Response(data=serialized_output, status=status.HTTP_200_OK)
         return Response(data={'error': 'Invalid data!', 'err': seri.errors}, status=status.HTTP_400_BAD_REQUEST)
@@ -88,6 +88,6 @@ class AdminCommentView(ViewSet):
     def remove_comment(self, request, comment_id=None):
         ''' Removes comment.'''
 
-        self.Admin_comment_usecase.remove_comment(comment_id=comment_id)
+        self.admin_comment_usecase.remove_comment(comment_id=comment_id)
         return Response(data=None, status=status.HTTP_200_OK)
     

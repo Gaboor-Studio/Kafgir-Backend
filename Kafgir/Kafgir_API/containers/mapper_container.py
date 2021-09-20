@@ -9,7 +9,7 @@ from ..mappers.recipe_item_mapper import *
 from ..mappers.tag_mapper import *
 from ..mappers.profile_mapper import *
 from ..mappers.comment_mapper import *
-
+from ..mappers.admin_management_mapper import *
 
 class MapperContainer(containers.DeclarativeContainer):
      
@@ -66,6 +66,15 @@ class MapperContainer(containers.DeclarativeContainer):
     comment_mapper = providers.Singleton(
         CommentMapper
     )
+
+    admin_brief_mapper = providers.Singleton(
+        AdminBriefMapper
+    )
+
+    admin_mapper = providers.Singleton(
+        AdminMapper
+    )
+    
 
 container = MapperContainer()
 # container.init_resources()

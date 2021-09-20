@@ -3,31 +3,36 @@ from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseU
 
 from .food import Food
 
+
 def user_directory_path(instance, filename):
     # file will be uploaded to MEDIA_ROOT/user.username/<filename>
     return 'profiles/user_{0}/{1}'.format(instance.username, filename)
 
+
 class UserProfileManager(BaseUserManager):
 
-    def create_user(self,username, email, name, last_name, password=None):
+    def create_user(self, username, email, name, last_name, password=None):
         if not email:
             raise ValueError('Users must have an email address')
 
         email = self.normalize_email(email)
-        user = self.model(username=username, email=email, name=name, last_name=last_name)
+        user = self.model(username=username, email=email,
+                          name=name, last_name=last_name)
 
         user.set_password(password)
 
         return user
 
-    def create_superuser(self, username, email, name, last_name, password):
+    def create_superuser(self, username, email, name, last_name, password, is_superuser=True):
         user = self.create_user(username, email, name, last_name, password)
 
         user.is_active = True
-        user.is_superuser = True
+        user.is_superuser = is_superuser
         user.is_staff = True
 
+        user.save(using=self._db)
         return user
+
 
 class User(AbstractBaseUser, PermissionsMixin):
     username = models.CharField(max_length=64, unique=True)
@@ -54,6 +59,6 @@ class User(AbstractBaseUser, PermissionsMixin):
         return self.email
 
     def get_image(self):
-        if not self.image :
+        if not self.image:
             return 'no-image'
         return self.image.url
