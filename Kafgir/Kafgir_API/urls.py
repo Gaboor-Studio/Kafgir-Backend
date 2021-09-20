@@ -17,6 +17,7 @@ from .url_patterns.member.member_ingredient_urls import urlpatterns as member_in
 from .url_patterns.member.search_urls import urlpatterns as member_search_url_patterns
 from .url_patterns.member.member_comment_urls import urlpatterns as member_comment_url_patterns
 from .url_patterns.admin.admin_management_urls import urlpatterns as admin_management_url_patterns
+from .url_patterns.admin.user_management_urls import urlpatterns as user_management_url_patterns
 
 urlpatterns = [
     path('auth/', include(auth_url_patterns)),
@@ -43,7 +44,9 @@ urlpatterns = [
 
     path('member/comment/', include(member_comment_url_patterns)),
 
-    path('admin/admin-management/', include(admin_management_url_patterns))
+    path('admin/admin-management/', include(admin_management_url_patterns)),
+
+    path('admin/user-management/', include(user_management_url_patterns))
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

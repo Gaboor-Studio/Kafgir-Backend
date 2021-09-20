@@ -14,6 +14,7 @@ from ..services.admin.admin_comment_service import AdminCommentService
 from ..services.member.profile_service import *
 from ..services.member.search_service import *
 from ..services.admin.admin_management_service import AdminManagementService
+from ..services.admin.user_management_service import *
 
 
 from .repo_container import RepoContainer
@@ -114,6 +115,12 @@ class UsecaseContainer(containers.DeclarativeContainer):
         user_repo = RepoContainer.user_repo,
         admin_mapper = MapperContainer.admin_mapper,
         admin_brief_mapper = MapperContainer.admin_brief_mapper 
+    )
+
+    user_management_usecase = providers.Singleton(
+        UserManagementService,
+        user_repo = RepoContainer.user_repo,
+        user_management_profile_mapper = MapperContainer.user_management_profile_mapper
     )
 
 container = UsecaseContainer()
