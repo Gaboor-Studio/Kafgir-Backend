@@ -6,9 +6,11 @@ from ..services.auth.sha1_generate_token_service import *
 from ..services.member.food_planning_services import *
 from ..services.member.member_home_page_service import *
 from ..services.member.member_ingredient_services import *
+from ..services.member.member_comment_service import *
 from ..services.member.member_food_services import MemberFoodService
 from ..services.admin.admin_food_service import AdminFoodService
 from ..services.admin.admin_tag_service import AdminTagServices
+from ..services.admin.admin_comment_service import AdminCommentService
 from ..services.member.profile_service import *
 
 
@@ -85,6 +87,20 @@ class UsecaseContainer(containers.DeclarativeContainer):
         ingredient_mapper= MapperContainer.ingredient_mapper
     )
 
+    member_comment_usecase = providers.Singleton(
+        MemberCommentService,
+        comment_repo = RepoContainer.comment_repo,
+        user_repo = RepoContainer.user_repo,
+        food_repo = RepoContainer.food_repo,
+        comment_mapper= MapperContainer.comment_mapper
+    )
+
+    Admin_comment_usecase = providers.Singleton(
+        AdminCommentService,
+        comment_repo = RepoContainer.comment_repo,
+        food_repo = RepoContainer.food_repo,
+        comment_mapper= MapperContainer.comment_mapper
+    )
 
 container = UsecaseContainer()
 # container.init_resources()

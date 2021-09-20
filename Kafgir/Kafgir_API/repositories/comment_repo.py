@@ -24,7 +24,7 @@ class CommentRepository(ABC):
         pass
 
     @abstractmethod
-    def get_not_confirmed_comments(self) -> List[Comment]:
+    def get_some_unconfirmed_comments(self, num: int) -> List[Comment]:
         pass
 
     @abstractmethod

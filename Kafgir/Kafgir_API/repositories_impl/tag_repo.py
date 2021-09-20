@@ -29,5 +29,5 @@ class TagRepositoryImpl(TagRepository):
         foods = Tag.objects.get(pk=id).food
         food_count = foods.count()
         if(food_count>=num) :
-            return list(foods.order_by('rating')[-1*num:])
+            return list(foods.order_by('-rating')[:num])
         return list(foods.all().order_by('-rating'))
