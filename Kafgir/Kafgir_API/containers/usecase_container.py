@@ -12,6 +12,7 @@ from ..services.admin.admin_food_service import AdminFoodService
 from ..services.admin.admin_tag_service import AdminTagServices
 from ..services.admin.admin_comment_service import AdminCommentService
 from ..services.member.profile_service import *
+from ..services.member.search_service import *
 from ..services.admin.admin_management_service import AdminManagementService
 
 
@@ -88,6 +89,11 @@ class UsecaseContainer(containers.DeclarativeContainer):
         ingredient_mapper= MapperContainer.ingredient_mapper
     )
 
+<<<<<<< HEAD
+    search_usecase = providers.Singleton(
+        SearchService,
+        food_brief_mapper= MapperContainer.food_brief_mapper
+=======
     member_comment_usecase = providers.Singleton(
         MemberCommentService,
         comment_repo = RepoContainer.comment_repo,
@@ -101,6 +107,7 @@ class UsecaseContainer(containers.DeclarativeContainer):
         comment_repo = RepoContainer.comment_repo,
         food_repo = RepoContainer.food_repo,
         comment_mapper= MapperContainer.comment_mapper
+>>>>>>> 18902c31057055a149a7c16f51fb5b79ce71a68c
     )
 
     admin_management_usecase = providers.Singleton(

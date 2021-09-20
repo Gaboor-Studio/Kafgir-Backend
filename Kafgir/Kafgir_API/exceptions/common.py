@@ -20,3 +20,7 @@ class CannotSendEmail(APIException):
 class CannotGenerateToken(APIException):
     status_code = 400
     default_detail = 'there was a problem generating a token for you!'
+
+class CannotParseToInt(APIException):
+    status_code = 400
+    default_detail = 'there was a problem parsing a value to int type!'
