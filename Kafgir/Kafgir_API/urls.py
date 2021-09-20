@@ -12,8 +12,10 @@ from .url_patterns.auth.authentication_urls import urlpatterns as auth_url_patte
 from .url_patterns.admin.admin_food_urls import urlpatterns as admin_food_url_patterns
 from .url_patterns.member.member_food_urls import urlpatterns as member_food_url_patterns
 from .url_patterns.admin.admin_tag_urls import urlpatterns as admin_tag_url_patterns
+from .url_patterns.admin.admin_comment_urls import urlpatterns as admin_comment_url_patterns
 from .url_patterns.member.member_ingredient_urls import urlpatterns as member_ingredient_url_patterns
 from .url_patterns.member.search_urls import urlpatterns as member_search_url_patterns
+from .url_patterns.member.member_comment_urls import urlpatterns as member_comment_url_patterns
 from .url_patterns.admin.admin_management_urls import urlpatterns as admin_management_url_patterns
 
 urlpatterns = [
@@ -37,6 +39,10 @@ urlpatterns = [
 
     path('member/search/', include(member_search_url_patterns)),
     
+    path('admin/comment/', include(admin_comment_url_patterns)),
+
+    path('member/comment/', include(member_comment_url_patterns)),
+
     path('admin/admin-management/', include(admin_management_url_patterns))
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
