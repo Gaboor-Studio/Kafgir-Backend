@@ -28,8 +28,8 @@ urlpatterns = [
     path('item/', member_shopping_list_item_create),
     path('item/<int:item_id>/',
          member_shopping_list_item_edit_remove),
-    path('item/done/<int:item_id>/',
+    path('item/<int:item_id>/done/',
          member_shopping_list_item_done),
-    path('item/undone/<int:item_id>/',
+    path('item/<int:item_id>/undone/',
          member_shopping_list_item_undone),
 ]

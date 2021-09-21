@@ -29,7 +29,7 @@ class MemberFoodView(ViewSet):
     def __init__(self, member_food_usecase: MemberFoodUsecase = Provide['member_food_usecase']):
         self.member_food_usecase = member_food_usecase
 
-    @swagger_auto_schema(responses=dto_to_swagger_json_output(FoodOutput))
+    @swagger_auto_schema(responses=dto_to_swagger_json_output(FoodOutput), tags=['member','food'])
     def get_one_food(self, request, food_id=None):
         ''' Gets informations of a food.'''
 
@@ -37,7 +37,7 @@ class MemberFoodView(ViewSet):
         serialized_output = cattr.unstructure(output)
         return Response(data=serialized_output, status=status.HTTP_200_OK)
 
-    @swagger_auto_schema(responses=dto_to_swagger_json_output(None))
+    @swagger_auto_schema(responses=dto_to_swagger_json_output(None), tags=['member','food'])
     def add_ingredients_to_list(self, request, food_id=None):
         ''' Gets informations of a food.'''
 

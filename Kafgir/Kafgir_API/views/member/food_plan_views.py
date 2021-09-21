@@ -27,7 +27,7 @@ class MemberFoodPlanView(ViewSet):
     def __init__(self, member_food_plan_usecase: MemberFoodPlanUsecase = Provide['member_food_plan_usecase']):
         self.member_food_plan_usecase = member_food_plan_usecase
 
-    @swagger_auto_schema(responses=dto_to_swagger_json_output(FoodPlanOutput, many=True))
+    @swagger_auto_schema(responses=dto_to_swagger_json_output(FoodPlanOutput, many=True), tags=['member','food-plan'])
     def find_food_plan_by_date(self, request):
         start_date = request.query_params.get('start_date')
         end_date = request.query_params.get('end_date')
@@ -36,7 +36,7 @@ class MemberFoodPlanView(ViewSet):
         serialized_outputs = list(map(cattr.unstructure, outputs))
         return Response(data=serialized_outputs, status=status.HTTP_200_OK)
 
-    @swagger_auto_schema(request_body=create_food_plan_serializer, responses=dto_to_swagger_json_output(None))    
+    @swagger_auto_schema(request_body=create_food_plan_serializer, responses=dto_to_swagger_json_output(None), tags=['member','food-plan'])    
     def create_new_food_plan(self, request):
         seri = self.create_food_plan_serializer(data=request.data)
         if seri.is_valid():
@@ -46,7 +46,7 @@ class MemberFoodPlanView(ViewSet):
             return Response(data=serialized_output, status=status.HTTP_200_OK)
         return Response(data={'error': 'Invalid data!', 'err': seri.errors}, status=status.HTTP_400_BAD_REQUEST)
 
-    @swagger_auto_schema(request_body=food_plan_serializer, responses=dto_to_swagger_json_output(None))
+    @swagger_auto_schema(request_body=food_plan_serializer, responses=dto_to_swagger_json_output(None), tags=['member','food-plan'])
     def update_food_plan(self, request, plan_id=None):
         seri = self.food_plan_serializer(data=request.data)
         if seri.is_valid():
@@ -56,7 +56,7 @@ class MemberFoodPlanView(ViewSet):
         return Response(data={'error': 'Invalid data!', 'err': seri.errors}, status=status.HTTP_400_BAD_REQUEST)
 
 
-    @swagger_auto_schema(responses=dto_to_swagger_json_output(None))
+    @swagger_auto_schema(responses=dto_to_swagger_json_output(None), tags=['member','food-plan'])
     def remove_food_plan(self, request, plan_id=None):
         self.member_food_plan_usecase.remove_food_plan(plan_id)
         return Response(data={}, status=status.HTTP_200_OK)

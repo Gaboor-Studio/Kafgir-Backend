@@ -26,13 +26,13 @@ class AdminTagView(ViewSet):
     def __init__(self, admin_tag_usecase: AdminTagUsecase = Provide['admin_tag_usecase']):
         self.admin_tag_usecase = admin_tag_usecase
 
-    @swagger_auto_schema(responses=dto_to_swagger_json_output(TagOutput, many=True))
+    @swagger_auto_schema(responses=dto_to_swagger_json_output(TagOutput, many=True), tags=['admin','tag'])
     def get_tags(self, request):
         outputs = self.admin_tag_usecase.find_all()
         serialized_outputs = list(map(cattr.unstructure, outputs))
         return Response(data=serialized_outputs, status=status.HTTP_200_OK)
 
-    @swagger_auto_schema(request_body=tag_serializer, responses=dto_to_swagger_json_output(None))    
+    @swagger_auto_schema(request_body=tag_serializer, responses=dto_to_swagger_json_output(None), tags=['admin','tag'])    
     def create_new_tag(self, request):
         seri = self.tag_serializer(data=request.data)
         if seri.is_valid():
@@ -42,7 +42,7 @@ class AdminTagView(ViewSet):
             return Response(data=serialized_output, status=status.HTTP_200_OK)
         return Response(data={'error': 'Invalid data!', 'err': seri.errors}, status=status.HTTP_400_BAD_REQUEST)
 
-    @swagger_auto_schema(request_body=tag_serializer, responses=dto_to_swagger_json_output(None))
+    @swagger_auto_schema(request_body=tag_serializer, responses=dto_to_swagger_json_output(None), tags=['admin','tag'])
     def update_tag(self, request, tag_id=None):
         seri = self.tag_serializer(data=request.data)
         if seri.is_valid():
@@ -52,7 +52,7 @@ class AdminTagView(ViewSet):
         return Response(data={'error': 'Invalid data!', 'err': seri.errors}, status=status.HTTP_400_BAD_REQUEST)
 
 
-    @swagger_auto_schema(responses=dto_to_swagger_json_output(None))
+    @swagger_auto_schema(responses=dto_to_swagger_json_output(None), tags=['admin','tag'])
     def remove_tag(self, request, tag_id=None):
         self.admin_tag_usecase.remove_tag(tag_id)
         return Response(data={}, status=status.HTTP_200_OK)

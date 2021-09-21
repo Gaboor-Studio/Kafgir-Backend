@@ -24,7 +24,7 @@ class MemberIngredientView(ViewSet):
     def __init__(self, member_ingredient_usecase: MemberIngredientUsecase = Provide['member_ingredient_usecase']):
         self.member_ingredient_usecase = member_ingredient_usecase
 
-    @swagger_auto_schema(responses=dto_to_swagger_json_output(IngredientOutput, many=True))
+    @swagger_auto_schema(responses=dto_to_swagger_json_output(IngredientOutput, many=True), tags=['member','ingredient'])
     def get_ingredient_list(self, request):
         ''' Find all ingredients starting with name or gets all ingredient.'''
         

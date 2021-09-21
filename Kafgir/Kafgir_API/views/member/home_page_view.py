@@ -21,7 +21,7 @@ class MemberHomePageView(ViewSet):
     def __init__(self, member_home_page_usecase: MemberHomePageUsecase = Provide['member_home_page_usecase']):
         self.member_home_page_usecase = member_home_page_usecase
 
-    @swagger_auto_schema(responses=dto_to_swagger_json_output(HomePageOutput))
+    @swagger_auto_schema(responses=dto_to_swagger_json_output(HomePageOutput), tags=['member','home-page'])
     def load_home_page(self, request):
         ''' Gets food plan, main tags and categories.'''
         number_of_foods = request.query_params.get('number_of_foods')
