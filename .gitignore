@@ -131,3 +131,6 @@ myEnv/
 
 # Mac OS
 .DS_Store
+
+#static files
+uploads/
