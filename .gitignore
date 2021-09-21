@@ -128,3 +128,6 @@ dmypy.json
 
 # virtual env
 myEnv/
+
+# Mac OS
+.DS_Store
