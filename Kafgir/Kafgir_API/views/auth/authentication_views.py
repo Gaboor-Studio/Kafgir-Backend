@@ -14,21 +14,6 @@ from ...usecases.auth.authentication_usecase import AuthenticationUsecase
 from ...serializers.auth_serializers import UserRegisterSerializer, SendEmailSerializer, VerifyEmailSerializer, GetResetTokenSerializer, ResetPasswordSerializer
 from ...dto.auth_dto import UserRegisterInput, SendEmailInput, VerifyEmailInput, GetResetTokenInput, ResetPasswordInput, PasswordResetTokenOutput
 
-@api_view(['POST'])
-@swagger_auto_schema(request_body=UserRegisterSerializer, responses=dto_to_swagger_json_output(None)) 
-@inject
-def register_view(request, authentication_usecase: AuthenticationUsecase = Provide['authentication_usecase']):
-    ''' This is a view for registering user '''
-    seri = UserRegisterSerializer(data=request.data)
-
-    if seri.is_valid():
-        input = cattr.structure(request.data, UserRegisterInput)
-        authentication_usecase.register_user(input)
-        return Response(data={}, status=status.HTTP_200_OK)
-    else:
-        return Response(data={'error': 'Invalid data!', 'err': seri.errors}, status=status.HTTP_400_BAD_REQUEST)
-
-
 class LoginApiView(ObtainAuthToken):
     ''' A view for login users.\n
         /api/auth/login (POST)
@@ -47,6 +32,18 @@ class AuthenticationView(viewsets.ViewSet):
     verify_email_serializer = VerifyEmailSerializer
     get_reset_token_serializer = GetResetTokenSerializer
     reset_password_serializer = ResetPasswordSerializer
+
+    @swagger_auto_schema(request_body=UserRegisterSerializer, responses=dto_to_swagger_json_output(None)) 
+    def register_view(self, request):
+        ''' This is a view for registering user '''
+        seri = UserRegisterSerializer(data=request.data)
+
+        if seri.is_valid():
+            input = cattr.structure(request.data, UserRegisterInput)
+            self.authentication_usecase.register_user(input)
+            return Response(data={}, status=status.HTTP_200_OK)
+        else:
+            return Response(data={'error': 'Invalid data!', 'err': seri.errors}, status=status.HTTP_400_BAD_REQUEST)
 
     @swagger_auto_schema(request_body=send_email_serializer, responses=dto_to_swagger_json_output(None))  
     def send_email(self, request):
