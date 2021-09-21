@@ -28,7 +28,7 @@ class AdminFoodView(ViewSet):
     def __init__(self, admin_food_usecase: AdminFoodUsecase = Provide['admin_food_usecase']):
         self.admin_food_usecase = admin_food_usecase
 
-    @swagger_auto_schema(responses=dto_to_swagger_json_output(FoodOutput))
+    @swagger_auto_schema(responses=dto_to_swagger_json_output(FoodOutput), tags=['admin','food'])
     def get_one_food(self, request, food_id=None):
         ''' Gets informations of a food.'''
 
@@ -37,7 +37,7 @@ class AdminFoodView(ViewSet):
         return Response(data=serialized_output, status=status.HTTP_200_OK)
 
     
-    @swagger_auto_schema(responses=dto_to_swagger_json_output(FoodBriefOutput,many=True))
+    @swagger_auto_schema(responses=dto_to_swagger_json_output(FoodBriefOutput,many=True), tags=['admin','food'])
     def get_all_food(self, request):
         ''' Gets a brief list of foods.'''
 
@@ -45,14 +45,14 @@ class AdminFoodView(ViewSet):
         serialized_outputs = list(map(cattr.unstructure,outputs))
         return Response(data=serialized_outputs, status=status.HTTP_200_OK)
 
-    @swagger_auto_schema(responses=dto_to_swagger_json_output(None))
+    @swagger_auto_schema(responses=dto_to_swagger_json_output(None), tags=['admin','food'])
     def delete_food(self, request, food_id=None):
         ''' Deletes a food.'''
 
         self.admin_food_usecase.delete_by_id(food_id)
         return Response(data=None, status=status.HTTP_200_OK)
 
-    @swagger_auto_schema(request_body=food_serializer ,responses=dto_to_swagger_json_output(FoodOutput))
+    @swagger_auto_schema(request_body=food_serializer ,responses=dto_to_swagger_json_output(FoodOutput), tags=['admin','food'])
     def create_food(self, request):
         ''' Creats a new food. Food ingredients will automatically be added to app ingredients. '''
 
