@@ -1,8 +1,9 @@
 from abc import ABC, abstractmethod
 
-from ..models.food import Food
+from django.db.models import QuerySet
 
-from typing import List
+from ..models.food import Food
+from ..models.tag import Tag
 
 class FoodRepository(ABC):
 
@@ -19,5 +20,9 @@ class FoodRepository(ABC):
         pass
 
     @abstractmethod
-    def find_all(self) -> List[Food]:
+    def find_all(self) -> QuerySet:
+        pass
+
+    @abstractmethod
+    def find_all_by_tag_ordered_by_rating(self, tag_id: int) -> QuerySet:
         pass

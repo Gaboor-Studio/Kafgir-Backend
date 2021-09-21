@@ -69,3 +69,8 @@ class SearchFieldMissing(APIException):
     status_code = 400
     default_detail = 'a required field is missing in your request'
     default_code = 'bad_request'
+
+class TagIdMissingException(APIException):
+    status_code = 400
+    default_detail = 'You must send tag id to get foods.'
+    default_code = 'bad_request'

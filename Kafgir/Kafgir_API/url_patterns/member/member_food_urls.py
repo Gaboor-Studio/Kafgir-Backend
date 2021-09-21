@@ -8,7 +8,12 @@ with_id = MemberFoodView.as_view({
 add_ingredients = MemberFoodView.as_view({
     'post': 'add_ingredients_to_list'
 })
+
+with_nothing = MemberFoodView.as_view({
+    'get': 'get_all_foods_with_tag'
+})
 urlpatterns = [
+    path('', with_nothing),
     path('<int:food_id>/', with_id),
     path('<int:food_id>/add-to-shopping-list',add_ingredients)
 ]
