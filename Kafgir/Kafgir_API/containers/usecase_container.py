@@ -6,7 +6,6 @@ from ..services.auth.sha1_generate_token_service import *
 from ..services.member.food_planning_services import *
 from ..services.member.member_home_page_service import *
 from ..services.member.member_ingredient_services import *
-from ..services.member.member_comment_service import *
 from ..services.member.member_food_services import MemberFoodService
 from ..services.admin.admin_food_service import AdminFoodService
 from ..services.admin.admin_tag_service import AdminTagServices
@@ -57,7 +56,10 @@ class UsecaseContainer(containers.DeclarativeContainer):
     member_food_usecase = providers.Singleton(
         MemberFoodService,
         food_repo = RepoContainer.food_repo,
-        food_mapper = MapperContainer.food_mapper
+        food_mapper = MapperContainer.food_mapper,
+        comment_repo = RepoContainer.comment_repo,
+        user_repo = RepoContainer.user_repo,
+        comment_mapper= MapperContainer.comment_mapper
     )
 
     admin_food_usecase = providers.Singleton(
@@ -67,7 +69,8 @@ class UsecaseContainer(containers.DeclarativeContainer):
         food_brief_mapper = MapperContainer.food_brief_mapper,
         ingredient_repo= RepoContainer.ingredient_repo,
         ingredient_piece_repo=RepoContainer.ingredient_piece_repo,
-        recipe_item_repo=RepoContainer.reciple_item_repo
+        recipe_item_repo=RepoContainer.reciple_item_repo,
+        tag_repo = RepoContainer.tag_repo
     )
     
     profile_usecase = providers.Singleton(
@@ -86,14 +89,6 @@ class UsecaseContainer(containers.DeclarativeContainer):
         MemberIngredientService,
         ingredient_repo = RepoContainer.ingredient_repo,
         ingredient_mapper= MapperContainer.ingredient_mapper
-    )
-
-    member_comment_usecase = providers.Singleton(
-        MemberCommentService,
-        comment_repo = RepoContainer.comment_repo,
-        user_repo = RepoContainer.user_repo,
-        food_repo = RepoContainer.food_repo,
-        comment_mapper= MapperContainer.comment_mapper
     )
 
     admin_comment_usecase = providers.Singleton(

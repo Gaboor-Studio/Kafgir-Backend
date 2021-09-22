@@ -9,3 +9,4 @@ class FoodSerializer(serializers.Serializer):
     cooking_time = serializers.IntegerField(min_value=1)
     ingredients = IngredientPieceSerializer(many=True)
     recipe = RecipeItemSerializer(many=True)
+    tags = serializers.ListField(child = serializers.IntegerField())
