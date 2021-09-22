@@ -2,23 +2,22 @@ from dependency_injector.wiring import inject, Provide
 from rest_framework import status
 from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
-from rest_framework.authentication import TokenAuthentication
+from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.permissions import IsAuthenticated,IsAdminUser
 import cattr
 from typing import List
 
 from ...usecases.admin.admin_comment_usecases import AdminCommentUsecase
 from ...serializers.comment_serializer import CommentIdListSerializer, UpdateCommentSerializer
-from ...dto.comment_dto import CommentBriefInput, CommentOutput, CommentInput, CommentIdListInput
+from ...dto.comment_dto import CommentBriefInput, CommentOutput, CommentIdListInput
 
 from drf_yasg.utils import swagger_auto_schema
 from typing import List
-import attr
 from ...util.dto_util import create_swagger_output
 
 class AdminCommentView(ViewSet):
 
-    authentication_classes = [TokenAuthentication]
+    authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated,IsAdminUser]
 
     update_comment_serializer = UpdateCommentSerializer

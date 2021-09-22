@@ -1,7 +1,7 @@
 from rest_framework import status
 from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
-from rest_framework.authentication import TokenAuthentication
+from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 
 from ...usecases.admin.admin_management_usecases import AdminManagementUsecase 
@@ -22,7 +22,7 @@ from dependency_injector.wiring import inject, Provide
 class AdminManagementView(ViewSet):
     '''This is a view for managing admins in admin panel.'''
 
-    authentication_classes = [TokenAuthentication]
+    authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated, IsAdminUser]
 
     @inject

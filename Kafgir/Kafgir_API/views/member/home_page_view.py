@@ -2,8 +2,7 @@ from dependency_injector.wiring import inject, Provide
 from rest_framework import status
 from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
-from rest_framework.authentication import TokenAuthentication
-from rest_framework.permissions import IsAuthenticated
+from rest_framework_simplejwt.authentication import JWTAuthentication
 import cattr
 
 from ...usecases.member.member_home_page import MemberHomePageUsecase
@@ -15,7 +14,7 @@ from ...util.dto_util import create_swagger_output
 
 class MemberHomePageView(ViewSet):
 
-    authentication_classes = [TokenAuthentication]
+    authentication_classes = [JWTAuthentication]
 
     @inject
     def __init__(self, member_home_page_usecase: MemberHomePageUsecase = Provide['member_home_page_usecase']):

@@ -10,13 +10,13 @@ class UserRepositoryImpl(UserRepository):
     user_model = get_user_model()
 
     def exist_user_by_username(self, username: str) -> bool:
-        return self.user_model.objects.filter(username=username).exists()
+        return self.user_model.objects.filter(username__iexact=username).exists()
 
     def exist_user_by_email(self, email: str) -> bool:
-        return self.user_model.objects.filter(email=email).exists()
+        return self.user_model.objects.filter(email__iexact=email).exists()
 
     def get_user_by_email(self, email: str) -> user_model:
-        return self.user_model.objects.get(email=email)
+        return self.user_model.objects.get(email__iexact=email)
 
     def save_user(self, user: user_model) -> None:
         user.save()

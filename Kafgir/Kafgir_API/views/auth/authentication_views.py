@@ -8,18 +8,9 @@ from ...util.dto_util import create_swagger_output
 from drf_yasg.utils import swagger_auto_schema
 import cattr
 
-from rest_framework.authtoken.views import ObtainAuthToken
-
 from ...usecases.auth.authentication_usecase import AuthenticationUsecase
 from ...serializers.auth_serializers import UserRegisterSerializer, SendEmailSerializer, VerifyEmailSerializer, GetResetTokenSerializer, ResetPasswordSerializer
 from ...dto.auth_dto import UserRegisterInput, SendEmailInput, VerifyEmailInput, GetResetTokenInput, ResetPasswordInput, PasswordResetTokenOutput
-
-class LoginApiView(ObtainAuthToken):
-    ''' A view for login users.\n
-        /api/auth/login (POST)
-    '''
-
-    renderer_classes = api_settings.DEFAULT_RENDERER_CLASSES
 
 class AuthenticationView(viewsets.ViewSet):
 

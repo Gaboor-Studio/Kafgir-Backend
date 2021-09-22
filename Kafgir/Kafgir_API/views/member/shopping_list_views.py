@@ -2,7 +2,7 @@ from dependency_injector.wiring import inject, Provide
 from rest_framework import status
 from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
-from rest_framework.authentication import TokenAuthentication
+from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.permissions import IsAuthenticated
 import cattr
 from typing import List
@@ -18,7 +18,7 @@ from ...util.dto_util import create_swagger_output
 
 class MemberShoppingListView(ViewSet):
 
-    authentication_classes = [TokenAuthentication]
+    authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
 
     shopping_list_serializer = ShopingListInputSerializer

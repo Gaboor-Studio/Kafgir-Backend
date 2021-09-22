@@ -2,7 +2,7 @@ from dependency_injector.wiring import Provide, inject
 from rest_framework import status
 from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
-from rest_framework.authentication import TokenAuthentication
+from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.permissions import IsAuthenticated
 from ...util.dto_util import create_swagger_output
 from drf_yasg.utils import swagger_auto_schema
@@ -20,7 +20,7 @@ class ProfileView(ViewSet):
         self.profile_usecase = profile_usecase
         super().__init__(**kwargs)
 
-    authentication_classes = [TokenAuthentication]
+    authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
     profile_serializer = ProfileSerializer
     profile_set_picture_serializer = ProfileSetPictureSerializer

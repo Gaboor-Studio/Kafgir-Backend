@@ -2,7 +2,7 @@ from dependency_injector.wiring import Provide, inject
 from rest_framework import status
 from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
-from rest_framework.authentication import TokenAuthentication
+from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.permissions import IsAuthenticated
 from ...util.dto_util import create_swagger_output
 from drf_yasg.utils import swagger_auto_schema
@@ -30,7 +30,7 @@ class SearchView(ViewSet):
         super().__init__(**kwargs)
         self.search_usecase = search_usecase
 
-    authentication_classes= [TokenAuthentication]
+    authentication_classes= [JWTAuthentication]
     permission_classes= [IsAuthenticated]
 
     @swagger_auto_schema(manual_parameters=test_param, responses=create_swagger_output(FoodBriefOutput, many=True))

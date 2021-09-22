@@ -2,7 +2,7 @@ import cattr
 from rest_framework import status
 from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
-from rest_framework.authentication import TokenAuthentication
+from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 
 from ...usecases.admin.user_management_usecases import UserManagementUsecase 
@@ -27,7 +27,7 @@ class UserManagementView(ViewSet):
         super().__init__(**kwargs)
         self.user_management_usecase= user_management_usecase
 
-    authentication_classes=[TokenAuthentication]
+    authentication_classes=[JWTAuthentication]
     permission_classes=[IsAuthenticated, IsAdminUser]
 
     @swagger_auto_schema(responses=create_swagger_output(UserManagementProfileOutput, many=True), tags=['admin', 'user-management'])
