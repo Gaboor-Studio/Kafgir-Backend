@@ -13,6 +13,7 @@ from ...serializers.auth_serializers import UserRegisterSerializer, SendEmailSer
 from ...dto.auth_dto import UserRegisterInput, SendEmailInput, VerifyEmailInput, GetResetTokenInput, ResetPasswordInput, PasswordResetTokenOutput
 
 class AuthenticationView(viewsets.ViewSet):
+    ''' This class is a view where user has access to sign up an other authentication APIs'''
 
     @inject
     def __init__(self, authentication_usecase: AuthenticationUsecase = Provide['authentication_usecase'], **kwargs) -> None:
