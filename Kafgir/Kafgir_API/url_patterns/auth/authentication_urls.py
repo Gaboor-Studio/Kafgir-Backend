@@ -1,5 +1,9 @@
 from django.urls import path
-from ...views.auth.authentication_views import LoginApiView,register_view, AuthenticationView
+from ...views.auth.authentication_views import LoginApiView, AuthenticationView
+
+register = AuthenticationView.as_view({
+    'post': 'register_view'
+})
 
 send_email = AuthenticationView.as_view({
     'post': 'send_email'
@@ -18,7 +22,7 @@ reset_password = AuthenticationView.as_view({
 })
 
 urlpatterns = [
-    path('register/', register_view),
+    path('register/', register),
     path('login/', LoginApiView.as_view()),
     path('send-confirmation/', send_email),
     path('confirm-email/', verify_email),

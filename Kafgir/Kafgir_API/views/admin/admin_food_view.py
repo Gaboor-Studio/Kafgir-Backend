@@ -10,11 +10,12 @@ from typing import List
 from ...usecases.admin.admin_food_usecases import AdminFoodUsecase
 from ...serializers.food_serializers import FoodSerializer
 from ...dto.food_dto import FoodOutput,FoodBriefOutput,FoodInput
+from ...util.paginator import PaginationData
 
 from drf_yasg.utils import swagger_auto_schema
 from typing import List
 import attr
-from ...util.dto_util import dto_to_swagger_json_output
+from ...util.dto_util import create_swagger_output
 
 
 class AdminFoodView(ViewSet):
@@ -28,7 +29,7 @@ class AdminFoodView(ViewSet):
     def __init__(self, admin_food_usecase: AdminFoodUsecase = Provide['admin_food_usecase']):
         self.admin_food_usecase = admin_food_usecase
 
-    @swagger_auto_schema(responses=dto_to_swagger_json_output(FoodOutput))
+    @swagger_auto_schema(responses=create_swagger_output(FoodOutput), tags=['admin','food'])
     def get_one_food(self, request, food_id=None):
         ''' Gets informations of a food.'''
 
@@ -37,22 +38,24 @@ class AdminFoodView(ViewSet):
         return Response(data=serialized_output, status=status.HTTP_200_OK)
 
     
-    @swagger_auto_schema(responses=dto_to_swagger_json_output(FoodBriefOutput,many=True))
+    @swagger_auto_schema(responses=create_swagger_output(FoodBriefOutput,many=True,paginated=True), tags=['admin','food'])
     def get_all_food(self, request):
         ''' Gets a brief list of foods.'''
 
-        outputs = self.admin_food_usecase.load_all()
-        serialized_outputs = list(map(cattr.unstructure,outputs))
-        return Response(data=serialized_outputs, status=status.HTTP_200_OK)
+        pagination_data = PaginationData(request)
+        outputs = self.admin_food_usecase.load_all(pagination_data)
+        outputs.data = list(map(cattr.unstructure,outputs.data))
+        serialized_output = cattr.unstructure(outputs)
+        return Response(data=serialized_output, status=status.HTTP_200_OK)
 
-    @swagger_auto_schema(responses=dto_to_swagger_json_output(None))
+    @swagger_auto_schema(responses=create_swagger_output(None), tags=['admin','food'])
     def delete_food(self, request, food_id=None):
         ''' Deletes a food.'''
 
         self.admin_food_usecase.delete_by_id(food_id)
         return Response(data=None, status=status.HTTP_200_OK)
 
-    @swagger_auto_schema(request_body=food_serializer ,responses=dto_to_swagger_json_output(FoodOutput))
+    @swagger_auto_schema(request_body=food_serializer ,responses=create_swagger_output(FoodOutput), tags=['admin','food'])
     def create_food(self, request):
         ''' Creats a new food. Food ingredients will automatically be added to app ingredients. '''
 

@@ -10,4 +10,4 @@ class RecipeItemMapper:
 
         return RecipeItemOutput(id=model.pk,
                                 step=model.step,
-                                text=model.food.title)
+                                text=model.text)

@@ -2,18 +2,24 @@ from typing import List
 
 from ...dto.food_dto import FoodOutput
 from ...dto.comment_dto import CommentOutput,CommentInput,CommentBriefInput
+
+from ...dto.food_dto import FoodOutput, FoodBriefOutput
 from ...usecases.member.member_food_usecases import MemberFoodUsecase
 from ...models.food import Food
 from ...models.comment import Comment
 from ...models.user import User
 from ...models.shopping_list_item import ShoppingListItem
+from ...models.tag import Tag
+from ...exceptions.not_found import FoodNotFoundException,TagNotFoundException
 from ...repositories.food_repo import FoodRepository
+from ...repositories.tag_repo import TagRepository
 from ...repositories.shopping_list_repo import ShoppingListRepository
 from ...repositories.user_repo import UserRepository
 from ...repositories.comment_repo import CommentRepository
 from ...mappers.food_mapper import FoodMapper
 from ...mappers.comment_mapper import CommentMapper
 from ...exceptions.not_found import CommentNotFoundException,FoodNotFoundException
+from ...mappers.food_mapper import FoodMapper,FoodBriefMapper
 
 from django.contrib.auth import get_user_model
 from dependency_injector.wiring import inject, Provide
@@ -23,14 +29,18 @@ class MemberFoodService(MemberFoodUsecase):
     user_model = get_user_model()
     @inject
     def __init__(self, food_repo: FoodRepository = Provide['food_repo'],
+                       tag_repo: TagRepository = Provide['tag_repo'],
                        food_mapper: FoodMapper = Provide['food_mapper'],
                        shopping_list_repo: ShoppingListRepository = Provide['shopping_list_repo'],
                        comment_repo: CommentRepository = Provide['comment_repo'],
                        user_repo: UserRepository = Provide['user_repo'],
-                       comment_mapper: CommentMapper = Provide['comment_mapper']):
-        
+                       comment_mapper: CommentMapper = Provide['comment_mapper'],
+                       food_brief_mapper: FoodBriefMapper = Provide['food_brief_mapper']):
+
+        self.tag_repo = tag_repo
         self.food_repo = food_repo
         self.food_mapper = food_mapper
+        self.food_brief_mapper = food_brief_mapper
         self.shopping_list_repo = shopping_list_repo
         self.comment_repo = comment_repo
         self.user_repo = user_repo
@@ -107,6 +117,15 @@ class MemberFoodService(MemberFoodUsecase):
             raise CommentNotFoundException(
                 detail=f'comment with comment_id={comment_id} does not exist!')
 
-
     def remove_comment(self, comment_id: int) -> None:
         self.comment_repo.delete_by_id(comment_id)
+
+
+    def find_all_with_tag(self, tag_id: int) -> List[FoodBriefOutput]:
+        try:
+            tag = self.tag_repo.find_by_id(tag_id)
+            foods = self.food_repo.find_all_by_tag_ordered_by_rating(tag)
+            return list(map(self.food_brief_mapper.from_model, foods))
+        except Tag.DoesNotExist:
+            raise TagNotFoundException(detail=f'Tag(id= {tag_id}) not found!')
+    

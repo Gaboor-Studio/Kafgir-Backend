@@ -4,7 +4,7 @@ from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
-from ...util.dto_util import dto_to_swagger_json_output
+from ...util.dto_util import create_swagger_output
 from drf_yasg.utils import swagger_auto_schema
 import cattr
 from typing import Any
@@ -26,7 +26,7 @@ class ProfileView(ViewSet):
     profile_set_picture_serializer = ProfileSetPictureSerializer
     profile_password_change_serializer = ProfilePasswordChangeSerializer
 
-    @swagger_auto_schema(responses=dto_to_swagger_json_output(ProfileOutput))
+    @swagger_auto_schema(responses=create_swagger_output(ProfileOutput), tags=['member','profile'])
     def get_profile(self, request):
         ''' get user profile's details '''
         id = request.user.id
@@ -34,7 +34,7 @@ class ProfileView(ViewSet):
         serialized_output = cattr.unstructure(output)
         return Response(data=serialized_output, status=status.HTTP_200_OK)
 
-    @swagger_auto_schema(request_body=profile_password_change_serializer, responses=dto_to_swagger_json_output(None))
+    @swagger_auto_schema(request_body=profile_password_change_serializer, responses=create_swagger_output(None), tags=['member','profile'])
     def change_password(self, request):
         ''' change user password having the user's old password, new password and it's repeat '''
 
@@ -48,7 +48,7 @@ class ProfileView(ViewSet):
         else:
             return Response(data={'error': 'Invalid data!', 'err': seri.errors}, status=status.HTTP_400_BAD_REQUEST)
 
-    @swagger_auto_schema(request_body=profile_serializer, responses=dto_to_swagger_json_output(ProfileOutput))
+    @swagger_auto_schema(request_body=profile_serializer, responses=create_swagger_output(ProfileOutput), tags=['member','profile'])
     def edit_profile(self, request):
         ''' edit user's name and last name (no change of email for now) '''
 
@@ -63,7 +63,7 @@ class ProfileView(ViewSet):
         else:
             return Response(data={'error': 'Invalid data!', 'err': seri.errors}, status=status.HTTP_400_BAD_REQUEST)
 
-    @swagger_auto_schema(request_body=profile_set_picture_serializer, responses=dto_to_swagger_json_output(None))
+    @swagger_auto_schema(request_body=profile_set_picture_serializer, responses=create_swagger_output(None), tags=['member','profile'])
     def set_picture(self, request):
         ''' set user's profile picture '''
 
@@ -77,7 +77,7 @@ class ProfileView(ViewSet):
         else:
             return Response(data={'error': 'Invalid data!', 'err': seri.errors}, status=status.HTTP_400_BAD_REQUEST)
 
-    @swagger_auto_schema(responses=dto_to_swagger_json_output(None))
+    @swagger_auto_schema(responses=create_swagger_output(None), tags=['member','profile'])
     def log_out(self, request):
         ''' log out of the account '''
 

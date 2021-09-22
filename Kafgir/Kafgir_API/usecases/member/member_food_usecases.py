@@ -1,9 +1,12 @@
 from abc import ABC, abstractmethod
 
 from typing import List
+
 from ...dto.comment_dto import CommentInput, CommentOutput, CommentBriefInput
 from ...models.user import User
 from ...dto.food_dto import FoodOutput
+from ...dto.food_dto import FoodOutput, FoodBriefOutput
+
 from django.contrib.auth import get_user_model
 
 class MemberFoodUsecase(ABC):
@@ -36,4 +39,8 @@ class MemberFoodUsecase(ABC):
 
     @abstractmethod
     def remove_comment(self, comment_id: int) -> None:
+        pass
+    
+    @abstractmethod
+    def find_all_with_tag(self, tag_id: int) -> List[FoodBriefOutput]:
         pass

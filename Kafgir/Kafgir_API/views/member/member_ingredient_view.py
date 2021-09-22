@@ -13,7 +13,7 @@ from ...dto.ingredient_dto import IngredientOutput
 from drf_yasg.utils import swagger_auto_schema
 from typing import List
 import attr
-from ...util.dto_util import dto_to_swagger_json_output
+from ...util.dto_util import create_swagger_output
 
 class MemberIngredientView(ViewSet):
 
@@ -24,7 +24,7 @@ class MemberIngredientView(ViewSet):
     def __init__(self, member_ingredient_usecase: MemberIngredientUsecase = Provide['member_ingredient_usecase']):
         self.member_ingredient_usecase = member_ingredient_usecase
 
-    @swagger_auto_schema(responses=dto_to_swagger_json_output(IngredientOutput, many=True))
+    @swagger_auto_schema(responses=create_swagger_output(IngredientOutput, many=True), tags=['member','ingredient'])
     def get_ingredient_list(self, request):
         ''' Find all ingredients starting with name or gets all ingredient.'''
         

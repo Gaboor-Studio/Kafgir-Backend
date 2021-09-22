@@ -2,8 +2,6 @@ from django.urls import path, include
 from django.conf.urls.static import static
 from django.conf import settings
 
-from .views.auth.authentication_views import register_view, LoginApiView
-
 from .url_patterns.member.member_shopping_list_urls import urlpatterns as member_shopping_list_url_patterns
 from .url_patterns.member.member_food_planning_urls import urlpatterns as member_food_planning_url_patterns
 from .url_patterns.member.member_home_page_urls import urlpatterns as member_home_page_url_patterns
@@ -14,7 +12,9 @@ from .url_patterns.member.member_food_urls import urlpatterns as member_food_url
 from .url_patterns.admin.admin_tag_urls import urlpatterns as admin_tag_url_patterns
 from .url_patterns.admin.admin_comment_urls import urlpatterns as admin_comment_url_patterns
 from .url_patterns.member.member_ingredient_urls import urlpatterns as member_ingredient_url_patterns
+from .url_patterns.member.search_urls import urlpatterns as member_search_url_patterns
 from .url_patterns.admin.admin_management_urls import urlpatterns as admin_management_url_patterns
+from .url_patterns.admin.user_management_urls import urlpatterns as user_management_url_patterns
 
 urlpatterns = [
     path('auth/', include(auth_url_patterns)),
@@ -35,9 +35,15 @@ urlpatterns = [
 
     path('member/profile/', include(profile_url_patterns)),
 
+    path('member/search/', include(member_search_url_patterns)),
+    
     path('admin/comment/', include(admin_comment_url_patterns)),
 
-    path('admin/admin-management/', include(admin_management_url_patterns))
+    path('admin/admin-management/', include(admin_management_url_patterns)),
+
+    path('admin/admin-management/', include(admin_management_url_patterns)),
+
+    path('admin/user-management/', include(user_management_url_patterns))
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

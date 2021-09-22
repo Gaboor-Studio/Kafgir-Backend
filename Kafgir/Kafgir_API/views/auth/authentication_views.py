@@ -4,7 +4,7 @@ from rest_framework import status
 from rest_framework import viewsets
 from rest_framework.settings import api_settings
 from rest_framework.response import Response
-from ...util.dto_util import dto_to_swagger_json_output
+from ...util.dto_util import create_swagger_output
 from drf_yasg.utils import swagger_auto_schema
 import cattr
 
@@ -13,21 +13,6 @@ from rest_framework.authtoken.views import ObtainAuthToken
 from ...usecases.auth.authentication_usecase import AuthenticationUsecase
 from ...serializers.auth_serializers import UserRegisterSerializer, SendEmailSerializer, VerifyEmailSerializer, GetResetTokenSerializer, ResetPasswordSerializer
 from ...dto.auth_dto import UserRegisterInput, SendEmailInput, VerifyEmailInput, GetResetTokenInput, ResetPasswordInput, PasswordResetTokenOutput
-
-@api_view(['POST'])
-@swagger_auto_schema(request_body=UserRegisterSerializer, responses=dto_to_swagger_json_output(None)) 
-@inject
-def register_view(request, authentication_usecase: AuthenticationUsecase = Provide['authentication_usecase']):
-    ''' This is a view for registering user '''
-    seri = UserRegisterSerializer(data=request.data)
-
-    if seri.is_valid():
-        input = cattr.structure(request.data, UserRegisterInput)
-        authentication_usecase.register_user(input)
-        return Response(data={}, status=status.HTTP_200_OK)
-    else:
-        return Response(data={'error': 'Invalid data!', 'err': seri.errors}, status=status.HTTP_400_BAD_REQUEST)
-
 
 class LoginApiView(ObtainAuthToken):
     ''' A view for login users.\n
@@ -48,7 +33,19 @@ class AuthenticationView(viewsets.ViewSet):
     get_reset_token_serializer = GetResetTokenSerializer
     reset_password_serializer = ResetPasswordSerializer
 
-    @swagger_auto_schema(request_body=send_email_serializer, responses=dto_to_swagger_json_output(None))  
+    @swagger_auto_schema(request_body=UserRegisterSerializer, responses=create_swagger_output(None)) 
+    def register_view(self, request):
+        ''' This is a view for registering user '''
+        seri = UserRegisterSerializer(data=request.data)
+
+        if seri.is_valid():
+            input = cattr.structure(request.data, UserRegisterInput)
+            self.authentication_usecase.register_user(input)
+            return Response(data={}, status=status.HTTP_200_OK)
+        else:
+            return Response(data={'error': 'Invalid data!', 'err': seri.errors}, status=status.HTTP_400_BAD_REQUEST)
+
+    @swagger_auto_schema(request_body=send_email_serializer, responses=create_swagger_output(None))  
     def send_email(self, request):
         ''' sends an email to the user's email that contains a 5 digit code that could be used for resetting the password or activating the account'''
 
@@ -61,7 +58,7 @@ class AuthenticationView(viewsets.ViewSet):
 
         return Response(data={'error': 'Invalid data!', 'err': seri.errors}, status=status.HTTP_400_BAD_REQUEST)
 
-    @swagger_auto_schema(request_body=verify_email_serializer, responses=dto_to_swagger_json_output(None))  
+    @swagger_auto_schema(request_body=verify_email_serializer, responses=create_swagger_output(None))  
     def verify_email(self, request):
         ''' given the 5 digit code as input, it activates the user's account '''
 
@@ -74,7 +71,7 @@ class AuthenticationView(viewsets.ViewSet):
 
         return Response(data={'error': 'Invalid data!', 'err': seri.errors}, status=status.HTTP_400_BAD_REQUEST)
 
-    @swagger_auto_schema(request_body=get_reset_token_serializer, responses=dto_to_swagger_json_output(PasswordResetTokenOutput))
+    @swagger_auto_schema(request_body=get_reset_token_serializer, responses=create_swagger_output(PasswordResetTokenOutput))
     def get_reset_token(self, request):
         ''' given the 5 digit code as input, responses with the user's token that could be used to resetting the password '''
 
@@ -88,7 +85,7 @@ class AuthenticationView(viewsets.ViewSet):
         else:
             return Response(data={'error': 'Invalid data!', 'err': seri.errors}, status=status.HTTP_400_BAD_REQUEST)
 
-    @swagger_auto_schema(request_body=reset_password_serializer, responses=dto_to_swagger_json_output(None))
+    @swagger_auto_schema(request_body=reset_password_serializer, responses=create_swagger_output(None))
     def reset_password(self, request):
         ''' given the user's token as input, resets user's password to the given new password '''
 

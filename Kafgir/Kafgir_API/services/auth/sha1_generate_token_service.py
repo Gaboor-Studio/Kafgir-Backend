@@ -14,6 +14,6 @@ class SHA1GenerateTokenService(GenerateTokenUsecase):
         if user is None:
             raise UserNotFoundException('cannot generate token for a user that does not exist!')
 
-        s = user.email + user.username + user.name
+        s = user.email + user.username
 
         return hashlib.sha1(s.encode("utf-8")).hexdigest()

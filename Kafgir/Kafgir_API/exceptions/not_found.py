@@ -39,3 +39,8 @@ class AdminNotFoundException(APIException):
     status_code = 404
     default_detail = 'admin not found!'
     default_code = 'not_found'
+
+class PageNotFoundException(APIException):
+    status_code = 404
+    default_detail = 'page not found!'
+    default_code = 'not_found'

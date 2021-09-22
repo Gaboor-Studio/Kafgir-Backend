@@ -2,8 +2,8 @@ from abc import ABC, abstractmethod
 
 from typing import List
 
-from ...dto.admin_management_dto import AdminOutput, AdminRegisterInput, AdminSetPasswordInput, AdminBriefOutput
-
+from ...dto.admin_management_dto import AdminOutput, AdminRegisterInput, AdminSetPasswordInput, AdminBriefOutput, AdminUpdateProfileInput
+from ...util.paginator import PaginationData
 
 class AdminManagementUsecase(ABC):
     '''This class is an abstraction for admin managment services.
@@ -16,7 +16,7 @@ class AdminManagementUsecase(ABC):
         pass
 
     @abstractmethod
-    def load_all_admins(self) -> List[AdminBriefOutput]:
+    def load_all_admins(self, pagination_data: PaginationData) -> List[AdminBriefOutput]:
         '''Returns a list of admins containing brief outputs.'''
         pass
 
@@ -31,7 +31,7 @@ class AdminManagementUsecase(ABC):
         pass
 
     @abstractmethod
-    def update_admin(self, id: int, input: AdminRegisterInput) -> AdminOutput:
+    def update_admin(self, id: int, input: AdminUpdateProfileInput) -> AdminOutput:
         ''' Updates an admin.'''
         pass
 

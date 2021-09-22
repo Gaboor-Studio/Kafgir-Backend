@@ -4,6 +4,7 @@ from typing import List
 
 from ...dto.food_dto import FoodOutput,FoodInput, FoodBriefOutput
 
+from ...util.paginator import PaginationData,PaginationOutput
 
 class AdminFoodUsecase(ABC):
 
@@ -12,7 +13,7 @@ class AdminFoodUsecase(ABC):
         pass
 
     @abstractmethod
-    def load_all(self) -> List[FoodBriefOutput]:
+    def load_all(self, pagination_data: PaginationData) -> PaginationOutput:
         pass
 
     @abstractmethod
