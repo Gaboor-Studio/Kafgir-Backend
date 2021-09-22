@@ -15,7 +15,7 @@ from ...models.ingredient import Ingredient
 from ...models.ingredient_piece import IngredientPiece
 from ...models.recipe_item import RecipeItem
 
-from ...exceptions.not_found import FoodNotFoundException
+from ...exceptions.not_found import FoodNotFoundException,PageNotFoundException
 
 from ...util.paginator import PaginationData,PaginatorUtil,PaginationOutput
 
@@ -47,10 +47,13 @@ class AdminFoodService(AdminFoodUsecase):
 
     def load_all(self, pagination_data: PaginationData) -> PaginationOutput:
         foods = self.food_repo.find_all()
-        paginated_foods, pages = PaginatorUtil.paginate_query_set(foods, pagination_data)
-        data = list(map(self.food_brief_mapper.from_model, paginated_foods))
-        return PaginatorUtil.create_pagination_output(data, pages, pagination_data.page)
-
+        try:
+            paginated_foods, pages = PaginatorUtil.paginate_query_set(foods, pagination_data)
+            data = list(map(self.food_brief_mapper.from_model, paginated_foods))
+            return PaginatorUtil.create_pagination_output(data, pages, pagination_data.page)
+        except:
+            raise PageNotFoundException(detail= f'Page({pagination_data.page}) not found!')
+        
     def delete_by_id(self, id: int) -> None:
         self.food_repo.delete_by_id(id)
 
