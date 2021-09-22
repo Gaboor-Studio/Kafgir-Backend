@@ -9,6 +9,7 @@ from ...exceptions.not_found import UserNotFoundException
 from ...exceptions.bad_request import AuthenticationError, PasswordRepeatDidNotMatch
 
 class ProfileService(ProfileUsecase):
+    ''' This class is an implementation of profile usecase where every method goes to be an API for users to manage their own profiles'''
 
     @inject
     def __init__(self, user_repo: UserRepository = Provide['user_repo'],

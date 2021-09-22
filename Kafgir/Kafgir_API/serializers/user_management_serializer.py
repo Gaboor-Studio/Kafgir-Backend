@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 class UserManagementCreateProfileSerializer(serializers.Serializer):
-    ''' This serializer manages validation over create profile api'''
+    ''' This serializer manages validation over create profile api in admin-management'''
 
     username= serializers.CharField(max_length=64)
     email= serializers.EmailField(max_length=255)

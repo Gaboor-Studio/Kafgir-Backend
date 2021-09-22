@@ -5,6 +5,7 @@ from ...usecases.auth.generate_token_usecase import GenerateTokenUsecase
 from ...exceptions.not_found import UserNotFoundException
 
 class SHA1GenerateTokenService(GenerateTokenUsecase):
+    ''' This is an implementation for generate token service which implements the methods using sha1 algorithm'''
 
     model = get_user_model()
 

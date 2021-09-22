@@ -14,6 +14,7 @@ from ...dto.profile_dto import ProfileInput, ProfileOutput, ProfileSetPictureInp
 from ...serializers.profile_serializer import ProfileSerializer, ProfileSetPictureSerializer, ProfilePasswordChangeSerializer
 
 class ProfileView(ViewSet):
+    ''' This class is a viewset where user has access to it's own profile APIs'''
 
     @inject
     def __init__(self, profile_usecase: ProfileUsecase = Provide['profile_usecase'], **kwargs: Any) -> None:
