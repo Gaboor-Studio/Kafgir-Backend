@@ -13,7 +13,6 @@ from .url_patterns.admin.admin_tag_urls import urlpatterns as admin_tag_url_patt
 from .url_patterns.admin.admin_comment_urls import urlpatterns as admin_comment_url_patterns
 from .url_patterns.member.member_ingredient_urls import urlpatterns as member_ingredient_url_patterns
 from .url_patterns.member.search_urls import urlpatterns as member_search_url_patterns
-from .url_patterns.member.member_comment_urls import urlpatterns as member_comment_url_patterns
 from .url_patterns.admin.admin_management_urls import urlpatterns as admin_management_url_patterns
 from .url_patterns.admin.user_management_urls import urlpatterns as user_management_url_patterns
 
@@ -40,7 +39,7 @@ urlpatterns = [
     
     path('admin/comment/', include(admin_comment_url_patterns)),
 
-    path('member/comment/', include(member_comment_url_patterns)),
+    path('admin/admin-management/', include(admin_management_url_patterns)),
 
     path('admin/admin-management/', include(admin_management_url_patterns)),
 

@@ -1,8 +1,11 @@
 from ..models.food import Food
 from ..dto.food_dto import FoodBriefOutput, FoodInFoodPlanOutput, FoodOutput
-
+from ..dto.comment_dto import CommentOutput
 from .ingredient_piece_mapper import IngredientPieceMapper
 from .recipe_item_mapper import RecipeItemMapper
+from .comment_mapper import CommentMapper
+
+from django.db.models import Q
 
 from dependency_injector.wiring import inject, Provide
 
@@ -10,9 +13,11 @@ class FoodMapper:
 
     @inject
     def __init__(self, ingredient_piece_mapper: IngredientPieceMapper = Provide['ingredient_piece_mapper'],
+                       comment_mapper: CommentMapper = Provide['comment_mapper'],
                        recipe_item_mapper: RecipeItemMapper = Provide['recipe_item_mapper']):
         self.ingredient_piece_mapper = ingredient_piece_mapper
         self.recipe_item_mapper = recipe_item_mapper
+        self.comment_mapper = comment_mapper
                        
     def from_model(self, model: Food) -> FoodOutput:
         if model == None:
@@ -25,7 +30,11 @@ class FoodMapper:
                           level=model.level,
                           ingredients=list(
                               map(self.ingredient_piece_mapper.from_model, list(model.ingredient_pieces.all()))),
-                          recipe=list(map(self.recipe_item_mapper.from_model, list(model.recipe_items.all()))))
+                          recipe=list(map(self.recipe_item_mapper.from_model, list(model.recipe_items.all()))),
+                          comments=[],
+                          my_comment=None)
+
+
 
 class FoodBriefMapper:
 
