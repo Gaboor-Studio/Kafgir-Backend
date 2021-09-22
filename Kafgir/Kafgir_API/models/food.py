@@ -17,5 +17,5 @@ class Food(models.Model):
     rating = models.FloatField(default=0)
     rating_count = models.IntegerField(default=0)
     level = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(3)])
-    cooking_time = models.IntegerField(validators=[MinValueValidator(1)])
+    cooking_time = models.CharField(max_length=32)
     

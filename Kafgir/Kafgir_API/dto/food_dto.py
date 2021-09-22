@@ -11,7 +11,7 @@ class FoodOutput:
     id: int = attr.ib()
     title: str = attr.ib()
     rating: float = attr.ib()
-    cooking_time: int = attr.ib()
+    cooking_time: str = attr.ib()
     level: int = attr.ib()
     ingredients: List[IngredientPieceOutput] = attr.ib()
     recipe: List[RecipeItemOutput] = attr.ib()
@@ -28,7 +28,7 @@ class FoodBriefOutput:
     id: int = attr.ib()
     title: str = attr.ib()
     rating: float = attr.ib()
-    cooking_time: int = attr.ib()
+    cooking_time: str = attr.ib()
     level: int = attr.ib()
 
 @attr.s
@@ -39,7 +39,7 @@ class FoodInFoodPlanOutput:
 @attr.s
 class FoodInput:
     title: str = attr.ib()
-    cooking_time: int = attr.ib()
+    cooking_time: str = attr.ib()
     level: int = attr.ib()
     ingredients: List[IngredientPieceInput] = attr.ib()
     recipe: List[RecipeItemInput] = attr.ib()
