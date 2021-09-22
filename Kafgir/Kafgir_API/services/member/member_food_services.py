@@ -52,11 +52,11 @@ class MemberFoodService(MemberFoodUsecase):
             if not user_id==None:
                 my_comment = self.find_comment_by_user_id(food_id=food_id,id=user_id)
                 if not my_comment==None:
-                    food_output = self.food_mapper.food_for_user_output(food)
+                    food_output = self.food_mapper.from_model(food)
                     food_output.comments = self.get_some_food_comments(food_id=food_id,num=6)
                     food_output.my_comment = my_comment
                     return food_output
-            food_output = self.food_mapper.food_output(food)
+            food_output = self.food_mapper.from_model(food)
             food_output.comments = self.get_some_food_comments(food_id=food_id,num=6)
             return food_output
         except Food.DoesNotExist:

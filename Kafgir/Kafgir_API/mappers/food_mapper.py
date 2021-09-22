@@ -1,6 +1,6 @@
 from ..models.food import Food
-from ..dto.food_dto import FoodBriefOutput, FoodInFoodPlanOutput, FoodOutput, FoodForUserOutput
-
+from ..dto.food_dto import FoodBriefOutput, FoodInFoodPlanOutput, FoodOutput
+from ..dto.comment_dto import CommentOutput
 from .ingredient_piece_mapper import IngredientPieceMapper
 from .recipe_item_mapper import RecipeItemMapper
 from .comment_mapper import CommentMapper
@@ -19,7 +19,7 @@ class FoodMapper:
         self.recipe_item_mapper = recipe_item_mapper
         self.comment_mapper = comment_mapper
                        
-    def food_output(self, model: Food) -> FoodOutput:
+    def from_model(self, model: Food) -> FoodOutput:
         if model == None:
             return None
 
@@ -31,22 +31,9 @@ class FoodMapper:
                           ingredients=list(
                               map(self.ingredient_piece_mapper.from_model, list(model.ingredient_pieces.all()))),
                           recipe=list(map(self.recipe_item_mapper.from_model, list(model.recipe_items.all()))),
-                          comments=[])
-
-    def food_for_user_output(self, model: Food) -> FoodForUserOutput:
-        if model == None:
-            return None
-
-        return FoodForUserOutput(id=model.pk,
-                          title=model.title,
-                          rating=model.rating,
-                          cooking_time=model.cooking_time,
-                          level=model.level,
-                          ingredients=list(
-                              map(self.ingredient_piece_mapper.from_model, list(model.ingredient_pieces.all()))),
-                          recipe=list(map(self.recipe_item_mapper.from_model, list(model.recipe_items.all()))),
                           comments=[],
                           my_comment=None)
+
 
 
 class FoodBriefMapper:

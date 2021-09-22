@@ -16,11 +16,6 @@ class FoodOutput:
     ingredients: List[IngredientPieceOutput] = attr.ib()
     recipe: List[RecipeItemOutput] = attr.ib()
     comments: List[CommentOutput] = attr.ib()
-    
-
-
-@attr.s
-class FoodForUserOutput(FoodOutput):
     my_comment: CommentOutput = attr.ib()
 
 @attr.s

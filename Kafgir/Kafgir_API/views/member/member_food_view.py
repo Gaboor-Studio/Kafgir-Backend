@@ -1,3 +1,4 @@
+from attr import attr
 from dependency_injector.wiring import inject, Provide
 
 from rest_framework import status
@@ -18,7 +19,7 @@ from ...exceptions.bad_request import TagIdMissingException
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
 
-import cattr
+import attr , cattr
 from typing import List
 
 from ...util.dto_util import create_swagger_output
@@ -47,12 +48,12 @@ class MemberFoodView(ViewSet):
         ''' Gets informations of a food.'''
         if request.user.is_authenticated:
             outputs = self.member_food_usecase.find_by_id(user_id=request.user.id,food_id=food_id)
-            serialized_outputs = cattr.unstructure(outputs)
+            serialized_outputs = attr.asdict(outputs)
             return Response(data=serialized_outputs, status=status.HTTP_200_OK)
  
 
         output = self.member_food_usecase.find_by_id(user_id=None,food_id=food_id)
-        serialized_output = cattr.unstructure(output)
+        serialized_output = attr.asdict(output)
         return Response(data=serialized_output, status=status.HTTP_200_OK)
 
     @swagger_auto_schema(responses=create_swagger_output(None), tags=['member','food'])
