@@ -19,6 +19,16 @@ class FoodOutput:
     my_comment: CommentOutput = attr.ib()
 
 @attr.s
+class AdminFoodDetailsOutput:
+    id: int = attr.ib()
+    title: str = attr.ib()
+    rating: float = attr.ib()
+    cooking_time: str = attr.ib()
+    level: int = attr.ib()
+    ingredients: List[IngredientPieceOutput] = attr.ib()
+    recipe: List[RecipeItemOutput] = attr.ib()
+
+@attr.s
 class FoodBriefOutput:
     id: int = attr.ib()
     title: str = attr.ib()

@@ -44,6 +44,12 @@ class MapperContainer(containers.DeclarativeContainer):
         FoodInFoodPlanMapper
     )
 
+    admin_food_details_mapper = providers.Singleton(
+        AdminFoodDetailsMapper,
+        ingredient_piece_mapper=ingredient_piece_mapper,
+        recipe_item_mapper=recipe_item_mapper
+    )
+
     tag_mapper = providers.Singleton(
         TagMapper
     )

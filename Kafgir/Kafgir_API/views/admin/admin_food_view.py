@@ -34,7 +34,7 @@ class AdminFoodView(ViewSet):
         ''' Gets informations of a food.'''
 
         output = self.admin_food_usecase.find_by_id(food_id)
-        serialized_output = cattr.unstructure(output)
+        serialized_output = attr.asdict(output)
         return Response(data=serialized_output, status=status.HTTP_200_OK)
 
     
