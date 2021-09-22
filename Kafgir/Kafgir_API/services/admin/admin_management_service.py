@@ -1,10 +1,14 @@
 from typing import List
 
-from ...dto.admin_management_dto import AdminOutput, AdminRegisterInput, AdminSetPasswordInput, AdminBriefOutput
+from django.core import exceptions
+
+from ...dto.admin_management_dto import AdminOutput, AdminRegisterInput, AdminSetPasswordInput, AdminBriefOutput, AdminUpdateProfileInput
 from ...repositories.user_repo import UserRepository
 from ...mappers.admin_management_mapper import AdminBriefMapper,AdminMapper
-from ...exceptions.not_found import AdminNotFoundException
+from ...exceptions.not_found import AdminNotFoundException, PageNotFoundException
+from ...exceptions.bad_request import UserAlreadyExistsException
 from ...usecases.admin.admin_management_usecases import AdminManagementUsecase
+from ...util.paginator import PaginationData,PaginatorUtil
 
 from dependency_injector.wiring import Provide, inject
 
@@ -31,11 +35,16 @@ class AdminManagementService(AdminManagementUsecase):
         except user_model.DoesNotExist:
             raise AdminNotFoundException(detail=f'Admin(id= {id}) not found!')
 
-    def load_all_admins(self) -> List[AdminBriefOutput]:
+    def load_all_admins(self, pagination_data: PaginationData) -> List[AdminBriefOutput]:
         '''Returns a list of admins containing brief outputs.'''
 
         admins = self.user_repo.get_all_by_is_staff(True)
-        return list(map(self.admin_brief_mapper.from_model, list(admins)))
+        try:
+            paginated_admins, pages = PaginatorUtil.paginate_query_set(admins, pagination_data)
+            data = list(map(self.admin_brief_mapper.from_model, paginated_admins))
+            return PaginatorUtil.create_pagination_output(data, pages, pagination_data.page)
+        except:
+            raise PageNotFoundException(detail= f'Page({pagination_data.page}) not found!')
 
     def delete_admin(self, id: int) -> None:
         '''Deletes an admin by id.'''
@@ -49,27 +58,37 @@ class AdminManagementService(AdminManagementUsecase):
     def create_admin(self, input: AdminRegisterInput) -> AdminOutput:
         ''' Creates an admin.'''
         
-        if not self.user_repo.exist_user_by_username(input.username):
-            if not self.user_repo.exist_user_by_username(input.email):
-                user = user_model.objects.create_superuser(username=input.username, email=input.email, name=input.name,
-                                               last_name=input.last_name, password=input.password, is_superuser=input.is_superuser)
-                self.user_repo.save_user(user)
-                return self.admin_mapper.from_model(user)
+        if self.user_repo.exist_user_by_username(input.username):
+            raise UserAlreadyExistsException(detail=f'A user already exists with the username({input.username})')
+        
+        if self.user_repo.exist_user_by_email(input.email):
+            raise UserAlreadyExistsException(detail=f'A user already exists with the email({input.email})')
+        
+        user = user_model.objects.create_superuser(username=input.username, email=input.email, name=input.name,
+                                            last_name=input.last_name, password=input.password, is_superuser=input.is_superuser)
+        self.user_repo.save_user(user)
+        return self.admin_mapper.from_model(user)
 
-            raise AdminNotFoundException(detail=f'Admin(email= {input.email}) not found!')
+        
 
-        raise AdminNotFoundException(detail=f'Admin(username= {input.username}) not found!')
-
-    def update_admin(self, id: int, input: AdminRegisterInput) -> AdminOutput:
+    def update_admin(self, id: int, input: AdminUpdateProfileInput) -> AdminOutput:
         ''' Updates an admin.'''
         try:
             user = self.user_repo.get_user_by_id_and_is_staff(id, True)
-            
-            user.username = input.username
-            user.email = input.email
+
+            if user.username != input.username:
+                if self.user_repo.exist_user_by_username(input.username):
+                    raise UserAlreadyExistsException(detail=f'A user already exists with the username({input.username})')
+                user.username = input.username
+
+            if user.email != input.email:
+                if self.user_repo.exist_user_by_email(input.email):                
+                    raise UserAlreadyExistsException(detail=f'A user already exists with the email({input.email})')
+                user.email = input.email
+
             user.name = input.name
             user.last_name = input.last_name
-            user.is_superuser = input.is_super_admin
+            user.is_superuser = input.is_superuser
 
             self.user_repo.save_user(user)
             return self.admin_mapper.from_model(user)

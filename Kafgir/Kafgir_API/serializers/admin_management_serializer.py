@@ -7,6 +7,7 @@ class AdminProfileUpdateSerializer(serializers.Serializer):
     email = serializers.EmailField(max_length=255)
     name = serializers.CharField(max_length=255)
     last_name = serializers.CharField(max_length=255)
+    is_superuser = serializers.BooleanField(default=False)
     
 class AdminRegisterSerializer(serializers.Serializer):
     '''This is a serializer for AdminRegisterInput DTO'''
