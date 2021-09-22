@@ -67,7 +67,7 @@ class UsecaseContainer(containers.DeclarativeContainer):
     admin_food_usecase = providers.Singleton(
         AdminFoodService,
         food_repo = RepoContainer.food_repo,
-        food_mapper= MapperContainer.food_mapper,
+        admin_food_details_mapper= MapperContainer.admin_food_details_mapper,
         food_brief_mapper = MapperContainer.food_brief_mapper,
         ingredient_repo= RepoContainer.ingredient_repo,
         ingredient_piece_repo=RepoContainer.ingredient_piece_repo,

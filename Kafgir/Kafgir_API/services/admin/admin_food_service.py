@@ -1,6 +1,6 @@
 from typing import List
 
-from ...dto.food_dto import FoodOutput, FoodInput, FoodBriefOutput
+from ...dto.food_dto import FoodOutput, FoodInput, AdminFoodDetailsOutput
 from ...usecases.admin.admin_food_usecases import AdminFoodUsecase
 
 from ...repositories.food_repo import FoodRepository
@@ -9,7 +9,7 @@ from ...repositories.tag_repo import TagRepository
 from ...repositories.ingredient_piece_repo import IngredientPieceRepository
 from ...repositories.recipe_item_repo import RecipeItemRepository
 
-from ...mappers.food_mapper import FoodMapper, FoodBriefMapper
+from ...mappers.food_mapper import AdminFoodDetailsMapper, FoodBriefMapper
 
 from ...models.food import Food
 from ...models.tag import Tag
@@ -27,7 +27,7 @@ class AdminFoodService(AdminFoodUsecase):
 
     @inject
     def __init__(self, food_repo: FoodRepository = Provide['food_repo'],
-                       food_mapper: FoodMapper = Provide['food_mapper'],
+                       admin_food_details_mapper: AdminFoodDetailsMapper = Provide['admin_food_details_mapper'],
                        tag_repo: TagRepository = Provide['tag_repo'],
                        food_brief_mapper: FoodBriefMapper = Provide['food_brief_mapper'],
                        ingredient_repo: IngredientRepository = Provide['ingredient_repo'],
@@ -36,17 +36,17 @@ class AdminFoodService(AdminFoodUsecase):
                        ):
         self.food_repo = food_repo
         self.tag_repo = tag_repo
-        self.food_mapper = food_mapper
+        self.admin_food_details_mapper = admin_food_details_mapper
         self.food_brief_mapper = food_brief_mapper
         self.ingredient_repo = ingredient_repo
         self.ingredient_piece_repo = ingredient_piece_repo
         self.recipe_item_repo = recipe_item_repo
         
 
-    def find_by_id(self, id: int) -> FoodOutput:
+    def find_by_id(self, id: int) -> AdminFoodDetailsOutput:
         try:
             food = self.food_repo.find_by_id(id)
-            return self.food_mapper.from_model(food)
+            return self.admin_food_details_mapper.from_model(food)
         except Food.DoesNotExist:
             raise FoodNotFoundException(detail=f'Food(id={id}) not found!')
 
@@ -62,7 +62,7 @@ class AdminFoodService(AdminFoodUsecase):
     def delete_by_id(self, id: int) -> None:
         self.food_repo.delete_by_id(id)
 
-    def create_food(self, input: FoodInput) -> FoodOutput:
+    def create_food(self, input: FoodInput) -> AdminFoodDetailsOutput:
         food = Food(title=input.title, level=input.level, cooking_time=input.cooking_time)
         self.food_repo.save(food)
 
@@ -89,4 +89,4 @@ class AdminFoodService(AdminFoodUsecase):
             except Tag.DoesNotExist:
                 raise TagNotFoundException(detail=f'tag(id={id}) not found!') 
 
-        return self.food_mapper.from_model(food)
+        return self.admin_food_details_mapper.from_model(food)
