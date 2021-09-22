@@ -8,6 +8,8 @@ from typing import List
 
 @attr.s
 class FoodOutput:
+    '''This is an output DTO for showing details of a food in client side.'''
+
     id: int = attr.ib()
     title: str = attr.ib()
     rating: float = attr.ib()
@@ -20,6 +22,8 @@ class FoodOutput:
 
 @attr.s
 class AdminFoodDetailsOutput:
+    '''This is an output DTO for showing details of a food in admin panel.'''
+
     id: int = attr.ib()
     title: str = attr.ib()
     rating: float = attr.ib()
@@ -30,6 +34,8 @@ class AdminFoodDetailsOutput:
 
 @attr.s
 class FoodBriefOutput:
+    '''This is an output DTO for showing a brief details of a food to be placed in a list of foods in admin panel.'''
+
     id: int = attr.ib()
     title: str = attr.ib()
     rating: float = attr.ib()
@@ -38,11 +44,15 @@ class FoodBriefOutput:
 
 @attr.s
 class FoodInFoodPlanOutput:
+    '''This is an output DTO for showing details of a food in food planner.'''
+
     id: int = attr.ib()
     title: str = attr.ib()
 
 @attr.s
 class FoodInput:
+    '''This is an input DTO for receiving food data in admin panel.'''
+    
     title: str = attr.ib()
     cooking_time: str = attr.ib()
     level: int = attr.ib()

@@ -6,12 +6,12 @@ from django.contrib.auth.backends import ModelBackend
 user_model = get_user_model()
 
 class EmailOrUsernameBackend(ModelBackend):
-    
-    EMAIL_REGEX = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
-    
     """
     Custom Email Backend to perform authentication via email or username
     """
+
+    EMAIL_REGEX = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
+    
     def authenticate(self, request, username=None, password=None, **kwargs):
         if re.fullmatch(self.EMAIL_REGEX, username):
             try:
