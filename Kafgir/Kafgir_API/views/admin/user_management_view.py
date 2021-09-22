@@ -10,7 +10,7 @@ from ...serializers.user_management_serializer import UserManagementCreateProfil
                                                     , UserManagementSetPasswordSerializer, UserManagementSetPfpSerializer
 from ...dto.user_management_dto import UserManagementCreateProfileInput, UserManagementEditProfileInput \
                                         , UserManagementSetPasswordInput, UserManagementSetPfpInput, UserManagementProfileOutput
-from ...util.dto_util import dto_to_swagger_json_output
+from ...util.dto_util import create_swagger_output
 from ...util.view_util import validate
 
 from drf_yasg.utils import swagger_auto_schema
@@ -30,14 +30,14 @@ class UserManagementView(ViewSet):
     authentication_classes=[TokenAuthentication]
     permission_classes=[IsAuthenticated, IsAdminUser]
 
-    @swagger_auto_schema(responses=dto_to_swagger_json_output(UserManagementProfileOutput, many=True), tags=['admin', 'user-management'])
+    @swagger_auto_schema(responses=create_swagger_output(UserManagementProfileOutput, many=True), tags=['admin', 'user-management'])
     def get_users(self, request):
         '''GET: get list of all non-admin users'''
         output = self.user_management_usecase.get_users_list()
         serializer_output = cattr.unstructure(output)
         return Response(data=serializer_output, status=status.HTTP_200_OK)
 
-    @swagger_auto_schema(request_body=UserManagementCreateProfileSerializer, responses=dto_to_swagger_json_output(UserManagementProfileOutput), tags=['admin', 'user-management'])
+    @swagger_auto_schema(request_body=UserManagementCreateProfileSerializer, responses=create_swagger_output(UserManagementProfileOutput), tags=['admin', 'user-management'])
     @validate(UserManagementCreateProfileSerializer)
     def create_user(self, request):
         '''POST: creates a new non-admin user'''
@@ -46,7 +46,7 @@ class UserManagementView(ViewSet):
         serialized_output = cattr.unstructure(output)
         return Response(data=serialized_output, status=status.HTTP_200_OK)
 
-    @swagger_auto_schema(request_body=UserManagementEditProfileSerializer, responses=dto_to_swagger_json_output(UserManagementProfileOutput), tags=['admin', 'user-management'])
+    @swagger_auto_schema(request_body=UserManagementEditProfileSerializer, responses=create_swagger_output(UserManagementProfileOutput), tags=['admin', 'user-management'])
     @validate(UserManagementEditProfileSerializer)
     def edit_user(self, request, id=None):
         '''PUT: edits the user with the given id'''
@@ -55,13 +55,13 @@ class UserManagementView(ViewSet):
         serialized_output= cattr.unstructure(output)
         return Response(data=serialized_output, status=status.HTTP_200_OK)
 
-    @swagger_auto_schema(responses=dto_to_swagger_json_output(None), tags=['admin', 'user-management'])
+    @swagger_auto_schema(responses=create_swagger_output(None), tags=['admin', 'user-management'])
     def delete_user(self, request, id=None):
         '''DELETE: deletes the user with the given id'''
         self.user_management_usecase.delete_user(id)
         return Response(data={'message': 'user has been successfully deleted!'}, status=status.HTTP_200_OK)
 
-    @swagger_auto_schema(request_body=UserManagementSetPasswordSerializer, responses=dto_to_swagger_json_output(None), tags=['admin', 'user-management'])
+    @swagger_auto_schema(request_body=UserManagementSetPasswordSerializer, responses=create_swagger_output(None), tags=['admin', 'user-management'])
     @validate(UserManagementSetPasswordSerializer)
     def set_user_password(self, request, id=None):
         '''POST: sets password for the user with the given id'''
@@ -69,7 +69,7 @@ class UserManagementView(ViewSet):
         self.user_management_usecase.set_user_password(id, input)
         return Response(data={'message': 'user\'s password has been successfully changed!'}, status=status.HTTP_200_OK)
 
-    @swagger_auto_schema(request_body=UserManagementSetPfpSerializer, responses=dto_to_swagger_json_output(None), tags=['admin', 'user-management'])
+    @swagger_auto_schema(request_body=UserManagementSetPfpSerializer, responses=create_swagger_output(None), tags=['admin', 'user-management'])
     @validate(UserManagementSetPfpSerializer)
     def set_user_picture(self, request, id=None):
         '''POST: sets profile picture of the user with the given id'''

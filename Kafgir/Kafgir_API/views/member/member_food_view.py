@@ -17,7 +17,7 @@ from drf_yasg import openapi
 import cattr
 from typing import List
 
-from ...util.dto_util import dto_to_swagger_json_output
+from ...util.dto_util import create_swagger_output
 
 ## to be used in swagger_auto_schema as manual_parameters
 test_param=[
@@ -36,7 +36,7 @@ class MemberFoodView(ViewSet):
     def __init__(self, member_food_usecase: MemberFoodUsecase = Provide['member_food_usecase']):
         self.member_food_usecase = member_food_usecase
 
-    @swagger_auto_schema(responses=dto_to_swagger_json_output(FoodOutput), tags=['member','food'])
+    @swagger_auto_schema(responses=create_swagger_output(FoodOutput), tags=['member','food'])
     def get_one_food(self, request, food_id=None):
         ''' Gets informations of a food.'''
 
@@ -44,14 +44,14 @@ class MemberFoodView(ViewSet):
         serialized_output = cattr.unstructure(output)
         return Response(data=serialized_output, status=status.HTTP_200_OK)
 
-    @swagger_auto_schema(responses=dto_to_swagger_json_output(None), tags=['member','food'])
+    @swagger_auto_schema(responses=create_swagger_output(None), tags=['member','food'])
     def add_ingredients_to_list(self, request, food_id=None):
         ''' Gets informations of a food.'''
 
         self.member_food_usecase.add_ingredients_to_list(food_id=food_id, user=request.user)
         return Response(data=None, status=status.HTTP_200_OK)
 
-    @swagger_auto_schema(manual_parameters=test_param, responses=dto_to_swagger_json_output(FoodBriefOutput, many=True), tags=['member','food'])
+    @swagger_auto_schema(manual_parameters=test_param, responses=create_swagger_output(FoodBriefOutput, many=True), tags=['member','food'])
     def get_all_foods_with_tag(self, request):
         ''' Gets all foods in a tag.'''
 

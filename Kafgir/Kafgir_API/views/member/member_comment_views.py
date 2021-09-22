@@ -14,7 +14,7 @@ from ...dto.comment_dto import CommentBriefInput, CommentOutput, CommentInput
 from drf_yasg.utils import swagger_auto_schema
 from typing import List
 import attr
-from ...util.dto_util import dto_to_swagger_json_output
+from ...util.dto_util import create_swagger_output
 
 class MemberCommentView(ViewSet):
 
@@ -27,7 +27,7 @@ class MemberCommentView(ViewSet):
     def __init__(self, member_comment_usecase: MemberCommentUsecase = Provide['member_comment_usecase']):
         self.member_comment_usecase = member_comment_usecase
 
-    @swagger_auto_schema(responses=dto_to_swagger_json_output(CommentOutput, many=True))
+    @swagger_auto_schema(responses=create_swagger_output(CommentOutput, many=True))
     def get_some_food_comments(self, request, food_id = None, num = None):
         ''' receives the number of comments and sends the same number of comments.'''
         
@@ -35,7 +35,7 @@ class MemberCommentView(ViewSet):
         serialized_outputs = list(map(cattr.unstructure, outputs))
         return Response(data=serialized_outputs, status=status.HTTP_200_OK)
 
-    @swagger_auto_schema(responses=dto_to_swagger_json_output(CommentOutput, many=True))
+    @swagger_auto_schema(responses=create_swagger_output(CommentOutput, many=True))
     def get_food_comments(self, request, food_id = None):
         ''' Gets all comments..'''
         
@@ -44,7 +44,7 @@ class MemberCommentView(ViewSet):
         return Response(data=serialized_outputs, status=status.HTTP_200_OK)
 
 
-    @swagger_auto_schema(responses=dto_to_swagger_json_output(CommentOutput))
+    @swagger_auto_schema(responses=create_swagger_output(CommentOutput))
     def get_comment_by_user_id(self, request, food_id = None):
         ''' If there is a comment with this userid then it will send it.'''
         if request.user.is_authenticated:
@@ -54,7 +54,7 @@ class MemberCommentView(ViewSet):
                 return Response(data=serialized_outputs, status=status.HTTP_200_OK)
             return Response(data={}, status=status.HTTP_200_OK)    
 
-    @swagger_auto_schema(request_body=create_comment_serializer, responses=dto_to_swagger_json_output(None))    
+    @swagger_auto_schema(request_body=create_comment_serializer, responses=create_swagger_output(None))    
     def create_new_comment(self, request):
         ''' Creates new comment.'''
 
@@ -66,7 +66,7 @@ class MemberCommentView(ViewSet):
             return Response(data=serialized_output, status=status.HTTP_200_OK)
         return Response(data={'error': 'Invalid data!', 'err': seri.errors}, status=status.HTTP_400_BAD_REQUEST)
 
-    @swagger_auto_schema(request_body=update_comment_serializer, responses=dto_to_swagger_json_output(None))    
+    @swagger_auto_schema(request_body=update_comment_serializer, responses=create_swagger_output(None))    
     def update_comment(self, request, comment_id = None):
         ''' updates comment.'''
 
@@ -78,7 +78,7 @@ class MemberCommentView(ViewSet):
             return Response(data=serialized_output, status=status.HTTP_200_OK)
         return Response(data={'error': 'Invalid data!', 'err': seri.errors}, status=status.HTTP_400_BAD_REQUEST)
 
-    @swagger_auto_schema(responses=dto_to_swagger_json_output(None))
+    @swagger_auto_schema(responses=create_swagger_output(None))
     def remove_comment(self, request, comment_id=None):
         ''' Removes comment.'''
 

@@ -11,7 +11,7 @@ from ...dto.home_page_dto import HomePageOutput
 
 from drf_yasg.utils import swagger_auto_schema
 import attr
-from ...util.dto_util import dto_to_swagger_json_output
+from ...util.dto_util import create_swagger_output
 
 class MemberHomePageView(ViewSet):
 
@@ -21,7 +21,7 @@ class MemberHomePageView(ViewSet):
     def __init__(self, member_home_page_usecase: MemberHomePageUsecase = Provide['member_home_page_usecase']):
         self.member_home_page_usecase = member_home_page_usecase
 
-    @swagger_auto_schema(responses=dto_to_swagger_json_output(HomePageOutput), tags=['member','home-page'])
+    @swagger_auto_schema(responses=create_swagger_output(HomePageOutput), tags=['member','home-page'])
     def load_home_page(self, request):
         ''' Gets food plan, main tags and categories.'''
         number_of_foods = request.query_params.get('number_of_foods')

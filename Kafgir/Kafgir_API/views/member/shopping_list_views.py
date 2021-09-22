@@ -14,7 +14,7 @@ from ...dto.shopping_list_dto import ShoppingListItemOutput, ShoppingListItemInp
 from drf_yasg.utils import swagger_auto_schema
 from typing import List
 import attr
-from ...util.dto_util import dto_to_swagger_json_output
+from ...util.dto_util import create_swagger_output
 
 class MemberShoppingListView(ViewSet):
 
@@ -28,7 +28,7 @@ class MemberShoppingListView(ViewSet):
     def __init__(self, member_shopping_list_usecase: MemberShoppingListUsecase = Provide['member_shopping_list_usecase']):
         self.member_shopping_list_usecase = member_shopping_list_usecase
 
-    @swagger_auto_schema(responses=dto_to_swagger_json_output(ShoppingListItemOutput, many=True), tags=['member','shopping-list'])
+    @swagger_auto_schema(responses=create_swagger_output(ShoppingListItemOutput, many=True), tags=['member','shopping-list'])
     def get_shopping_list(self, request):
         ''' Gets user shopping list.'''
         
@@ -36,7 +36,7 @@ class MemberShoppingListView(ViewSet):
         serialized_outputs = list(map(cattr.unstructure, outputs))
         return Response(data=serialized_outputs, status=status.HTTP_200_OK)
 
-    @swagger_auto_schema(request_body=create_shopping_list_serializer, responses=dto_to_swagger_json_output(None), tags=['member','shopping-list']) 
+    @swagger_auto_schema(request_body=create_shopping_list_serializer, responses=create_swagger_output(None), tags=['member','shopping-list']) 
     def create_new_shopping_list_item(self, request):
         ''' Creates new shopping list item.'''
 
@@ -48,7 +48,7 @@ class MemberShoppingListView(ViewSet):
             return Response(data=serialized_output, status=status.HTTP_200_OK)
         return Response(data={'error': 'Invalid data!', 'err': seri.errors}, status=status.HTTP_400_BAD_REQUEST)
 
-    @swagger_auto_schema(request_body=create_shopping_list_serializer(many=True), responses=dto_to_swagger_json_output(None), tags=['member','shopping-list'])
+    @swagger_auto_schema(request_body=create_shopping_list_serializer(many=True), responses=create_swagger_output(None), tags=['member','shopping-list'])
     def create_new_shopping_list(self, request):
         ''' Adds all items to the shopping list.'''
 
@@ -59,7 +59,7 @@ class MemberShoppingListView(ViewSet):
             return Response(status=status.HTTP_200_OK)
         return Response(data={'error': 'Invalid data!', 'err': seri.errors}, status=status.HTTP_400_BAD_REQUEST)
 
-    @swagger_auto_schema(request_body=shopping_list_serializer, responses=dto_to_swagger_json_output(None), tags=['member','shopping-list'])
+    @swagger_auto_schema(request_body=shopping_list_serializer, responses=create_swagger_output(None), tags=['member','shopping-list'])
     def update_shopping_list_item(self, request, item_id=None):
         ''' Updates a shopping list item.'''
 
@@ -71,21 +71,21 @@ class MemberShoppingListView(ViewSet):
         return Response(data={'error': 'Invalid data!', 'err': seri.errors}, status=status.HTTP_400_BAD_REQUEST)
 
 
-    @swagger_auto_schema(responses=dto_to_swagger_json_output(None), tags=['member','shopping-list'])
+    @swagger_auto_schema(responses=create_swagger_output(None), tags=['member','shopping-list'])
     def done(self, request, item_id=None):
         ''' Sets a shopping list item to done status.'''
 
         self.member_shopping_list_usecase.done(item_id)
         return Response(data=None, status=status.HTTP_200_OK)        
 
-    @swagger_auto_schema(responses=dto_to_swagger_json_output(None), tags=['member','shopping-list'])
+    @swagger_auto_schema(responses=create_swagger_output(None), tags=['member','shopping-list'])
     def undone(self, request, item_id=None):
         ''' Sets a shopping list item to undone status.'''
 
         self.member_shopping_list_usecase.undone(item_id)
         return Response(data=None, status=status.HTTP_200_OK)
 
-    @swagger_auto_schema(responses=dto_to_swagger_json_output(None), tags=['member','shopping-list'])
+    @swagger_auto_schema(responses=create_swagger_output(None), tags=['member','shopping-list'])
     def remove_shopping_list_item(self, request, item_id=None):
         ''' Removes a shopping list item from the shopping list.'''
 

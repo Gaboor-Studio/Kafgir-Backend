@@ -4,7 +4,7 @@ from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
-from ...util.dto_util import dto_to_swagger_json_output
+from ...util.dto_util import create_swagger_output
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
 import cattr
@@ -33,7 +33,7 @@ class SearchView(ViewSet):
     authentication_classes= [TokenAuthentication]
     permission_classes= [IsAuthenticated]
 
-    @swagger_auto_schema(manual_parameters=test_param, responses=dto_to_swagger_json_output(FoodBriefOutput, many=True))
+    @swagger_auto_schema(manual_parameters=test_param, responses=create_swagger_output(FoodBriefOutput, many=True))
     def search_for_food(self, request):
         ''' This method returns a list of foods which are true in the conditions that user defined in the request '''
 
