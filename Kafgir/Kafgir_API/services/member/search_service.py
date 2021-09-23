@@ -45,7 +45,11 @@ class SearchService(SearchUsecase):
                 raise CannotParseToInt(detail='cooking time needs to be an integer')
 
         if category is not None:
-            query_set = query_set.filter(tags__id=category, tags__is_primary=True)
+            try:
+                temp_id = int(category)
+                query_set = query_set.filter(tags__id=category, tags__is_primary=True)
+            except ValueError:
+                raise CannotParseToInt(detail='category needs to be an integer(ID)')
 
         if ingredients is not None:
             for ing in ingredients:
