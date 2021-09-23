@@ -14,7 +14,7 @@
 │   └── `<model_name>_repo.py` Contains definition of a repository. Each class must extend abc.ABC class.  
 
 ├── [repositories_impl](repositories_impl): *Contains implementations of repositories.*      
-│   └── `<repository_name>_impl.py` Contains implementation of a repository. Each class must extend its own repository.
+│   └── `<repository_name>_repo_impl.py` Contains implementation of a repository. Each class must extend its own repository.
 
 ├── [dto](dto/): *Contains all DTOs of the app. use case related DTOs should be placed in the same file.*  
 │   └── `<usecase_name>_dto.py` Contains all DTOs of a specific use case.  
