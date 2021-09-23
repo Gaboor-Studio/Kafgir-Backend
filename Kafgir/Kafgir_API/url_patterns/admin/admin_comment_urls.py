@@ -1,14 +1,6 @@
 from django.urls import path
 from ...views.admin.admin_comment_view import AdminCommentView
 
-admin_get_some_food_comments = AdminCommentView.as_view({
-    'get': 'get_some_food_comments'
-})
-
-admin_get_food_comments = AdminCommentView.as_view({
-    'get': 'get_food_comments'
-})
-
 admin_confirm_the_comment = AdminCommentView.as_view({
     'put': 'confirm_the_comment'
 })
@@ -27,8 +19,6 @@ admin_comment_remove_edit = AdminCommentView.as_view({
 })
 
 urlpatterns = [
-    path('get-some-comments/<int:num>/food/<int:food_id>/', admin_get_some_food_comments),
-    path('food/<int:food_id>/', admin_get_food_comments),
     path('<int:comment_id>/', admin_comment_remove_edit),
     path('confirm/<int:comment_id>/', admin_confirm_the_comment),
     path('confirm/', admin_confirm_comments),

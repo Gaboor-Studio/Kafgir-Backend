@@ -2,12 +2,12 @@ from dependency_injector import containers, providers
 
 from ..repositories_impl.shopping_list_repo import *
 from ..repositories_impl.user_repo_impl import *
-from ..repositories_impl.food_planning_repo import *
+from ..repositories_impl.food_planning_repo_impl import *
 from ..repositories_impl.food_repo_impl import *
 from ..repositories_impl.ingredient_repo_impl import *
 from ..repositories_impl.ingredient_piece_repo_impl import *
 from ..repositories_impl.recipe_item_repo_impl import *
-from ..repositories_impl.tag_repo import *
+from ..repositories_impl.tag_repo_impl import *
 from ..repositories_impl.comment_repo_impl import *
 
 class RepoContainer(containers.DeclarativeContainer):

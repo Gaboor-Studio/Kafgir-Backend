@@ -33,7 +33,7 @@ class AuthenticationView(viewsets.ViewSet):
     get_reset_token_serializer = GetResetTokenSerializer
     reset_password_serializer = ResetPasswordSerializer
 
-    @swagger_auto_schema(request_body=UserRegisterSerializer, responses=create_swagger_output(None)) 
+    @swagger_auto_schema(request_body=UserRegisterSerializer, responses=create_swagger_output(None), tags=['auth','authentication']) 
     def register_view(self, request):
         ''' This is a view for registering user '''
         seri = UserRegisterSerializer(data=request.data)
@@ -45,7 +45,7 @@ class AuthenticationView(viewsets.ViewSet):
         else:
             return Response(data={'error': 'Invalid data!', 'err': seri.errors}, status=status.HTTP_400_BAD_REQUEST)
 
-    @swagger_auto_schema(request_body=send_email_serializer, responses=create_swagger_output(None))  
+    @swagger_auto_schema(request_body=send_email_serializer, responses=create_swagger_output(None), tags=['auth','authentication'])  
     def send_email(self, request):
         ''' sends an email to the user's email that contains a 5 digit code that could be used for resetting the password or activating the account'''
 
@@ -58,7 +58,7 @@ class AuthenticationView(viewsets.ViewSet):
 
         return Response(data={'error': 'Invalid data!', 'err': seri.errors}, status=status.HTTP_400_BAD_REQUEST)
 
-    @swagger_auto_schema(request_body=verify_email_serializer, responses=create_swagger_output(None))  
+    @swagger_auto_schema(request_body=verify_email_serializer, responses=create_swagger_output(None), tags=['auth','authentication'])  
     def verify_email(self, request):
         ''' given the 5 digit code as input, it activates the user's account '''
 
@@ -71,7 +71,7 @@ class AuthenticationView(viewsets.ViewSet):
 
         return Response(data={'error': 'Invalid data!', 'err': seri.errors}, status=status.HTTP_400_BAD_REQUEST)
 
-    @swagger_auto_schema(request_body=get_reset_token_serializer, responses=create_swagger_output(PasswordResetTokenOutput))
+    @swagger_auto_schema(request_body=get_reset_token_serializer, responses=create_swagger_output(PasswordResetTokenOutput), tags=['auth','authentication'])
     def get_reset_token(self, request):
         ''' given the 5 digit code as input, responses with the user's token that could be used to resetting the password '''
 
@@ -85,7 +85,7 @@ class AuthenticationView(viewsets.ViewSet):
         else:
             return Response(data={'error': 'Invalid data!', 'err': seri.errors}, status=status.HTTP_400_BAD_REQUEST)
 
-    @swagger_auto_schema(request_body=reset_password_serializer, responses=create_swagger_output(None))
+    @swagger_auto_schema(request_body=reset_password_serializer, responses=create_swagger_output(None), tags=['auth','authentication'])
     def reset_password(self, request):
         ''' given the user's token as input, resets user's password to the given new password '''
 

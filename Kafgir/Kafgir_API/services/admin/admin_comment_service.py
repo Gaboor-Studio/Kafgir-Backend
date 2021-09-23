@@ -41,6 +41,8 @@ class AdminCommentService(AdminCommentUsecase):
                 detail=f'comment with comment_id={comment_id} does not exist!')
  
     def confirm_comments(self, comments: CommentIdListInput) -> None:
+        '''This method recives a list of comment IDs for confirming user comments .'''
+
         for comment_id in comments.commentid_list:
             try:
                 comment = self.comment_repo.find_by_id(comment_id)
@@ -53,21 +55,10 @@ class AdminCommentService(AdminCommentUsecase):
                 raise CommentNotFoundException(
                     detail=f'comment with comment_id={comment_id} does not exist!')
 
-    def get_some_food_comments(self, food_id: int, num: int) -> List[CommentOutput]:
-        try:
-            food = self.food_repo.find_by_id(food_id)
-            return list(map(self.comment_mapper.from_model, self.comment_repo.get_some_food_comments(num=num, food=food)))
-        except Food.DoesNotExist:
-            raise FoodNotFoundException(detail=f'Food(id={food_id}) not found!')
-
-    def get_food_comments(self, food_id: int) -> List[CommentOutput]:
-        try:
-            food = self.food_repo.find_by_id(food_id)
-            return list(map(self.comment_mapper.from_model, self.comment_repo.get_food_comments(food=food)))
-        except Food.DoesNotExist:
-            raise FoodNotFoundException(detail=f'Food(id={food_id}) not found!') 
 
     def update_comment(self, comment_id: int, input:  CommentBriefInput) -> None:
+        '''updates an comment .'''
+
         try:
             comment = self.comment_repo.find_by_id(comment_id)
             
@@ -82,4 +73,6 @@ class AdminCommentService(AdminCommentUsecase):
                 detail=f'comment with comment_id={comment_id} does not exist!')
 
     def remove_comment(self, comment_id: int) -> None:
+        ''' deletes an comment by ID.'''
+
         self.comment_repo.delete_by_id(comment_id)

@@ -8,7 +8,7 @@ import cattr
 from typing import List
 
 from ...usecases.member.shopping_list_usecases import MemberShoppingListUsecase
-from ...serializers.shopping_list_serializer import ShopingListInputSerializer, CreateShopingListInputSerializer
+from ...serializers.shopping_list_serializer import ShoppingListInputSerializer, CreateShoppingListInputSerializer
 from ...dto.shopping_list_dto import ShoppingListItemOutput, ShoppingListItemInput, ShoppingListItemBriefInput
 
 from drf_yasg.utils import swagger_auto_schema
@@ -21,8 +21,8 @@ class MemberShoppingListView(ViewSet):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
 
-    shopping_list_serializer = ShopingListInputSerializer
-    create_shopping_list_serializer = CreateShopingListInputSerializer
+    shopping_list_serializer = ShoppingListInputSerializer
+    create_shopping_list_serializer = CreateShoppingListInputSerializer
 
     @inject
     def __init__(self, member_shopping_list_usecase: MemberShoppingListUsecase = Provide['member_shopping_list_usecase']):

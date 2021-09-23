@@ -63,7 +63,7 @@ class MemberFoodView(ViewSet):
         self.member_food_usecase.add_ingredients_to_list(food_id=food_id, user=request.user)
         return Response(data=None, status=status.HTTP_200_OK)
 
-    @swagger_auto_schema(responses=create_swagger_output(CommentOutput, many=True))
+    @swagger_auto_schema(responses=create_swagger_output(CommentOutput, many=True), tags=['member','food'])
     def get_some_food_comments(self, request, food_id = None, number_of_comments = None):
         ''' receives the number of comments and sends the same number of comments.'''
         
@@ -71,7 +71,7 @@ class MemberFoodView(ViewSet):
         serialized_outputs = list(map(cattr.unstructure, outputs))
         return Response(data=serialized_outputs, status=status.HTTP_200_OK)
 
-    @swagger_auto_schema(responses=create_swagger_output(CommentOutput, many=True))
+    @swagger_auto_schema(responses=create_swagger_output(CommentOutput, many=True), tags=['member','food'])
     def get_food_comments(self, request, food_id = None):
         ''' Gets all comments..'''
         
@@ -79,7 +79,7 @@ class MemberFoodView(ViewSet):
         serialized_outputs = list(map(cattr.unstructure, outputs))
         return Response(data=serialized_outputs, status=status.HTTP_200_OK)
 
-    @swagger_auto_schema(request_body=create_comment_serializer, responses=create_swagger_output(None))    
+    @swagger_auto_schema(request_body=create_comment_serializer, responses=create_swagger_output(None), tags=['member','food'])    
     def create_new_comment(self, request):
         ''' Creates new comment.'''
 
@@ -91,7 +91,7 @@ class MemberFoodView(ViewSet):
             return Response(data=serialized_output, status=status.HTTP_200_OK)
         return Response(data={'error': 'Invalid data!', 'err': seri.errors}, status=status.HTTP_400_BAD_REQUEST)
 
-    @swagger_auto_schema(request_body=update_comment_serializer, responses=create_swagger_output(None))    
+    @swagger_auto_schema(request_body=update_comment_serializer, responses=create_swagger_output(None), tags=['member','food'])    
     def update_comment(self, request, comment_id = None):
         ''' updates comment.'''
 
@@ -103,7 +103,7 @@ class MemberFoodView(ViewSet):
             return Response(data=serialized_output, status=status.HTTP_200_OK)
         return Response(data={'error': 'Invalid data!', 'err': seri.errors}, status=status.HTTP_400_BAD_REQUEST)
 
-    @swagger_auto_schema(responses=create_swagger_output(None))
+    @swagger_auto_schema(responses=create_swagger_output(None), tags=['member','food'])
     def remove_comment(self, request, comment_id=None):
         ''' Removes comment.'''
 

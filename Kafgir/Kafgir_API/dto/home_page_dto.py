@@ -6,13 +6,11 @@ from .food_plan_dto import FoodPlanOutput
 from typing import List
 
 @attr.s
-class HomePageBriefOutput:
+class HomePageOutput:
+    '''This is a DTO for displaying categories, main tags and meal plans on the Home page.'''
+
     main_tags: List[MainTagOutput] = attr.ib()
     categories: List[PrimaryTagOutput] = attr.ib()
-    
-
-@attr.s
-class HomePageOutput(HomePageBriefOutput):
     food_plan: List[FoodPlanOutput] = attr.ib()
     
     

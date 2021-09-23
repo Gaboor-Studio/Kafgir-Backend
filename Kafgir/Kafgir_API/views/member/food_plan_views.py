@@ -10,10 +10,19 @@ from typing import List
 from ...usecases.member.food_planning_usecases import MemberFoodPlanUsecase
 from ...serializers.food_plan_serializers import FoodPlanInputSerializer , CreateFoodPlanInputSerializer
 from ...dto.food_plan_dto import FoodPlanOutput, FoodPlanInput, FoodPlanBriefInput
+from ...exceptions.bad_request import StartDateMissingException, EndtDateMissingException
 
 from drf_yasg.utils import swagger_auto_schema
+from drf_yasg import openapi
 import attr
 from ...util.dto_util import create_swagger_output
+
+## to be used in swagger_auto_schema as manual_parameters
+test_param=[
+    openapi.Parameter('start_date', openapi.IN_QUERY, 'the start date of the meal plan.', required=True, type=openapi.TYPE_INTEGER),
+    openapi.Parameter('end_date', openapi.IN_QUERY, 'the end date of the meal plan.', required=True, type=openapi.TYPE_INTEGER),
+]
+
 
 class MemberFoodPlanView(ViewSet):
 
@@ -27,10 +36,15 @@ class MemberFoodPlanView(ViewSet):
     def __init__(self, member_food_plan_usecase: MemberFoodPlanUsecase = Provide['member_food_plan_usecase']):
         self.member_food_plan_usecase = member_food_plan_usecase
 
-    @swagger_auto_schema(responses=create_swagger_output(FoodPlanOutput, many=True), tags=['member','food-plan'])
-    def find_food_plan_by_date(self, request):
-        start_date = request.query_params.get('start_date')
-        end_date = request.query_params.get('end_date')
+    @swagger_auto_schema(manual_parameters=test_param, responses=create_swagger_output(FoodPlanOutput, many=True), tags=['member','food-plan'])
+    def find_food_plan_by_date(self, request):        
+        start_date = request.GET.get('start_date')        
+        if start_date is None:
+            raise StartDateMissingException()
+        
+        end_date = request.GET.get('end_date')        
+        if end_date is None:
+            raise EndtDateMissingException()
 
         outputs = self.member_food_plan_usecase.find_food_plan_by_date(id=request.user.id, start_date=start_date, end_date=end_date)
         serialized_outputs = list(map(cattr.unstructure, outputs))

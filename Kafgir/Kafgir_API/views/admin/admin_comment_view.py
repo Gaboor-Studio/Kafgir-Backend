@@ -28,7 +28,7 @@ class AdminCommentView(ViewSet):
     def __init__(self, admin_comment_usecase: AdminCommentUsecase = Provide['admin_comment_usecase']):
         self.admin_comment_usecase = admin_comment_usecase
 
-    @swagger_auto_schema(responses=create_swagger_output(CommentOutput, many=True))
+    @swagger_auto_schema(responses=create_swagger_output(CommentOutput, many=True), tags=['admin','comment'])
     def get_some_unconfirmed_comments(self, request, num = None):
         ''' receives a number and sends the same number of unconfirmed comments.'''
         
@@ -36,7 +36,7 @@ class AdminCommentView(ViewSet):
         serialized_outputs = list(map(cattr.unstructure, outputs))
         return Response(data=serialized_outputs, status=status.HTTP_200_OK)
 
-    @swagger_auto_schema(responses=create_swagger_output(None))    
+    @swagger_auto_schema(responses=create_swagger_output(None), tags=['admin','comment'])    
     def confirm_the_comment(self, request, comment_id = None):
         ''' confirm the comment.'''
 
@@ -44,7 +44,7 @@ class AdminCommentView(ViewSet):
         serialized_output = cattr.unstructure(output)
         return Response(data=serialized_output, status=status.HTTP_200_OK)
 
-    @swagger_auto_schema(request_body=commentid_list_serializer, responses=create_swagger_output(None))    
+    @swagger_auto_schema(request_body=commentid_list_serializer, responses=create_swagger_output(None), tags=['admin','comment'])    
     def confirm_comments(self, request):
         ''' receives a list of comments id and confirms them.'''
 
@@ -56,7 +56,7 @@ class AdminCommentView(ViewSet):
             return Response(data=serialized_output, status=status.HTTP_200_OK)
         return Response(data={'error': 'Invalid data!', 'err': seri.errors}, status=status.HTTP_400_BAD_REQUEST)
 
-    @swagger_auto_schema(responses=create_swagger_output(CommentOutput, many=True))
+    @swagger_auto_schema(responses=create_swagger_output(CommentOutput, many=True), tags=['admin','comment'])
     def get_some_food_comments(self, request, food_id = None, num = None):
         ''' receives a number and sends the same number of comments.'''
         
@@ -64,7 +64,7 @@ class AdminCommentView(ViewSet):
         serialized_outputs = list(map(cattr.unstructure, outputs))
         return Response(data=serialized_outputs, status=status.HTTP_200_OK)
 
-    @swagger_auto_schema(responses=create_swagger_output(CommentOutput, many=True))
+    @swagger_auto_schema(responses=create_swagger_output(CommentOutput, many=True), tags=['admin','comment'])
     def get_food_comments(self, request, food_id = None):
         ''' Gets all comments..'''
         
@@ -72,7 +72,7 @@ class AdminCommentView(ViewSet):
         serialized_outputs = list(map(cattr.unstructure, outputs))
         return Response(data=serialized_outputs, status=status.HTTP_200_OK)
 
-    @swagger_auto_schema(request_body=update_comment_serializer, responses=create_swagger_output(None))    
+    @swagger_auto_schema(request_body=update_comment_serializer, responses=create_swagger_output(None), tags=['admin','comment'])    
     def update_comment(self, request, comment_id = None):
         ''' updates comment.'''
 
@@ -84,7 +84,7 @@ class AdminCommentView(ViewSet):
             return Response(data=serialized_output, status=status.HTTP_200_OK)
         return Response(data={'error': 'Invalid data!', 'err': seri.errors}, status=status.HTTP_400_BAD_REQUEST)
 
-    @swagger_auto_schema(responses=create_swagger_output(None))
+    @swagger_auto_schema(responses=create_swagger_output(None), tags=['admin','comment'])
     def remove_comment(self, request, comment_id=None):
         ''' Removes comment.'''
 

@@ -9,6 +9,7 @@ from dependency_injector.wiring import inject, Provide
 from typing import List
 
 class FoodPlanOutputMapper:
+    '''This class uses the FoodInFoodPlanMapper class to convert the default food plan model to FoodPlanOutput DTO.'''
     
     @inject
     def __init__(self, food_in_food_plan_mapper: FoodInFoodPlanMapper = Provide['food_in_food_plan_mapper']):
@@ -16,6 +17,8 @@ class FoodPlanOutputMapper:
         self.food_in_food_plan_mapper = food_in_food_plan_mapper
 
     def from_model(self, model: FoodPlan) -> FoodPlanOutput:
+        '''Takes a model of food plan and converts it to FoodPlanOutput DTO'''
+
         if model == None:
             return None
 

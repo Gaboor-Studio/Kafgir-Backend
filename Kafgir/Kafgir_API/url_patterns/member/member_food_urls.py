@@ -37,5 +37,5 @@ urlpatterns = [
     path('comment/<int:comment_id>/', member_comment_remove_edit),
     path('', with_nothing),
     path('<int:food_id>/', with_id),
-    path('<int:food_id>/add-to-shopping-list',add_ingredients)
+    path('<int:food_id>/add-to-shopping-list/',add_ingredients)
 ]

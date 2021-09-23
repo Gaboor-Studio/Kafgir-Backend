@@ -20,14 +20,6 @@ class AdminCommentUsecase(ABC):
         pass 
 
     @abstractmethod
-    def get_some_food_comments(self, food_id: int, num: int) -> List[CommentOutput]:
-        pass 
-
-    @abstractmethod
-    def get_food_comments(self, food_id: int) -> List[CommentOutput]:
-        pass 
-
-    @abstractmethod
     def update_comment(self, comment_id: int, input:  CommentBriefInput) -> None:
         pass
 

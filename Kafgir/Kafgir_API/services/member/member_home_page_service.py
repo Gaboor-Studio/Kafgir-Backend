@@ -7,7 +7,7 @@ from ...models.user import User
 from ...usecases.member.member_home_page import MemberHomePageUsecase
 from ...dto.tag_dto import MainTagOutput, TagOutput, PrimaryTagOutput
 from ...dto.food_plan_dto import FoodPlanOutput
-from ...dto.home_page_dto import HomePageOutput, HomePageBriefOutput
+from ...dto.home_page_dto import HomePageOutput
 from ...repositories.tag_repo import TagRepository
 from ...repositories.food_planning_repo import FoodPlanningRepository
 from ...mappers.food_plan_mapper import FoodPlanOutputMapper
@@ -17,6 +17,7 @@ from typing import List
 from datetime import date,timedelta
 
 class MemberHomePageService(MemberHomePageUsecase):
+    ''' This class is an abstract class for usecases of member_home_page '''
 
     @inject
     def __init__(self, tag_repo: TagRepository = Provide['tag_repo'],
@@ -36,7 +37,10 @@ class MemberHomePageService(MemberHomePageUsecase):
         self.primary_tag_mapper = primary_tag_mapper
 
     
-    def get_some_food_by_tag_id(self, num: int) -> List[MainTagOutput]:
+    def get_main_tags(self, num: int) -> List[MainTagOutput]:
+        '''This method returns a list of all main tags .
+            receives the number of foods and sends the same number of foods with each main tag.'''
+
         tags = self.tag_repo.find_main_tag()
         output = []
         for tag in tags:
@@ -46,21 +50,26 @@ class MemberHomePageService(MemberHomePageUsecase):
         return output
     
     def get_food_plan(self, id: int) -> List[FoodPlanOutput]:
+        '''This method returns the yesterday , today and tomorrow meal plan used on the home page .'''
         end = date.today() + timedelta(days=1)
         start = date.today() - timedelta(days=1)
         food_plan = self.food_plan_repo.find_food_plan_by_date(id=id,start_date=start,end_date=end)
         return list(map(self.food_plan_output_mapper.from_model, food_plan))
 
     def get_categories(self) -> List[PrimaryTagOutput]:
+        '''This method returns a list of all categories .'''
+
         return list(map(self.primary_tag_mapper.from_model, self.tag_repo.find_primary_tag()))
 
-    def load_home_page(self, id: int, num: int) -> HomePageBriefOutput:
-        if (id == None):
-            main_tags = self.get_some_food_by_tag_id(num)
-            categories = self.get_categories()
-            return HomePageBriefOutput(main_tags=main_tags, categories=categories)
+    def load_home_page(self, id: int, num: int) -> HomePageOutput:
+        '''This function returns all the information used on the home page .'''
 
-        main_tags = self.get_some_food_by_tag_id(num)
+        if (id == None):
+            main_tags = self.get_main_tags(num)
+            categories = self.get_categories()
+            return HomePageOutput(food_plan=None, main_tags=main_tags, categories=categories)
+
+        main_tags = self.get_main_tags(num)
         food_plan = self.get_food_plan(id)
         categories = self.get_categories()
         return HomePageOutput(food_plan=food_plan, main_tags=main_tags, categories=categories)

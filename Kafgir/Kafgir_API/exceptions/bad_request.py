@@ -74,3 +74,13 @@ class TagIdMissingException(APIException):
     status_code = 400
     default_detail = 'You must send tag id to get foods.'
     default_code = 'bad_request'
+
+class StartDateMissingException(APIException):
+    status_code = 400
+    default_detail = 'You must send start date to get plan.'
+    default_code = 'bad_request'
+
+class EndtDateMissingException(APIException):
+    status_code = 400
+    default_detail = 'You must send end date to get plan.'
+    default_code = 'bad_request'
