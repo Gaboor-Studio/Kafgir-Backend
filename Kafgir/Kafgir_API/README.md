@@ -29,19 +29,19 @@
 
 ├── [usecases](usecases/): *Contains abstract definitions of services.*  
 │   ├── [auth](usecases/auth/): *All auth related use cases should be defined in this package*  
-│   │   └── `auth_<usecase_name>_usecases.py` Contains definition of an auth related use case. Each class must extend abc.ABC class.  
+│   │   └── `auth_<usecase_name>_usecase.py` Contains definition of an auth related use case. Each class must extend abc.ABC class.  
 │   ├── [admin](usecases/admin/): *All admin related use cases should be defined in this package*  
-│   │   └── `auth_<usecase_name>_usecases.py` Contains definition of an admin related use case. Each class must extend abc.ABC class.  
+│   │   └── `auth_<usecase_name>_usecase.py` Contains definition of an admin related use case. Each class must extend abc.ABC class.  
 │   └── [member](usecases/member/): *All member side related use cases should be defined in this package*  
-│        └── `member_<usecase_name>_usecases.py` Contains definition of a member side related use case. Each class must extend abc.ABC class.   
+│        └── `member_<usecase_name>_usecase.py` Contains definition of a member side related use case. Each class must extend abc.ABC class.   
 
 ├── [services](services/): *Contains implementations of services.*  
 │   ├── [auth](services/auth): *All auth related services should be defined in this package*  
-│   │   └── `auth_<service_name>_services.py` Contains definition of an auth related service. Each class must extend its own use case.  
+│   │   └── `auth_<service_name>_service.py` Contains definition of an auth related service. Each class must extend its own use case.  
 │   ├── [admin](services/admin): *All admin related services should be defined in this package*  
-│   │   └── `admin_<service_name>_services.py` Contains definition of an admin related service. Each class must extend its own use case.  
+│   │   └── `admin_<service_name>_service.py` Contains definition of an admin related service. Each class must extend its own use case.  
 │   ├── [member](services/member/): *All member side related services should be defined in this package*  
-│        └── `member_<service_name>_services.py` Contains definition of a member side related service. Each class must extend its own use case.
+│        └── `member_<service_name>_service.py` Contains definition of a member side related service. Each class must extend its own use case.
 
 ├── [serializers](serializers/): *Contains definitions of all serializers. Model related serializers should be placed in the same file.*  
 │   └── `<model_name>_serializers.py` Contains  definitions of serializers with the same model.
