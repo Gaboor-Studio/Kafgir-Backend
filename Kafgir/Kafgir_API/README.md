@@ -24,8 +24,8 @@
 │   ├── `common.py` Common errors such as validation error can be defined here.  
 │   └── `not_found.py` Not found errros should be defined here.  
 
-├── [mappers](mappers/): *Contains all mappers. Mappers with same model should be placed in the same file.*  
-│   └── `<model_name>_mappers.py` Contains all mappers of a specific model.  
+├── [mappers](mappers/): *Contains all mappers. Mappers with same use case should be placed in the same file.*  
+│   └── `<usecase_name>_mappers.py` Contains all mappers of a specific model.  
 
 ├── [usecases](usecases/): *Contains abstract definitions of services.*  
 │   ├── [auth](usecases/auth/): *All auth related use cases should be defined in this package*  
