@@ -5,7 +5,7 @@
 ├── `urls.py` *Contains url mappings of the app. It uses url patterns defined in url_patterns package.*  
 
 ├── `apps.py` *Contains app config and sets wiring of the containers.*  
-  
+
 ├── [models](models/): *Contains all models. Related models can be defined in the same file but its better to seperate them all.*  
 │   ├── `__init__.py` All models should be imported in this file.    
 │   └── `<model_name>.py` Contains definition of a model or some related models.
@@ -25,36 +25,44 @@
 │   └── `not_found.py` Not found errros should be defined here.  
 
 ├── [mappers](mappers/): *Contains all mappers. Mappers with same model should be placed in the same file.*  
-│   └── `<model_name>_mapper.py` Contains all mappers of a specific model.  
+│   └── `<model_name>_mappers.py` Contains all mappers of a specific model.  
 
 ├── [usecases](usecases/): *Contains abstract definitions of services.*  
 │   ├── [auth](usecases/auth/): *All auth related use cases should be defined in this package*  
-│   │   └── `auth_<usecase_name>.py` Contains definition of an auth related use case. Each class must extend abc.ABC class.  
+│   │   └── `auth_<usecase_name>_usecases.py` Contains definition of an auth related use case. Each class must extend abc.ABC class.  
+│   ├── [admin](usecases/admin/): *All admin related use cases should be defined in this package*  
+│   │   └── `auth_<usecase_name>_usecases.py` Contains definition of an admin related use case. Each class must extend abc.ABC class.  
 │   └── [member](usecases/member/): *All member side related use cases should be defined in this package*  
-│        └── `member_<usecase_name>.py` Contains definition of a member side related use case. Each class must extend abc.ABC class.   
+│        └── `member_<usecase_name>_usecases.py` Contains definition of a member side related use case. Each class must extend abc.ABC class.   
 
 ├── [services](services/): *Contains implementations of services.*  
 │   ├── [auth](services/auth): *All auth related services should be defined in this package*  
-│   │   └── `auth_<service_name>.py` Contains definition of an auth related service. Each class must extend its own use case.  
+│   │   └── `auth_<service_name>_services.py` Contains definition of an auth related service. Each class must extend its own use case.  
+│   ├── [admin](services/admin): *All admin related services should be defined in this package*  
+│   │   └── `admin_<service_name>_services.py` Contains definition of an admin related service. Each class must extend its own use case.  
 │   ├── [member](services/member/): *All member side related services should be defined in this package*  
-│        └── `member_<service_name>.py` Contains definition of a member side related service. Each class must extend its own use case.
+│        └── `member_<service_name>_services.py` Contains definition of a member side related service. Each class must extend its own use case.
 
-└── [serializers](serializers/): *Contains definitions of all serializers. Model related serializers should be placed in the same file.*  
-│   └── `<model_name>.py` Contains  definitions of serializers with the same model.
-  
+├── [serializers](serializers/): *Contains definitions of all serializers. Model related serializers should be placed in the same file.*  
+│   └── `<model_name>_serializers.py` Contains  definitions of serializers with the same model.
+
 ├── [views](views/): *Contains definition of REST API views.*  
 │   ├── [auth](views/auth/): *Contains definition of all auth related views.*  
-│   │   └── `auth_<view_name>.py` Contains definition of an auth related view.  
+│   │   └── `auth_<view_name>_view.py` Contains definition of an auth related view.  
+│   ├── [admin](views/admin/): *Contains definition of all admin related views.*  
+│   │   └── `admin_<view_name>_view.py` Contains definition of an admin related view.  
 │   └── [member](views/member/): *Contains definition of all member side related views.*  
-│        └── `member_<view_name>.py` Contains definition of a member side related view.    
-  
+         └── `member_<view_name>_view.py` Contains definition of a member side related view.    
+
 ├── [containers](containers/): *Contains all containers. We use 3 containers to organize objects.*  
 │   ├── `repo_container.py` All repositories are defined inside this container.  
 │   ├── `mapper_container.py` All mappers are defined inside this container.   
 │   └── `usecase_container.py` All use cases are defined inside this container.  
-  
+
 ├── [url_patterns](url_patterns/): *Contains url mappings of each use case.*  
 │   ├── [auth](views/auth/): *Contains url mappings of all auth related use cases.*  
 │   │   └── `auth_<usecase_name>_urls.py` Contains url mappings of an auth related use case.  
+│   ├── [admin](views/admin/): *Contains url mappings of all admin related use cases.*  
+│   │   └── `admin_<usecase_name>_urls.py` Contains url mappings of an admin related use case.  
 │   └── [member](views/member/): *Contains definition of all member side related views.*  
 │        └── `member_<usecase_name>_urls.py` Contains url mappings of an auth related use case.      
