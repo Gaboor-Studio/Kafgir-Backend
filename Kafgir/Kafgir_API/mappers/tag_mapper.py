@@ -2,7 +2,7 @@ from ..models.tag import Tag
 from ..models.food import Food
 from ..dto.tag_dto import TagOutput, MainTagOutput, PrimaryTagOutput
 
-from .food_mapper import FoodInFoodPlanMapper
+from .food_mappers import FoodInFoodPlanMapper
 
 from dependency_injector.wiring import inject, Provide
 
@@ -29,8 +29,6 @@ class PrimaryTagMapper:
         return PrimaryTagOutput(   id=model.pk,
                                     title=model.title
                                     )
-
-
 
 class MainTagMapper:
 

@@ -4,7 +4,7 @@ from typing import List
 from ...dto.food_dto import FoodBriefOutput
 from ...models.food import Food
 from ...usecases.member.search_usecases import SearchUsecase
-from ...mappers.food_mapper import FoodBriefMapper
+from ...mappers.food_mappers import FoodBriefMapper
 from ...exceptions.bad_request import SearchFieldMissing
 from ...exceptions.common import CannotParseToInt
 

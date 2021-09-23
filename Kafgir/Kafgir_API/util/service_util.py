@@ -10,6 +10,7 @@ RANDOM_NUMBERS_STRING = '0123456789'
 
 def generate_random_str( length: int) -> str:
     ''' This function returns a random string of given length and given characters'''
+    
     return get_random_string(length=length, allowed_chars=RANDOM_NUMBERS_STRING)
 
 def is_expired(start_date: datetime, minutes: int) -> bool:

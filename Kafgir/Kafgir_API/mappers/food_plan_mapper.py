@@ -2,7 +2,7 @@ from ..models.food_plan import FoodPlan
 from ..dto.food_plan_dto import FoodPlanOutput
 from ..models.food import Food
 
-from .food_mapper import FoodInFoodPlanMapper
+from .food_mappers import FoodInFoodPlanMapper
 
 from dependency_injector.wiring import inject, Provide
 

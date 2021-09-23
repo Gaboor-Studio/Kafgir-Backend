@@ -6,7 +6,7 @@ from ..services.auth.sha1_generate_token_service import *
 from ..services.member.food_planning_services import *
 from ..services.member.member_home_page_service import *
 from ..services.member.member_ingredient_services import *
-from ..services.member.member_food_services import MemberFoodService
+from ..services.member.member_food_service import MemberFoodService
 from ..services.admin.admin_food_service import AdminFoodService
 from ..services.admin.admin_tag_service import AdminTagServices
 from ..services.admin.admin_comment_service import AdminCommentService
