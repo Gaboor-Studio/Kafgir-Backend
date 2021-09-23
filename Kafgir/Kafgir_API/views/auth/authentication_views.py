@@ -22,6 +22,7 @@ class LoginApiView(ObtainAuthToken):
     renderer_classes = api_settings.DEFAULT_RENDERER_CLASSES
 
 class AuthenticationView(viewsets.ViewSet):
+    ''' This class is a view where user has access to sign up an other authentication APIs'''
 
     @inject
     def __init__(self, authentication_usecase: AuthenticationUsecase = Provide['authentication_usecase'], **kwargs) -> None:

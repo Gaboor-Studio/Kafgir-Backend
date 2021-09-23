@@ -15,6 +15,7 @@ from ...repositories.user_repo import UserRepository
 from ...util.service_util import generate_random_str, is_expired
 
 class AuthenticationService(AuthenticationUsecase):
+    ''' This class is an implementation for authentication usecases'''
 
     model = get_user_model()
 

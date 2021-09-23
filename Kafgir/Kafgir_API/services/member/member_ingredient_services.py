@@ -5,8 +5,7 @@ from ...models.ingredient import Ingredient
 from ...usecases.member.member_ingredient_usecases import MemberIngredientUsecase
 from ...dto.ingredient_dto import IngredientOutput
 from ...repositories.ingredient_repo import IngredientRepository
-from ...mappers.ingredient_mapper import IngredientMapper
-from ...exceptions.not_found import IngredientNotFoundException
+from ...mappers.ingredient_mappers import IngredientMapper
 
 from datetime import date
 from typing import List

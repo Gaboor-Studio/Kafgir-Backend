@@ -1,11 +1,12 @@
 from rest_framework import serializers
 
 class ProfileSerializer(serializers.Serializer):
-    # username = serializers.CharField(max_length=64)
+    ''' This serializer manages validation over editing profile api'''
     name = serializers.CharField(max_length=255)
     last_name = serializers.CharField(max_length=255)
 
 class ProfilePasswordChangeSerializer(serializers.Serializer):
+    ''' This serializer manages validation over change profile password api'''
     old_password = serializers.CharField(max_length=128)
     new_password = serializers.CharField(max_length=128)
     new_password_rep = serializers.CharField(max_length=128)
@@ -18,8 +19,10 @@ class ProfilePasswordChangeSerializer(serializers.Serializer):
         return super().validate(attrs)
 
 class ProfileSetEmailSerializer(serializers.Serializer): 
+    ''' This serializer manages validation over set profile email api'''
     email = serializers.EmailField(max_length=255)
 
 class ProfileSetPictureSerializer(serializers.Serializer):
+    ''' This serializer manages validation over set profile picture api'''
     image = serializers.ImageField()
 

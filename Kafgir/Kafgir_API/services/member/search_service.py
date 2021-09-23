@@ -4,7 +4,7 @@ from typing import List
 from ...dto.food_dto import FoodBriefOutput
 from ...models.food import Food
 from ...usecases.member.search_usecases import SearchUsecase
-from ...mappers.food_mapper import FoodBriefMapper
+from ...mappers.food_mappers import FoodBriefMapper
 from ...exceptions.bad_request import SearchFieldMissing
 from ...exceptions.common import CannotParseToInt
 
@@ -45,7 +45,11 @@ class SearchService(SearchUsecase):
                 raise CannotParseToInt(detail='cooking time needs to be an integer')
 
         if category is not None:
-            query_set = query_set.filter(tags__id=category, tags__is_primary=True)
+            try:
+                temp_id = int(category)
+                query_set = query_set.filter(tags__id=category, tags__is_primary=True)
+            except ValueError:
+                raise CannotParseToInt(detail='category needs to be an integer(ID)')
 
         if ingredients is not None:
             for ing in ingredients:

@@ -5,12 +5,11 @@ from rest_framework import status
 from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework.authentication import TokenAuthentication
-from rest_framework.permissions import IsAuthenticated, IsAdminUser
 
-from ...usecases.member.member_food_usecases import MemberFoodUsecase
+from ...usecases.member.member_food_usecase import MemberFoodUsecase
 from ...serializers.food_serializers import FoodSerializer
 from ...dto.food_dto import FoodOutput
-from ...usecases.member.member_food_usecases import MemberFoodUsecase
+from ...usecases.member.member_food_usecase import MemberFoodUsecase
 from ...serializers.comment_serializer import CreateCommentSerializer, UpdateCommentSerializer
 from ...dto.comment_dto import CommentBriefInput, CommentOutput, CommentInput
 from ...dto.food_dto import FoodOutput, FoodBriefOutput
@@ -30,7 +29,7 @@ test_param=[
 ]
 
 class MemberFoodView(ViewSet):
-
+    '''This is a view for foods in client side.'''
 
     authentication_classes = [TokenAuthentication]
     permission_classes = []
@@ -46,13 +45,13 @@ class MemberFoodView(ViewSet):
     @swagger_auto_schema(responses=create_swagger_output(FoodOutput), tags=['member','food'])
     def get_one_food(self, request, food_id=None):
         ''' Gets informations of a food.'''
-        if request.user.is_authenticated:
-            outputs = self.member_food_usecase.find_by_id(user_id=request.user.id,food_id=food_id)
-            serialized_outputs = attr.asdict(outputs)
-            return Response(data=serialized_outputs, status=status.HTTP_200_OK)
- 
+        # Finding user id if exists
+        user_id = request.user.id if request.user.is_authenticated else None
 
-        output = self.member_food_usecase.find_by_id(user_id=None,food_id=food_id)
+        # Finding the food
+        output = self.member_food_usecase.find_by_id(user_id=user_id,food_id=food_id)
+        
+        # Converting to JSON. here we used attr.asdict because the comment field of the food can be null.
         serialized_output = attr.asdict(output)
         return Response(data=serialized_output, status=status.HTTP_200_OK)
 
@@ -80,6 +79,7 @@ class MemberFoodView(ViewSet):
         return Response(data=serialized_outputs, status=status.HTTP_200_OK)
 
     @swagger_auto_schema(request_body=create_comment_serializer, responses=create_swagger_output(None), tags=['member','food'])    
+    #TODO: use @validate here 
     def create_new_comment(self, request):
         ''' Creates new comment.'''
 
@@ -92,6 +92,7 @@ class MemberFoodView(ViewSet):
         return Response(data={'error': 'Invalid data!', 'err': seri.errors}, status=status.HTTP_400_BAD_REQUEST)
 
     @swagger_auto_schema(request_body=update_comment_serializer, responses=create_swagger_output(None), tags=['member','food'])    
+    #TODO: use @validate here
     def update_comment(self, request, comment_id = None):
         ''' updates comment.'''
 
@@ -114,6 +115,7 @@ class MemberFoodView(ViewSet):
     def get_all_foods_with_tag(self, request):
         ''' Gets all foods in a tag.'''
 
+        # Checking if tagId is in query params
         tag_id = request.GET.get('tagId')        
         if tag_id is None:
             raise TagIdMissingException()
