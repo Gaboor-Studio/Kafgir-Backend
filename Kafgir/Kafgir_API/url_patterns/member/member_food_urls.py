@@ -28,7 +28,7 @@ with_nothing = MemberFoodView.as_view({
 urlpatterns = [
     path('<int:food_id>/get-comments/<int:number_of_comments>/', member_get_some_food_comments),
     path('<int:food_id>/get-comments/', member_get_food_comments),
-    path('comment/', member_create_new_comment),
+    path('<int:food_id>/comment/', member_create_new_comment),
     path('', with_nothing),
     path('<int:food_id>/', with_id),
     path('<int:food_id>/add-to-shopping-list/',add_ingredients)

@@ -4,7 +4,6 @@ class CreateCommentSerializer(serializers.Serializer):
     '''This serializer is used to create comment .'''
 
     rating = serializers.IntegerField(min_value=0,max_value=10)
-    food = serializers.IntegerField()
     text = serializers.CharField()
 
 class UpdateCommentSerializer(serializers.Serializer):

@@ -43,7 +43,7 @@ class MemberFoodUsecase(ABC):
         pass
 
     @abstractmethod
-    def add_comment(self, input:  CommentInput, user: User) -> None:
+    def add_comment(self, food_id: int, input:  CommentInput, user: User) -> None:
         '''Posts a comment on the food with the given user.'''
         pass
     

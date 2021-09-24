@@ -11,7 +11,9 @@ class CommentMapper:
             return None
 
         return CommentOutput(   id=model.pk,
-                                user=model.user.pk,
+                                user_id=model.user.pk,
+                                username=model.user.username,
+                                user_pic=model.user.get_image(),
                                 date_time=model.date_time,
                                 rating=model.rating,
                                 text=model.text)

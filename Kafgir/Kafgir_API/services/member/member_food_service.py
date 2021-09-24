@@ -64,7 +64,7 @@ class MemberFoodService(MemberFoodUsecase):
                 if not my_comment==None:
                     food_output.my_comment = my_comment
             
-            food_output.comments = self.get_some_food_comments(food_id=food_id,num=6)
+            food_output.comments = list(map(self.comment_mapper.from_model, self.comment_repo.get_some_food_comments(num=6, food=food)))
             return food_output
         except Food.DoesNotExist:
             raise FoodNotFoundException(detail=f'Food(id={id}) not found!')
@@ -89,7 +89,7 @@ class MemberFoodService(MemberFoodUsecase):
             food = self.food_repo.find_by_id(food_id)
 
             # Converting the food comments to a list of CommentOutput and returning them 
-            return list(map(self.comment_mapper.from_model, self.comment_repo.get_some_food_comments(num=num, food=food)))
+            return list(map(self.comment_mappeXr.from_model, self.comment_repo.get_some_food_comments(num=num, food=food)))
         except Food.DoesNotExist:
             raise FoodNotFoundException(detail=f'Food(id={food_id}) not found!')
 
@@ -115,16 +115,16 @@ class MemberFoodService(MemberFoodUsecase):
         except Food.DoesNotExist:
             raise FoodNotFoundException(detail=f'Food(id={food_id}) not found!')
 
-    def add_comment(self, input:  CommentInput, user: User) -> None:
+    def add_comment(self, food_id: int, input:  CommentInput, user: User) -> None:
         '''Posts a comment on the food with the given user.'''
         try:
-            food = self.food_repo.find_by_id(input.food)
-            if not self.comment_repo.are_there_any_user_comment(id=user.pk, food=input.food):
+            food = self.food_repo.find_by_id(food_id)
+            if not self.comment_repo.are_there_any_user_comment(id=user.pk, food=food_id):
                 comment = Comment(food=food,user=user,confirmed=False,text=input.text,rating=input.rating)
                 comment.save()
             #TODO: else throw an error
         except Food.DoesNotExist:
-            raise FoodNotFoundException(detail=f'Food(id={input.food}) not found!')
+            raise FoodNotFoundException(detail=f'Food(id={food_id}) not found!')
 
     def find_all_with_tag(self, tag_id: int) -> List[FoodBriefOutput]:
         '''Finds all foods which have a specific tag and returns a list of FoodBriefOutput.'''
