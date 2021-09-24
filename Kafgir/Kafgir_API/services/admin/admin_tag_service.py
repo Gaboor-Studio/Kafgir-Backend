@@ -26,7 +26,7 @@ class AdminTagServices(AdminTagUsecase):
         return list(map(self.tag_mapper.from_model, self.tag_repo.find_all()))
 
     def find_by_id(self, id: int) -> TagOutput:
-        ''' Finds an tag by id.'''
+        ''' Finds a tag by id.'''
 
         try:
             tag = self.tag_repo.find_by_id(id)
@@ -35,13 +35,13 @@ class AdminTagServices(AdminTagUsecase):
             raise TagNotFoundException(detail=f'tag(id={id}) not found!') 
 
     def create_new_tag(self, input:  TagInput) -> None:
-        '''creates an tag .'''
+        '''creates a tag .'''
 
         tag = Tag(title=input.title, is_main=input.is_main, is_primary=input.is_primary, display_order=input.display_order)
         self.tag_repo.save(tag)
 
     def update_tag(self, id: int, input:  TagInput) -> None:
-        '''updates an Tag .'''
+        '''updates a Tag .'''
 
         try:
             tag = self.tag_repo.find_by_id(id)
@@ -57,6 +57,6 @@ class AdminTagServices(AdminTagUsecase):
             raise TagNotFoundException(detail=f'tag(id={id}) not found!') 
 
     def remove_tag(self, id: int) -> None:
-        ''' deletes an tag by ID.'''
+        ''' deletes a tag by ID.'''
 
         self.tag_repo.delete_by_id(id)

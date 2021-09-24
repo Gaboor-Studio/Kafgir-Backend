@@ -16,6 +16,7 @@ import attr
 from ...util.dto_util import create_swagger_output
 
 class AdminTagView(ViewSet):
+    '''This is a view for tag in admin side.'''
 
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated,IsAdminUser]
@@ -28,12 +29,16 @@ class AdminTagView(ViewSet):
 
     @swagger_auto_schema(responses=create_swagger_output(TagOutput, many=True), tags=['admin','tag'])
     def get_tags(self, request):
+        ''' Gets all tags..'''
+
         outputs = self.admin_tag_usecase.find_all()
         serialized_outputs = list(map(cattr.unstructure, outputs))
         return Response(data=serialized_outputs, status=status.HTTP_200_OK)
 
     @swagger_auto_schema(request_body=tag_serializer, responses=create_swagger_output(None), tags=['admin','tag'])    
     def create_new_tag(self, request):
+        ''' Creates new tag.'''
+
         seri = self.tag_serializer(data=request.data)
         if seri.is_valid():
             input = cattr.structure(request.data, TagInput)
@@ -44,6 +49,8 @@ class AdminTagView(ViewSet):
 
     @swagger_auto_schema(request_body=tag_serializer, responses=create_swagger_output(None), tags=['admin','tag'])
     def update_tag(self, request, tag_id=None):
+        ''' updates tag.'''
+
         seri = self.tag_serializer(data=request.data)
         if seri.is_valid():
             input = cattr.structure(request.data, TagInput)
@@ -54,5 +61,7 @@ class AdminTagView(ViewSet):
 
     @swagger_auto_schema(responses=create_swagger_output(None), tags=['admin','tag'])
     def remove_tag(self, request, tag_id=None):
+        ''' Removes a tag.'''
+
         self.admin_tag_usecase.remove_tag(tag_id)
         return Response(data={}, status=status.HTTP_200_OK)

@@ -10,6 +10,7 @@ from ..services.member.member_food_service import MemberFoodService
 from ..services.admin.admin_food_service import AdminFoodService
 from ..services.admin.admin_tag_service import AdminTagServices
 from ..services.admin.admin_comment_service import AdminCommentService
+from ..services.member.member_comment_service import MemberCommentService
 from ..services.member.profile_service import *
 from ..services.member.search_service import *
 from ..services.admin.admin_management_service import AdminManagementService
@@ -103,6 +104,11 @@ class UsecaseContainer(containers.DeclarativeContainer):
         comment_repo = RepoContainer.comment_repo,
         food_repo = RepoContainer.food_repo,
         comment_mapper= MapperContainer.comment_mapper
+    )
+
+    member_comment_usecase = providers.Singleton(
+        MemberCommentService,
+        comment_repo = RepoContainer.comment_repo,
     )
 
     admin_management_usecase = providers.Singleton(

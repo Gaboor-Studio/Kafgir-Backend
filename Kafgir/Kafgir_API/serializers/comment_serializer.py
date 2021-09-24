@@ -14,6 +14,6 @@ class UpdateCommentSerializer(serializers.Serializer):
     text = serializers.CharField()
 
 class CommentIdListSerializer(serializers.Serializer):
-    '''This serializer recives a list of comment IDs for administrator to confirm user comments .'''
+    '''This serializer receives a list of comment IDs for administrator to confirm user comments .'''
 
     commentid_list = serializers.ListField(child = serializers.IntegerField())

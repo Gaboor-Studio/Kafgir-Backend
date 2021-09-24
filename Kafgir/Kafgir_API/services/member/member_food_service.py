@@ -126,27 +126,6 @@ class MemberFoodService(MemberFoodUsecase):
         except Food.DoesNotExist:
             raise FoodNotFoundException(detail=f'Food(id={input.food}) not found!')
 
-    #TODO: move this function to comment service
-    def update_comment(self, comment_id: int, input:  CommentBriefInput) -> None:
-        '''Updates the comment of the user.'''
-        try:
-            comment = self.comment_repo.find_by_id(comment_id)
-            
-            comment.rating = input.rating
-            comment.text = input.text           
-            comment.confirmed = False
-
-            comment.save()
-        
-        except Comment.DoesNotExist:
-            raise CommentNotFoundException(
-                detail=f'comment with comment_id={comment_id} does not exist!')
-
-    #TODO: move this function to comment service
-    def remove_comment(self, comment_id: int) -> None:
-        '''Removes the comment of the user.'''
-        self.comment_repo.delete_by_id(comment_id)
-
     def find_all_with_tag(self, tag_id: int) -> List[FoodBriefOutput]:
         '''Finds all foods which have a specific tag and returns a list of FoodBriefOutput.'''
         # Check if the tah exist

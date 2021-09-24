@@ -25,6 +25,7 @@ test_param=[
 
 
 class MemberFoodPlanView(ViewSet):
+    '''This is a view for food plan in client side.'''
 
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
@@ -37,7 +38,9 @@ class MemberFoodPlanView(ViewSet):
         self.member_food_plan_usecase = member_food_plan_usecase
 
     @swagger_auto_schema(manual_parameters=test_param, responses=create_swagger_output(FoodPlanOutput, many=True), tags=['member','food-plan'])
-    def find_food_plan_by_date(self, request):        
+    def find_food_plan_by_date(self, request): 
+        '''This method returns the meal plan by getting the start and end dates .'''
+       
         start_date = request.GET.get('start_date')        
         if start_date is None:
             raise StartDateMissingException()
@@ -52,6 +55,8 @@ class MemberFoodPlanView(ViewSet):
 
     @swagger_auto_schema(request_body=create_food_plan_serializer, responses=create_swagger_output(None), tags=['member','food-plan'])    
     def create_new_food_plan(self, request):
+        '''Creates food plan .'''
+
         seri = self.create_food_plan_serializer(data=request.data)
         if seri.is_valid():
             input = cattr.structure(request.data, FoodPlanInput)
@@ -62,6 +67,8 @@ class MemberFoodPlanView(ViewSet):
 
     @swagger_auto_schema(request_body=food_plan_serializer, responses=create_swagger_output(None), tags=['member','food-plan'])
     def update_food_plan(self, request, plan_id=None):
+        ''' Updates a food plan .'''
+
         seri = self.food_plan_serializer(data=request.data)
         if seri.is_valid():
             input = cattr.structure(request.data, FoodPlanBriefInput)
@@ -72,5 +79,7 @@ class MemberFoodPlanView(ViewSet):
 
     @swagger_auto_schema(responses=create_swagger_output(None), tags=['member','food-plan'])
     def remove_food_plan(self, request, plan_id=None):
+        '''removes a food plan .'''
+
         self.member_food_plan_usecase.remove_food_plan(plan_id)
         return Response(data={}, status=status.HTTP_200_OK)

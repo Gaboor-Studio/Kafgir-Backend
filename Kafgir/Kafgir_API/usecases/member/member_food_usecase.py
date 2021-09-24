@@ -46,16 +46,6 @@ class MemberFoodUsecase(ABC):
     def add_comment(self, input:  CommentInput, user: User) -> None:
         '''Posts a comment on the food with the given user.'''
         pass
-
-    @abstractmethod
-    def update_comment(self, comment_id: int, input:  CommentBriefInput) -> None:
-        '''Updates the comment of the user.'''
-        pass
-
-    @abstractmethod
-    def remove_comment(self, comment_id: int) -> None:
-        '''Removes the comment of the user.'''
-        pass
     
     @abstractmethod
     def find_all_with_tag(self, tag_id: int) -> List[FoodBriefOutput]:

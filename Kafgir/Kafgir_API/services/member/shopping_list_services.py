@@ -13,6 +13,7 @@ from ...exceptions.not_found import ShoppingListItemNotFoundException
 from typing import List
 
 class MemberShoppingListService(MemberShoppingListUsecase):
+    ''' This class is an abstract class for usecases of member_shopping_list api '''
 
     @inject
     def __init__(self, shopping_list_repo: ShoppingListRepository = Provide['shopping_list_repo'],
@@ -24,18 +25,26 @@ class MemberShoppingListService(MemberShoppingListUsecase):
         self.shopping_list_output_mapper = shopping_list_output_mapper
 
     def find_shopping_list(self, id: int) -> List[ShoppingListItemOutput]:
+        ''' Finds a shopping list by id.'''
+
         return list(map(self.shopping_list_output_mapper.from_model, self.shopping_list_repo.find_all_items(id=id)))
 
     def add_new_shopping_list_item(self, input:  ShoppingListItemBriefInput, user: User) -> None: 
+        '''Creates a shopping list item .'''
+
         shopping_list_item = ShoppingListItem(title=input.title, done=False, amount=input.amount, user=user)
         shopping_list_item.save()
 
     def add_new_shopping_list(self, inputs:  List[ShoppingListItemBriefInput], user: User) -> None:
+        '''Creates a shopping list .'''
+
         for input in inputs:
             shopping_list_item = ShoppingListItem(title=input.title, done=False, amount=input.amount, user=user)
             shopping_list_item.save()
 
     def update_shopping_list_item(self, item_id: int, input:  ShoppingListItemInput) -> None:
+        '''Updates a shopping list item .'''
+
         try:
             shopping_list_item = self.shopping_list_repo.find_item_by_id(item_id)
             
@@ -51,6 +60,8 @@ class MemberShoppingListService(MemberShoppingListUsecase):
 
 
     def done(self, item_id: int) -> None:
+        '''Updates undone field to done .'''
+
         try:
             shopping_list_item = self.shopping_list_repo.find_item_by_id(item_id)
             
@@ -63,6 +74,8 @@ class MemberShoppingListService(MemberShoppingListUsecase):
                 detail=f'shopping list item with item_id={item_id} does not exist!')
 
     def undone(self, item_id: int) -> None:
+        '''Updates done field to undone .'''
+
         try:
             shopping_list_item = self.shopping_list_repo.find_item_by_id(item_id)
             
@@ -75,5 +88,7 @@ class MemberShoppingListService(MemberShoppingListUsecase):
                 detail=f'shopping list item with item_id={item_id} does not exist!')
 
     def remove_shopping_list_item(self, item_id: int) -> None:
+        '''Deletes a shopping list item by ID .'''
+
         self.shopping_list_repo.delete_item(item_id)
     

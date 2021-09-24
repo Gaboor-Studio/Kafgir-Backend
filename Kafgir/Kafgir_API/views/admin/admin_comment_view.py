@@ -17,6 +17,7 @@ import attr
 from ...util.dto_util import create_swagger_output
 
 class AdminCommentView(ViewSet):
+    '''This is a view for comment in admin side.'''
 
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated,IsAdminUser]

@@ -17,6 +17,8 @@ import attr
 from ...util.dto_util import create_swagger_output
 
 class MemberShoppingListView(ViewSet):
+    '''This is a view for shopping list in client side.'''
+
 
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]

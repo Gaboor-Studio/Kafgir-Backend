@@ -15,6 +15,7 @@ from datetime import date
 from typing import List
 
 class MemberFoodPlanService(MemberFoodPlanUsecase):
+    ''' This class is an abstract class for usecases of member_food_plan api '''
 
     @inject
     def __init__(self, food_plan_repo: FoodPlanningRepository = Provide['food_plan_repo'],
@@ -26,6 +27,8 @@ class MemberFoodPlanService(MemberFoodPlanUsecase):
         self.food_repo = food_repo
 
     def find_food_plan_by_date(self, id: int, start_date: str, end_date: str) -> List[FoodPlanOutput]:
+        '''This method returns the meal plan by getting the start and end dates .'''
+
         inputs1 = start_date.split("-")
         start = date(int(inputs1[0]),int(inputs1[1]),int(inputs1[2]))
         inputs2 = end_date.split("-")
@@ -34,6 +37,8 @@ class MemberFoodPlanService(MemberFoodPlanUsecase):
         return list(map(self.food_plan_output_mapper.from_model, food_plan))
 
     def add_new_food_plan(self, input: FoodPlanInput, user: User) -> None:
+        '''Creates a food plan .'''
+
         inputs = input.date_time.split("-")
         date_time = date(int(inputs[0]),int(inputs[1]),int(inputs[2]))
         breakfast = self.food_repo.find_by_id(input.breakfast)
@@ -44,6 +49,8 @@ class MemberFoodPlanService(MemberFoodPlanUsecase):
     
 
     def update_food_plan(self, plan_id: int, input:  FoodPlanBriefInput) -> None:
+        ''' Updates a food plan .'''
+
         try:
             food_plan = self.food_plan_repo.find_food_plan_by_id(plan_id)
             breakfast = self.food_repo.find_by_id(input.breakfast)
@@ -61,4 +68,6 @@ class MemberFoodPlanService(MemberFoodPlanUsecase):
 
 
     def remove_food_plan(self, plan_id: int) -> None:
+        '''Deletes a food plan by ID .'''
+
         self.food_plan_repo.delete_food_plan(plan_id)
