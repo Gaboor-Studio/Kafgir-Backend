@@ -80,36 +80,16 @@ class MemberFoodView(ViewSet):
 
     @swagger_auto_schema(request_body=create_comment_serializer, responses=create_swagger_output(None), tags=['member','food'])    
     #TODO: use @validate here 
-    def create_new_comment(self, request):
+    def create_new_comment(self, request, food_id=None):
         ''' Creates new comment.'''
 
         seri = self.create_comment_serializer(data=request.data)
         if seri.is_valid():
             input = cattr.structure(request.data, CommentInput)
-            output = self.member_food_usecase.add_comment(input=input,user=request.user)
+            output = self.member_food_usecase.add_comment(food_id=food_id, input=input,user=request.user)
             serialized_output = cattr.unstructure(output)
             return Response(data=serialized_output, status=status.HTTP_200_OK)
         return Response(data={'error': 'Invalid data!', 'err': seri.errors}, status=status.HTTP_400_BAD_REQUEST)
-
-    @swagger_auto_schema(request_body=update_comment_serializer, responses=create_swagger_output(None), tags=['member','food'])    
-    #TODO: use @validate here
-    def update_comment(self, request, comment_id = None):
-        ''' updates comment.'''
-
-        seri = self.update_comment_serializer(data=request.data)
-        if seri.is_valid():
-            input = cattr.structure(request.data, CommentBriefInput)
-            output = self.member_food_usecase.update_comment(input=input,comment_id=comment_id)
-            serialized_output = cattr.unstructure(output)
-            return Response(data=serialized_output, status=status.HTTP_200_OK)
-        return Response(data={'error': 'Invalid data!', 'err': seri.errors}, status=status.HTTP_400_BAD_REQUEST)
-
-    @swagger_auto_schema(responses=create_swagger_output(None), tags=['member','food'])
-    def remove_comment(self, request, comment_id=None):
-        ''' Removes comment.'''
-
-        self.member_food_usecase.remove_comment(comment_id=comment_id)
-        return Response(data=None, status=status.HTTP_200_OK)
 
     @swagger_auto_schema(manual_parameters=test_param, responses=create_swagger_output(FoodBriefOutput, many=True), tags=['member','food'])
     def get_all_foods_with_tag(self, request):

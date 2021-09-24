@@ -8,7 +8,9 @@ class CommentOutput:
     '''This is a DTO for showing comment details.'''
 
     id: int = attr.ib()
-    user: int = attr.ib()
+    user_id: int = attr.ib()
+    username: str = attr.ib()
+    user_pic: str = attr.ib()
     date_time: datetime = attr.ib()
     rating: int = attr.ib()
     text: str = attr.ib()
@@ -18,7 +20,6 @@ class CommentInput:
     '''This is a DTO for creating comment .'''
 
     rating: int = attr.ib()
-    food: int = attr.ib()
     text: str = attr.ib()
 
 @attr.s

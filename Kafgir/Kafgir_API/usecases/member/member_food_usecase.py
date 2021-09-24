@@ -43,18 +43,8 @@ class MemberFoodUsecase(ABC):
         pass
 
     @abstractmethod
-    def add_comment(self, input:  CommentInput, user: User) -> None:
+    def add_comment(self, food_id: int, input:  CommentInput, user: User) -> None:
         '''Posts a comment on the food with the given user.'''
-        pass
-
-    @abstractmethod
-    def update_comment(self, comment_id: int, input:  CommentBriefInput) -> None:
-        '''Updates the comment of the user.'''
-        pass
-
-    @abstractmethod
-    def remove_comment(self, comment_id: int) -> None:
-        '''Removes the comment of the user.'''
         pass
     
     @abstractmethod
