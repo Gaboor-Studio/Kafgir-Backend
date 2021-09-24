@@ -32,7 +32,7 @@ class AdminTagView(ViewSet):
         serialized_outputs = list(map(cattr.unstructure, outputs))
         return Response(data=serialized_outputs, status=status.HTTP_200_OK)
 
-    @swagger_auto_schema(request_body=tag_serializer, responses=create_swagger_output(None), tags=['admin','tag'])    
+    @swagger_auto_schema(request_body=tag_serializer, responses=create_swagger_output(None), tags=['admin','tag','x'])    
     def create_new_tag(self, request):
         seri = self.tag_serializer(data=request.data)
         if seri.is_valid():
