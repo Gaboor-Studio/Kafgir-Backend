@@ -15,13 +15,15 @@ class KafgirApiConfig(AppConfig):
         from .views import auth as view_auth
         from .views import member as view_member
 
+        from . import tests as test
+
         from . import mappers
 
         from .containers.mapper_container import container as mapper_container
         from .containers.repo_container import container as repo_container
         from .containers.usecase_container import container as usecase_container
 
-        usecase_container.wire(packages=[view_auth, view_member, view_admin, service_auth, service_member, service_admin])
+        usecase_container.wire(packages=[view_auth, view_member, view_admin, service_auth, service_member, service_admin, test])
         repo_container.wire(
             packages=[service_auth, service_member, service_admin])
         mapper_container.wire(
