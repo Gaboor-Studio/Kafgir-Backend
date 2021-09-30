@@ -11,7 +11,12 @@ member_tag_remove_edit = AdminTagView.as_view({
     'put': 'update_tag'
 })
 
+set_tp = AdminTagView.as_view({
+    'post': 'set_tag_picture'
+})
+
 urlpatterns = [
     path('', admin_get_post_tags),
     path('<int:tag_id>/', member_tag_remove_edit),
+    path('<int:tag_id>/set-picture/', set_tp)
 ]

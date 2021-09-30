@@ -7,3 +7,10 @@ class TagInputSerializer(serializers.Serializer):
     is_main = serializers.BooleanField()
     is_primary = serializers.BooleanField()
     display_order = serializers.IntegerField()
+    image= serializers.ImageField(required=False)
+
+
+class TagSetTpSerializer(serializers.Serializer):
+    ''' This serializer is used to set tag image.'''
+    
+    image= serializers.ImageField()

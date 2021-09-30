@@ -11,6 +11,7 @@ class TagOutput:
     title: str = attr.ib()
     is_main: bool = attr.ib()
     is_primary: bool = attr.ib()
+    image = attr.ib()
     display_order: int = attr.ib()
 
 @attr.s
@@ -18,6 +19,7 @@ class PrimaryTagOutput:
     '''This is a DTO for showing a list of categories in home page.'''
 
     id: int = attr.ib()
+    image = attr.ib()
     title: str = attr.ib()
 
 @attr.s
@@ -28,6 +30,14 @@ class TagInput:
     is_main: bool = attr.ib()
     is_primary: bool = attr.ib()
     display_order: int = attr.ib()
+    image = attr.ib(default=None)
+
+@attr.s
+class SetTagImageInput:
+    ''' This is a DTO to set the tag image'''
+
+    image= attr.ib()
+
 
 @attr.s
 class MainTagOutput:
@@ -36,3 +46,4 @@ class MainTagOutput:
     id: int = attr.ib()
     title: str = attr.ib()
     foods: List[FoodInFoodPlanOutput] = attr.ib()
+

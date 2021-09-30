@@ -1,6 +1,6 @@
 from typing import List
 
-from ...dto.tag_dto import TagInput, TagOutput
+from ...dto.tag_dto import TagInput, TagOutput, SetTagImageInput
 from ...usecases.admin.admin_tag_usecases import AdminTagUsecase
 from ...repositories.tag_repo import TagRepository
 from ...mappers.tag_mapper import TagMapper
@@ -36,8 +36,10 @@ class AdminTagServices(AdminTagUsecase):
 
     def create_new_tag(self, input:  TagInput) -> None:
         '''creates a tag .'''
-
-        tag = Tag(title=input.title, is_main=input.is_main, is_primary=input.is_primary, display_order=input.display_order)
+        if input.image == None :
+            tag = Tag(title=input.title, is_main=input.is_main, is_primary=input.is_primary, display_order=input.display_order)
+        else :
+            tag = Tag(title=input.title, is_main=input.is_main, is_primary=input.is_primary, display_order=input.display_order, image=input.image)
         self.tag_repo.save(tag)
 
     def update_tag(self, id: int, input:  TagInput) -> None:
@@ -50,12 +52,28 @@ class AdminTagServices(AdminTagUsecase):
             tag.is_main = input.is_main
             tag.is_primary = input.is_primary
             tag.display_order = input.display_order
+            
+            if not input.image == None :
+                tag.image = input.image
 
             self.tag_repo.save(tag)
         
         except Tag.DoesNotExist:
             raise TagNotFoundException(detail=f'tag(id={id}) not found!') 
 
+    def set_tag_image(self, id: int, input:  SetTagImageInput) -> None:
+        ''' This method sets image for a tag'''
+        
+        try:
+            tag = self.tag_repo.find_by_id(id)
+            
+            tag.image = input.image
+
+            self.tag_repo.save(tag)
+        
+        except Tag.DoesNotExist:
+            raise TagNotFoundException(detail=f'tag(id={id}) not found!')
+    
     def remove_tag(self, id: int) -> None:
         ''' deletes a tag by ID.'''
 

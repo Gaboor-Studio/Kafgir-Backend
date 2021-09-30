@@ -21,6 +21,7 @@ class TagMapper:
                             title=model.title,
                             is_main=model.is_main,
                             is_primary=model.is_primary,
+                            image=model.get_image(),
                             display_order=model.display_order)
 
 class PrimaryTagMapper:
@@ -32,7 +33,8 @@ class PrimaryTagMapper:
         if model == None:
             return None
 
-        return PrimaryTagOutput(   id=model.pk,
+        return PrimaryTagOutput(    id=model.pk,
+                                    image=model.get_image(),
                                     title=model.title
                                     )
 

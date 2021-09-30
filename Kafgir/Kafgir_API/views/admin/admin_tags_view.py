@@ -8,8 +8,8 @@ import cattr
 from typing import List
 
 from ...usecases.admin.admin_tag_usecases import AdminTagUsecase
-from ...serializers.tag_serializers import TagInputSerializer 
-from ...dto.tag_dto import TagInput,TagOutput
+from ...serializers.tag_serializers import TagInputSerializer, TagSetTpSerializer
+from ...dto.tag_dto import TagInput,TagOutput,SetTagImageInput
 
 from drf_yasg.utils import swagger_auto_schema
 import attr
@@ -22,6 +22,8 @@ class AdminTagView(ViewSet):
     permission_classes = [IsAuthenticated,IsAdminUser]
 
     tag_serializer = TagInputSerializer
+    set_Tp_serializer = TagSetTpSerializer
+
 
     @inject
     def __init__(self, admin_tag_usecase: AdminTagUsecase = Provide['admin_tag_usecase']):
@@ -58,6 +60,16 @@ class AdminTagView(ViewSet):
             return Response(status=status.HTTP_200_OK)
         return Response(data={'error': 'Invalid data!', 'err': seri.errors}, status=status.HTTP_400_BAD_REQUEST)
 
+    @swagger_auto_schema(request_body=set_Tp_serializer, responses=create_swagger_output(None), tags=['admin','tag'])
+    def set_tag_picture(self, request, tag_id=None):
+        ''' sets tag picture with the given id.'''
+
+        seri = self.set_Tp_serializer(data=request.data)
+        if seri.is_valid():
+            input = cattr.structure(request.data, SetTagImageInput)
+            self.admin_tag_usecase.set_tag_image(id=tag_id, input=input)
+            return Response(status=status.HTTP_200_OK)
+        return Response(data={'error': 'Invalid data!', 'err': seri.errors}, status=status.HTTP_400_BAD_REQUEST)
 
     @swagger_auto_schema(responses=create_swagger_output(None), tags=['admin','tag'])
     def remove_tag(self, request, tag_id=None):

@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from ...dto.tag_dto import TagInput,TagOutput
+from ...dto.tag_dto import TagInput,TagOutput,SetTagImageInput
 
 from typing import List
 
@@ -20,6 +20,10 @@ class AdminTagUsecase(ABC):
 
     @abstractmethod
     def update_tag(self, id: int, input:  TagInput) -> None:
+        pass
+
+    @abstractmethod
+    def set_tag_image(self, id: int, input:  SetTagImageInput) -> None:
         pass
 
     @abstractmethod
