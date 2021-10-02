@@ -20,6 +20,7 @@ class FoodOutput:
     comments: List[CommentOutput] = attr.ib()
     my_comment: CommentOutput = attr.ib()
     tags: List[str] = attr.ib()
+    image: str = attr.ib()
 
 @attr.s
 class AdminFoodDetailsOutput:
@@ -33,7 +34,7 @@ class AdminFoodDetailsOutput:
     ingredients: List[IngredientPieceOutput] = attr.ib()
     recipe: List[RecipeItemOutput] = attr.ib()
     tags: List[str] = attr.ib()
-    
+    image: str = attr.ib()
 
 @attr.s
 class FoodBriefOutput:
@@ -51,6 +52,7 @@ class FoodInFoodPlanOutput:
 
     id: int = attr.ib()
     title: str = attr.ib()
+    image: str = attr.ib()
 
 @attr.s
 class FoodInput:
@@ -62,3 +64,4 @@ class FoodInput:
     ingredients: List[IngredientPieceInput] = attr.ib()
     recipe: List[RecipeItemInput] = attr.ib()
     tags: List[int] = attr.ib()
+    image = attr.ib(default=None)

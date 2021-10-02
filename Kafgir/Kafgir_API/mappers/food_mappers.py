@@ -37,7 +37,8 @@ class FoodMapper:
                           recipe=list(map(self.recipe_item_mapper.from_model, list(model.recipe_items.all()))),
                           comments=[],
                           my_comment=None,
-                          tags=[tag.title for tag in model.tags.all()])
+                          tags=[tag.title for tag in model.tags.all()],
+                          image=model.get_image())
 
 
 
@@ -68,7 +69,8 @@ class FoodInFoodPlanMapper:
 
         # Creating FoodInFoodPlanOutput DTO
         return FoodInFoodPlanOutput(id=model.pk,
-                          title=model.title)
+                          title=model.title,
+                          image=model.get_image())
 
 
 class AdminFoodDetailsMapper:
@@ -98,4 +100,5 @@ class AdminFoodDetailsMapper:
                           ingredients=list(
                               map(self.ingredient_piece_mapper.from_model, list(model.ingredient_pieces.all()))),
                           recipe=list(map(self.recipe_item_mapper.from_model, list(model.recipe_items.all()))),
-                          tags=[tag.title for tag in model.tags.all()])
+                          tags=[tag.title for tag in model.tags.all()],
+                          image=model.get_image())
