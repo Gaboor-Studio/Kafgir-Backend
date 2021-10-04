@@ -44,6 +44,6 @@ class SearchView(ViewSet):
         level = request.query_params.get('level')
         cooking_time = request.query_params.get('cooking_time')
 
-        outputs = self.search_usecase.search_for_food(title, category_id, ingredients, level, cooking_time)
+        outputs = self.search_usecase.search_for_food(request.user ,title, category_id, ingredients, level, cooking_time)
         serialized_outputs = list(map(cattr.unstructure, outputs))
         return Response(data=serialized_outputs, status=status.HTTP_200_OK)

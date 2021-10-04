@@ -15,6 +15,7 @@ from ..services.member.profile_service import *
 from ..services.member.search_service import *
 from ..services.admin.admin_management_service import AdminManagementService
 from ..services.admin.user_management_service import *
+from ..services.member.member_history_service import *
 
 
 from .repo_container import RepoContainer
@@ -122,6 +123,13 @@ class UsecaseContainer(containers.DeclarativeContainer):
         UserManagementService,
         user_repo = RepoContainer.user_repo,
         user_management_profile_mapper = MapperContainer.user_management_profile_mapper
+    )
+
+    member_history_usecase = providers.Singleton(
+        MemberHistoryService,
+        history_repo=RepoContainer.history_repo,
+        tag_repo=RepoContainer.tag_repo,
+        history_mapper=MapperContainer.history_mapper
     )
 
 container = UsecaseContainer()
