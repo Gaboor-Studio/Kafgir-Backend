@@ -1,6 +1,5 @@
 from typing import List
 import attr
-from django.db.models.fields import DateTimeField
 from ..dto.tag_dto import PrimaryTagOutput
 
 @attr.s
@@ -15,9 +14,10 @@ class HistoryInput:
 @attr.s
 class HistoryOutput:
     ''' It's a DTO to output a single user's search history! '''
+    id: int = attr.ib()
     title: str = attr.ib()
     category: PrimaryTagOutput = attr.ib()
     level: int = attr.ib()
     cooking_time: str = attr.ib()
     ingredients: List[str] = attr.ib()
-    time: DateTimeField = attr.ib()
+    time: str = attr.ib()

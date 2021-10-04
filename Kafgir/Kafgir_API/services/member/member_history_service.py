@@ -10,6 +10,9 @@ from ...models.history import History
 from ...models.user import User
 from ...models.tag import Tag
 from ...exceptions.not_found import UserNotFoundException, TagNotFoundException, HistoryNotFoundException
+from ...exceptions.common import CannotParseToInt
+
+DEFAULT_HISTORY_COUNT = 5
 
 class MemberHistoryService(MemberHistoryUsecase):
     ''' This is an implementation to MemberHistoryUsecase for user to be able to play with history and stuff. '''
@@ -25,6 +28,7 @@ class MemberHistoryService(MemberHistoryUsecase):
 
     def create_history(self, user: User, input: HistoryInput) -> HistoryOutput:
         ''' This method saves a search request as a history. '''
+        
         if user is None:
             raise UserNotFoundException()
 
@@ -40,18 +44,30 @@ class MemberHistoryService(MemberHistoryUsecase):
         self.history_repo.save_history(history)
         return self.history_mapper.from_model(history)
 
-    def get_history(self, uid: int) -> List[HistoryOutput]:
+    def get_history(self, uid: int, cnt: int) -> List[HistoryOutput]:
         ''' This method returns a user's search history. '''
-        return list(map(self.history_mapper.from_model, self.history_repo.get_user_history(uid)))
+
+        if cnt is not None:
+            try:
+                count = int(cnt)
+            except ValueError:
+                raise CannotParseToInt(detail='count needs to be an integer(ID)')
+        else:
+            count= DEFAULT_HISTORY_COUNT
+
+        return list(map(self.history_mapper.from_model, self.history_repo.get_user_history(uid, count)))
 
     def remove_history(self, hid: int) -> None:
         ''' This method deletes a history record. '''
+
         try:
-            self.history_repo.remove_history(hid)
+            history = self.history_repo.get_history_by_id(hid)
+            self.history_repo.delete_history(history)
         except History.DoesNotExist:
-            raise HistoryNotFoundException()
+            raise HistoryNotFoundException(detail=f'history with id (id={hid}) does not exist.')
 
     def remove_all_history(self, uid: int) -> None:
         ''' This method deletes all history records that belong to the user with the id of (uid). '''
+
         self.history_repo.remove_all_history(uid)
     

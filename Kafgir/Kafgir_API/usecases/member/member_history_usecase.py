@@ -12,8 +12,8 @@ class MemberHistoryUsecase(ABC):
         pass
 
     @abstractmethod
-    def get_history(self, uid: int) -> List[HistoryOutput]:
-        ''' This method returns a user's search history. '''
+    def get_history(self, uid: int, cnt: int) -> List[HistoryOutput]:
+        ''' This method returns a user's search history or a part of it. '''
         pass
 
     @abstractmethod

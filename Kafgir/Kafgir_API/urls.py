@@ -49,7 +49,7 @@ urlpatterns = [
 
     path('admin/user-management/', include(user_management_url_patterns)),
 
-    path('member/history/', include(member_history_url_patterns))
+    path('member/history/', include(member_history_url_patterns)),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

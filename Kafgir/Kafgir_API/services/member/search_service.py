@@ -22,7 +22,7 @@ class SearchService(SearchUsecase):
         self.food_brief_mapper = food_brief_mapper
         self.member_history_usecase = member_history_usecase
 
-    def search_for_food(self, user: User, title: str, category: int, ingredients: List[str], level: int, cooking_time: int) -> List[FoodBriefOutput]:
+    def search_for_food(self, user: User, title: str, category: int, ingredients: str, level: int, cooking_time: int) -> List[FoodBriefOutput]:
         ''' Search for a group of specific foods using their names, category, ingredients, level and cooking time'''
 
         query_set = Food.objects
@@ -62,7 +62,8 @@ class SearchService(SearchUsecase):
             temp_id= None
 
         if ingredients is not None:
-            for ing in ingredients:
+            ingredients_list = ingredients.split('_')
+            for ing in ingredients_list:
                 query_set = query_set.filter(ingredient_pieces__ingredient__name=ing)
 
         ''' In this part we create the history record for the search and save it to the database. '''

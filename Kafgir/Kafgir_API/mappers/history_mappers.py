@@ -14,10 +14,11 @@ class HistoryMapper:
     def from_model(self, model: History) -> HistoryOutput:
         ''' This method gets a history record as input and returns it's data containd in a HistoryOutput DTO. '''
 
-        if model is None:
+        if model == None:
             return None
 
         return HistoryOutput(
+            id= model.id,
             title= model.title,
             category= self.primary_tag_mapper.from_model(model.category),
             level= model.level,
