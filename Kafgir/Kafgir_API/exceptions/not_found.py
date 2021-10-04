@@ -44,3 +44,8 @@ class PageNotFoundException(APIException):
     status_code = 404
     default_detail = 'page not found!'
     default_code = 'not_found'
+
+class HistoryNotFoundException(APIException):
+    status_code = 404
+    default_detail = 'history not found!'
+    default_code = 'not_found'

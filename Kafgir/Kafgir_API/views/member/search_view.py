@@ -33,17 +33,16 @@ class SearchView(ViewSet):
     authentication_classes= [TokenAuthentication]
     permission_classes= [IsAuthenticated]
 
-    @swagger_auto_schema(manual_parameters=test_param, responses=create_swagger_output(FoodBriefOutput, many=True))
+    @swagger_auto_schema(manual_parameters=test_param, responses=create_swagger_output(FoodBriefOutput, many=True), tags=['member', 'search'])
     def search_for_food(self, request):
         ''' This method returns a list of foods which are true in the conditions that user defined in the request '''
 
         title = request.query_params.get('title')
         category_id = request.query_params.get('category')
         ingredient_string = request.query_params.get('ingredients')
-        ingredients = ingredient_string.split('_') if ingredient_string is not None else None
         level = request.query_params.get('level')
         cooking_time = request.query_params.get('cooking_time')
 
-        outputs = self.search_usecase.search_for_food(title, category_id, ingredients, level, cooking_time)
+        outputs = self.search_usecase.search_for_food(request.user ,title, category_id, ingredient_string, level, cooking_time)
         serialized_outputs = list(map(cattr.unstructure, outputs))
         return Response(data=serialized_outputs, status=status.HTTP_200_OK)
