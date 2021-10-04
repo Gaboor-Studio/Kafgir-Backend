@@ -108,6 +108,6 @@ class AdminFoodService(AdminFoodUsecase):
                 tag = self.tag_repo.find_by_id(tag_id)
                 food.tags.add(tag)
             except Tag.DoesNotExist:
-                raise TagNotFoundException(detail=f'tag(id={id}) not found!') 
+                raise TagNotFoundException(detail=f'tag(id={tag_id}) not found!') 
 
         return self.admin_food_details_mapper.from_model(food)

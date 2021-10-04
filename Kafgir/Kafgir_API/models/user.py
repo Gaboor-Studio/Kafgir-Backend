@@ -1,7 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 
-from .food import Food
 
 
 def user_directory_path(instance, filename):
@@ -42,7 +41,6 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
     image = models.ImageField(upload_to=user_directory_path)
-    favorite_foods = models.ManyToManyField(Food, related_name="favorite_of")
     requested_otp_password = models.CharField(max_length=5, null=True)
     requested_otp_time = models.DateTimeField(null=True)
     requested_token_time = models.DateTimeField(null=True)
