@@ -50,4 +50,8 @@ class MemberHistoryService(MemberHistoryUsecase):
             self.history_repo.remove_history(hid)
         except History.DoesNotExist:
             raise HistoryNotFoundException()
+
+    def remove_all_history(self, uid: int) -> None:
+        ''' This method deletes all history records that belong to the user with the id of (uid). '''
+        self.history_repo.remove_all_history(uid)
     

@@ -14,6 +14,10 @@ class HistoryRepositoryImpl(HistoryRepository):
         ''' This is a method for user to get rid of a single search history. '''
         self.model.objects.filter(id=hid).delete()
     
+    def remove_all_history(self, id: int) -> None:
+        ''' This is a method for user to delete all it's search history. '''
+        self.model.objects.filter(user__id=id).delete()
+    
     def save_history(self, history: History) -> None:
         ''' This is a method for saving a history object. '''
         history.save()

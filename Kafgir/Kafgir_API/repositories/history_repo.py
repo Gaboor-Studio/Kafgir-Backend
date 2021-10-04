@@ -16,6 +16,11 @@ class HistoryRepository(ABC):
         ''' This is a method for user to get rid of a single search history. '''
         pass
 
+    @abstractmethod
+    def remove_all_history(self, uid: int) -> None:
+        ''' This is a method for user to delete all it's search history. '''
+        pass
+
     @abstractmethod 
     def save_history(self, history: History) -> None:
         ''' This is a method for saving a history object. '''

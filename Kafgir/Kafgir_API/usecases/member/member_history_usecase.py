@@ -20,4 +20,9 @@ class MemberHistoryUsecase(ABC):
     def remove_history(self, hid: int) -> None:
         ''' This method deletes a history record. '''
         pass
+
+    @abstractmethod
+    def remove_all_history(self, uid: int) -> None:
+        ''' This method deletes all history records that belong to the user with the id of (uid). '''
+        pass
     
