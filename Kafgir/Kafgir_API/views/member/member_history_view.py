@@ -32,3 +32,8 @@ class MemberHistoryView(ViewSet):
         ''' This method removes a single record from user's history. '''
         self.member_history_usecase.remove_history(hid)
         return Response(data={'message': 'history was successfully removed!'}, status=status.HTTP_200_OK)
+
+    def clear_history(self, request):
+        ''' This method clears a user's search history. '''
+        self.member_history_usecase.remove_all_history(request.user.id)
+        return Response(data={'message': 'history was successfully cleared!'}, status=status.HTTP_200_OK)
