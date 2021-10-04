@@ -1,12 +1,18 @@
 from django.db import models
-
 from django.core.validators import MinValueValidator,MaxValueValidator
+from django.contrib.contenttypes.fields import GenericRelation
+
+from django.contrib.auth import get_user_model
+from .comment import Commentable, Comment
+
+
+user_model = get_user_model()
 
 def food_directory_path(instance, filename):
     # file will be uploaded to MEDIA_ROOT/<filename>
     return f'foods/{filename}'
 
-class Food(models.Model):
+class Food(Commentable):
     '''This is a model for representing foods.\n
 
     Fields:\n
@@ -19,11 +25,11 @@ class Food(models.Model):
     '''
 
     title = models.CharField(max_length=255)
-    rating = models.FloatField(default=0)
-    rating_count = models.IntegerField(default=0)
     level = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(3)])
     cooking_time = models.CharField(max_length=32)
     image = models.ImageField(upload_to=food_directory_path, null=True)
+    comments = GenericRelation(Comment, related_query_name='food')
+    users = models.ManyToManyField(user_model, related_name='favorite_of')
 
     def get_image(self):
         if not self.image:

@@ -119,9 +119,10 @@ class MemberFoodService(MemberFoodUsecase):
         '''Posts a comment on the food with the given user.'''
         try:
             food = self.food_repo.find_by_id(food_id)
-            if not self.comment_repo.are_there_any_user_comment(id=user.pk, food=food_id):
-                comment = Comment(food=food,user=user,confirmed=False,text=input.text,rating=input.rating)
+            if not self.comment_repo.are_there_any_user_comment(id=user.pk, food=food):
+                comment = Comment.objects.create(content_object=food,user=user,confirmed=False,text=input.text,rating=input.rating)
                 comment.save()
+                
             #TODO: else throw an error
         except Food.DoesNotExist:
             raise FoodNotFoundException(detail=f'Food(id={food_id}) not found!')
