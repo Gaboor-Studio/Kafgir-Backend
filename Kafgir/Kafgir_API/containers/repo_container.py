@@ -9,6 +9,8 @@ from ..repositories_impl.ingredient_piece_repo_impl import *
 from ..repositories_impl.recipe_item_repo_impl import *
 from ..repositories_impl.tag_repo_impl import *
 from ..repositories_impl.comment_repo_impl import *
+from ..repositories_impl.content_type_repo_impl import *
+from ..repositories_impl.crud_repo_impl import *
 
 class RepoContainer(containers.DeclarativeContainer):
      
@@ -48,6 +50,14 @@ class RepoContainer(containers.DeclarativeContainer):
 
     comment_repo = providers.Singleton(
         CommentRepositoryImpl
+    )
+
+    content_type_repo = providers.Singleton(
+        ContentTypeRepositoryImpl
+    )
+
+    crud_repo = providers.Singleton(
+        CrudRepositoryImpl
     )
 
 container = RepoContainer()

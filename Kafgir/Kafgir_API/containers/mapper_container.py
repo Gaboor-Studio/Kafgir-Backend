@@ -74,6 +74,14 @@ class MapperContainer(containers.DeclarativeContainer):
         CommentMapper
     )
 
+    comment_brief_mapper = providers.Singleton(
+        CommentBriefMapper
+    )
+
+    my_comment_mapper = providers.Singleton(
+        MyCommentMapper
+    )
+
     admin_brief_mapper = providers.Singleton(
         AdminBriefMapper
     )

@@ -3,7 +3,7 @@ from rest_framework import serializers
 class CreateFoodPlanInputSerializer(serializers.Serializer):
     '''This serializer is used to create food plan .'''
 
-    date_time = serializers.CharField(max_length=255)
+    date_time = serializers.DateTimeField()
     breakfast = serializers.IntegerField()
     lunch = serializers.IntegerField()
     dinner = serializers.IntegerField()

@@ -9,8 +9,8 @@ admin_confirm_comments = AdminCommentView.as_view({
     'put': 'confirm_comments'
 })
 
-admin_get_some_unconfirmed_comments = AdminCommentView.as_view({
-    'get': 'get_some_unconfirmed_comments'
+root = AdminCommentView.as_view({
+    'get': 'get_comments'
 })
 
 admin_comment_remove_edit = AdminCommentView.as_view({
@@ -22,5 +22,5 @@ urlpatterns = [
     path('<int:comment_id>/', admin_comment_remove_edit),
     path('confirm/<int:comment_id>/', admin_confirm_the_comment),
     path('confirm/', admin_confirm_comments),
-    path('get-some-unconfirmed-comments/<int:num>/', admin_get_some_unconfirmed_comments),
+    path('', root),
 ]

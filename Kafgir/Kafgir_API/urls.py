@@ -38,9 +38,9 @@ urlpatterns = [
 
     path('member/search/', include(member_search_url_patterns)),
     
-    path('admin/comment/', include(admin_comment_url_patterns)),
+    path('admin/comments/', include(admin_comment_url_patterns)),
 
-    path('member/comment/', include(member_comment_url_patterns)),
+    path('member/comments/', include(member_comment_url_patterns)),
 
     path('admin/admin-management/', include(admin_management_url_patterns)),
 

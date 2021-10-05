@@ -1,5 +1,5 @@
 import attr
-from datetime import date
+from datetime import datetime
 from .food_dto import FoodInFoodPlanOutput
 
 from typing import List
@@ -10,7 +10,7 @@ class FoodPlanOutput:
     '''This is a DTO for showing food plan details.'''
 
     id: int = attr.ib()
-    date_time: date = attr.ib()
+    date_time: datetime = attr.ib()
     breakfast: FoodInFoodPlanOutput = attr.ib()
     lunch: FoodInFoodPlanOutput = attr.ib()
     dinner: FoodInFoodPlanOutput = attr.ib()
