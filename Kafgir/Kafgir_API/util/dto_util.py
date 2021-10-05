@@ -1,6 +1,6 @@
 import attr
 
-from typing import Dict
+from typing import Dict,get_args
 from drf_yasg import openapi
 
 def get_dto_structure(dto_class) -> Dict:
@@ -11,9 +11,36 @@ def get_dto_structure(dto_class) -> Dict:
 
     for f in attr.fields(dto_class):
         try:
+            # For primitive types
             dic[f.name] = f.type()
         except:
-            dic[f.name] = str(f.type)
+            # Check if the object is list
+            try:
+                # For primitive types
+                dic[f.name] = f.type()
+            except:
+                # Check if the object is generic
+                if len(get_args(f.type)) != 0:
+                    if f.type.__origin__ == list:
+                        generic_type = get_args(f.type)[0]
+                        
+                        # Checking if the generic type is an attr class
+                        if attr.has(generic_type):
+                            strcuture = get_dto_structure(generic_type)
+                            dic[f.name] = [strcuture]
+                        else:
+                            try:
+                                dic[f.name] = [generic_type()]
+                            except:
+                                dic[f.name] = [str(generic_type)]
+                else:
+                    try:
+                        if attr.has(f.type):
+                            dic[f.name] = get_dto_structure(f.type)  
+                        else:
+                            dic[f.name] = str(f.type)
+                    except:
+                        dic[f.name] = str(f.type)
     
     return dic
 

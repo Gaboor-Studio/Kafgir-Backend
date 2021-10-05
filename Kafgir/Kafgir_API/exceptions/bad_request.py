@@ -84,3 +84,8 @@ class EndtDateMissingException(APIException):
     status_code = 400
     default_detail = 'You must send end date to get plan.'
     default_code = 'bad_request'
+
+class CommentAlreadyExists(APIException):
+    status_code = 400
+    default_detail = 'A comment on this model already exists by this user.'
+    default_code = 'bad_request'
