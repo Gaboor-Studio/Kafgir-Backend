@@ -53,17 +53,16 @@ class RepoContainer(containers.DeclarativeContainer):
         CommentRepositoryImpl
     )
 
-<<<<<<< HEAD
     history_repo = providers.Singleton(
         HistoryRepositoryImpl
-=======
+    )
+    
     content_type_repo = providers.Singleton(
         ContentTypeRepositoryImpl
     )
 
     crud_repo = providers.Singleton(
         CrudRepositoryImpl
->>>>>>> ratings
     )
 
 container = RepoContainer()
