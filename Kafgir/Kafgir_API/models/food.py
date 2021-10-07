@@ -1,6 +1,7 @@
 from django.db import models
 from django.core.validators import MinValueValidator,MaxValueValidator
 from django.contrib.contenttypes.fields import GenericRelation
+from django.db.models import Transform, CharField
 
 from django.contrib.auth import get_user_model
 from .comment import Commentable, Comment
@@ -35,3 +36,26 @@ class Food(Commentable):
         if not self.image:
             return 'no-image'
         return self.image.url
+
+
+# class CookingTimeToMinutesTransform(Transform):
+
+#     lookup_name = "tominute"
+
+#     def as_sql(self, compiler, connection):
+#         lhs, params = compiler.compile(self.lhs)
+#         sql ="""
+#                 {}
+#             """
+#         return sql.format(lhs), params
+
+#     @property
+#     def output_field(self):
+#         return models.IntegerField()
+    
+# CharField.register_lookup(CookingTimeToMinutesTransform)
+
+# from django.db.models.sql.compiler import SQLCompiler
+# from django.db.backends.mysql.base import BaseDatabaseWrapper
+
+# SQLCompiler.

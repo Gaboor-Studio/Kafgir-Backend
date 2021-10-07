@@ -21,6 +21,7 @@ class History(models.Model):
     title = models.CharField(max_length=255, null=True)
     category = models.ForeignKey(Tag, on_delete=SET_NULL, null=True)
     level = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(3)], null=True)
-    cooking_time = models.CharField(max_length=32, null=True)
+    lct = models.IntegerField(null=True)
+    uct = models.IntegerField(null=True)
     ingredients = models.CharField(max_length=1023, null=True)    
     time = models.DateTimeField(auto_now_add=True)

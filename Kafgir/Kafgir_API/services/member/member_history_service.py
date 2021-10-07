@@ -40,7 +40,7 @@ class MemberHistoryService(MemberHistoryUsecase):
         except Tag.DoesNotExist:
             raise TagNotFoundException()
 
-        history = History(user= user, title= input.title, category= category_obj, level= input.level, cooking_time= input.cooking_time, ingredients= input.ingredients)
+        history = History(user= user, title= input.title, category= category_obj, level= input.level, lct= input.lct, uct= input.uct, ingredients= input.ingredients)
         self.history_repo.save_history(history)
         return self.history_mapper.from_model(history)
 
