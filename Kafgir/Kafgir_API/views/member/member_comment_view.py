@@ -8,13 +8,12 @@ from rest_framework.authentication import TokenAuthentication
 
 from ...usecases.member.member_comment_usecase import MemberCommentUsecase
 from ...serializers.comment_serializer import UpdateCommentSerializer
-from ...dto.comment_dto import CommentBriefInput
-
+from ...dto.comment_dto import CommentInput
+from ...util.view_util import validate
 
 from drf_yasg.utils import swagger_auto_schema
-from drf_yasg import openapi
 
-import attr , cattr
+import cattr
 
 from ...util.dto_util import create_swagger_output
 
@@ -31,21 +30,17 @@ class MemberCommentView(ViewSet):
         self.member_comment_usecase = member_comment_usecase
 
     @swagger_auto_schema(request_body=update_comment_serializer, responses=create_swagger_output(None), tags=['member','food'])    
-    #TODO: use @validate here
+    @validate(UpdateCommentSerializer)
     def update_comment(self, request, comment_id = None):
         ''' updates comment.'''
-
-        seri = self.update_comment_serializer(data=request.data)
-        if seri.is_valid():
-            input = cattr.structure(request.data, CommentBriefInput)
-            output = self.member_comment_usecase.update_comment(input=input,comment_id=comment_id)
-            serialized_output = cattr.unstructure(output)
-            return Response(data=serialized_output, status=status.HTTP_200_OK)
-        return Response(data={'error': 'Invalid data!', 'err': seri.errors}, status=status.HTTP_400_BAD_REQUEST)
+        input = cattr.structure(request.data, CommentInput)
+        output = self.member_comment_usecase.update_comment(comment_id, input)
+        serialized_output = cattr.unstructure(output)
+        return Response(data=serialized_output, status=status.HTTP_200_OK)
+        
 
     @swagger_auto_schema(responses=create_swagger_output(None), tags=['member','food'])
     def remove_comment(self, request, comment_id=None):
         ''' Removes comment.'''
-
-        self.member_comment_usecase.remove_comment(comment_id=comment_id)
+        self.member_comment_usecase.remove_comment(comment_id)
         return Response(data=None, status=status.HTTP_200_OK)

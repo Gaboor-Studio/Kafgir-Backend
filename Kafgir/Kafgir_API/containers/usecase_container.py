@@ -16,7 +16,7 @@ from ..services.member.search_service import *
 from ..services.admin.admin_management_service import AdminManagementService
 from ..services.admin.user_management_service import *
 from ..services.member.member_history_service import *
-
+from ..services.member.member_comment_service import *
 
 from .repo_container import RepoContainer
 from .mapper_container import MapperContainer

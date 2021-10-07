@@ -25,6 +25,8 @@ class PaginatorUtil:
 
     @staticmethod
     def paginate_query_set(query_set, pagination_data: PaginationData):
+        # if not query_set.exists():
+        #     return [], 1
         paginator = Paginator(query_set, pagination_data.size)
         page = paginator.page(pagination_data.page)
         return page.object_list, paginator.num_pages

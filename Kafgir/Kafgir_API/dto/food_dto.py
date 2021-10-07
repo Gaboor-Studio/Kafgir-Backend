@@ -2,7 +2,7 @@ import attr
 
 from .ingredient_piece_dto import IngredientPieceOutput,IngredientPieceInput
 from .recipe_dto import RecipeItemOutput,RecipeItemInput
-from .comment_dto import CommentOutput
+from .comment_dto import CommentOutput,MyCommentOutput
 
 from typing import List
 
@@ -18,7 +18,7 @@ class FoodOutput:
     ingredients: List[IngredientPieceOutput] = attr.ib()
     recipe: List[RecipeItemOutput] = attr.ib()
     comments: List[CommentOutput] = attr.ib()
-    my_comment: CommentOutput = attr.ib()
+    my_comment: MyCommentOutput = attr.ib()
     tags: List[str] = attr.ib()
     image: str = attr.ib()
 

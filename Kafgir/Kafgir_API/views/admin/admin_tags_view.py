@@ -4,6 +4,7 @@ from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated,IsAdminUser
+from rest_framework.decorators import action, parser_classes
 import cattr
 from typing import List
 
@@ -37,7 +38,7 @@ class AdminTagView(ViewSet):
         serialized_outputs = list(map(cattr.unstructure, outputs))
         return Response(data=serialized_outputs, status=status.HTTP_200_OK)
 
-    @swagger_auto_schema(request_body=tag_serializer, responses=create_swagger_output(None), tags=['admin','tag','x'])    
+    @swagger_auto_schema(request_body=tag_serializer, responses=create_swagger_output(None), tags=['admin','tag'])    
     def create_new_tag(self, request):
         ''' Creates new tag.'''
 
