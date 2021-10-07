@@ -8,7 +8,8 @@ class HistoryInput:
     title: str = attr.ib()
     category: int = attr.ib(default=None)
     level: int = attr.ib(default=None)
-    cooking_time: str = attr.ib(default=None)
+    lct: int = attr.ib(default=None)
+    uct: int = attr.ib(default=None)
     ingredients: str = attr.ib(default=None)
 
 @attr.s
@@ -18,6 +19,7 @@ class HistoryOutput:
     title: str = attr.ib()
     category: PrimaryTagOutput = attr.ib()
     level: int = attr.ib()
-    cooking_time: str = attr.ib()
+    lct: int = attr.ib()
+    uct: int = attr.ib()
     ingredients: List[str] = attr.ib()
     time: str = attr.ib()

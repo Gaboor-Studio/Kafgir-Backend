@@ -22,7 +22,8 @@ class HistoryMapper:
             title= model.title,
             category= self.primary_tag_mapper.from_model(model.category),
             level= model.level,
-            cooking_time= model.cooking_time,
+            lct= model.lct,
+            uct= model.uct,
             ingredients= model.ingredients.split('_') if model.ingredients is not None else None,
             time= model.time
         )

@@ -84,3 +84,8 @@ class EndtDateMissingException(APIException):
     status_code = 400
     default_detail = 'You must send end date to get plan.'
     default_code = 'bad_request'
+
+class WrongPairOfBoundsException(APIException):
+    status_code = 400
+    default_detail = 'your lower and upper bound has logical problems.'
+    default_code = 'bad_request'
