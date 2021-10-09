@@ -78,6 +78,18 @@ class ProfileService(ProfileUsecase):
 
         self.user_repo.save_user(user)
 
+    def delete_photo(self, id: int) -> None:
+        ''' allows user to delete his/her profile picture '''
+        
+        try:
+            user = self.user_repo.get_user_by_id(id)
+        except self.model.DoesNotExist:
+            raise UserNotFoundException(detail=f'user with (id={id}) was not found!')
+
+        user.image.delete()
+
+        self.user_repo.save_user(user)
+
     def logout(self, id: int) -> None:
         ''' logs out '''
 
