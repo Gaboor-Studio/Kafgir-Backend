@@ -94,3 +94,12 @@ class UserManagementService(UserManagementUsecase):
             self.user_repo.save_user(user)
         except self.user_model.DoesNotExist:
             raise UserNotFoundException(f'User(id={id}) does not exist!')
+
+    def delete_user_pfp(self, id: int) -> None:
+        ''' This method deletes pfp for a usre'''
+        try: 
+            user = self.user_repo.get_user_by_id_and_is_staff(id, False)
+            user.image.delete()
+            self.user_repo.save_user(user)
+        except self.user_model.DoesNotExist:
+            raise UserNotFoundException(f'User(id={id}) does not exist!')

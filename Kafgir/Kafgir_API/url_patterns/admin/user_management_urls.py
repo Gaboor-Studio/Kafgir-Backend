@@ -16,13 +16,14 @@ set_password = UserManagementView.as_view({
     'post': 'set_user_password'
 })
 
-set_pfp = UserManagementView.as_view({
-    'post': 'set_user_picture'
+pfp = UserManagementView.as_view({
+    'post': 'set_user_picture',
+    'delete': 'delete_user_picture'
 })
 
 urlpatterns = [
     path('', root),
     path('<int:id>/', change_user),
     path('<int:id>/set-password/', set_password),
-    path('<int:id>/set-picture/', set_pfp)
+    path('<int:id>/picture/', pfp)
 ]
