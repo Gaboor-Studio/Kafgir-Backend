@@ -53,15 +53,15 @@ class SearchService(SearchUsecase):
                 if input.uct is not None:
                     temp_uct = int(input.uct)
                     if temp_lct <= temp_uct:
-                        query_set = query_set.filter(cooking_time__range=(temp_lct, temp_uct))
+                        query_set = query_set.filter(cooking_time__tominute__range=(temp_lct, temp_uct))
                     else:
                         raise WrongPairOfBoundsException(detail='lower bound is greater than upper!')
                 else:
-                    query_set = query_set.filter(cooking_time__gt=temp_lct)
+                    query_set = query_set.filter(cooking_time__tominute__gt=temp_lct)
             else:
                 if input.uct is not None:
                     temp_uct = int(input.uct)
-                    query_set = query_set.filter(cooking_time__lt=temp_uct)
+                    query_set = query_set.filter(cooking_time__tominute__lt=temp_uct)
                 else:
                     pass
         except ValueError:

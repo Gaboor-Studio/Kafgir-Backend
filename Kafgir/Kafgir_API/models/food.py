@@ -38,22 +38,20 @@ class Food(Commentable):
         return self.image.url
 
 
-# class CookingTimeToMinutesTransform(Transform):
+class CookingTimeToMinutesTransform(Transform):
+    ''' This is a custom transform to convert string to integer until we decide if we want to continue with cooking time as string or integer! '''
+    lookup_name = "tominute"
 
-#     lookup_name = "tominute"
+    def as_sql(self, compiler, connection):
+        lhs, params = compiler.compile(self.lhs)
 
-#     def as_sql(self, compiler, connection):
-#         lhs, params = compiler.compile(self.lhs)
-#         sql ="""
-#                 {}
-#             """
-#         return sql.format(lhs), params
+        return '{}'.format(lhs), params
 
-#     @property
-#     def output_field(self):
-#         return models.IntegerField()
+    @property
+    def output_field(self):
+        return models.IntegerField()
     
-# CharField.register_lookup(CookingTimeToMinutesTransform)
+CharField.register_lookup(CookingTimeToMinutesTransform)
 
 # from django.db.models.sql.compiler import SQLCompiler
 # from django.db.backends.mysql.base import BaseDatabaseWrapper
