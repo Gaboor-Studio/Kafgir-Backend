@@ -37,3 +37,8 @@ class UserManagementUsecase(ABC):
     def set_user_pfp(self, id: int, input: UserManagementSetPfpInput) -> None:
         ''' This method sets pfp for a user'''
         pass
+
+    @abstractmethod
+    def delete_user_pfp(self, id: int) -> None:
+        ''' This method deletes pfp for a usre'''
+        pass

@@ -10,8 +10,9 @@ set_password = ProfileView.as_view({
     'post': 'change_password'
 })
 
-set_picture = ProfileView.as_view({
-    'post': 'set_picture'
+picture = ProfileView.as_view({
+    'post': 'set_picture',
+    'delete': 'delete_picture'
 })
 
 edit_profile = ProfileView.as_view({
@@ -25,7 +26,7 @@ log_out = ProfileView.as_view({
 urlpatterns = [
     path('', get_profile),
     path('set-password/', set_password),
-    path('set-picture/', set_picture),
+    path('picture/', picture),
     path('edit-profile/', edit_profile),
     path('log-out/', log_out)
 ]

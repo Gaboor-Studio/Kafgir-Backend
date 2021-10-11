@@ -11,6 +11,7 @@ from ..mappers.profile_mapper import *
 from ..mappers.comment_mapper import *
 from ..mappers.admin_management_mapper import *
 from ..mappers.user_management_mapper import *
+from ..mappers.history_mappers import *
 
 class MapperContainer(containers.DeclarativeContainer):
      
@@ -74,6 +75,14 @@ class MapperContainer(containers.DeclarativeContainer):
         CommentMapper
     )
 
+    comment_brief_mapper = providers.Singleton(
+        CommentBriefMapper
+    )
+
+    my_comment_mapper = providers.Singleton(
+        MyCommentMapper
+    )
+
     admin_brief_mapper = providers.Singleton(
         AdminBriefMapper
     )
@@ -84,6 +93,11 @@ class MapperContainer(containers.DeclarativeContainer):
 
     user_management_profile_mapper = providers.Singleton(
         UserManagementProfileMapper
+    )
+
+    history_mapper = providers.Singleton(
+        HistoryMapper,
+        primary_tag_mapper= primary_tag_mapper
     )
     
 

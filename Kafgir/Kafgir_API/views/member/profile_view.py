@@ -78,6 +78,14 @@ class ProfileView(ViewSet):
         else:
             return Response(data={'error': 'Invalid data!', 'err': seri.errors}, status=status.HTTP_400_BAD_REQUEST)
 
+    @swagger_auto_schema(responses=create_swagger_output(None), tags=['member', 'profile'])
+    def delete_picture(self, request):
+        ''' delete user's profile picture '''
+
+        id = request.user.id
+        self.profile_usecase.delete_photo(id)
+        return Response(data={'message': 'your profile picture has been deleted successfully'}, status=status.HTTP_200_OK)
+
     @swagger_auto_schema(responses=create_swagger_output(None), tags=['member','profile'])
     def log_out(self, request):
         ''' log out of the account '''

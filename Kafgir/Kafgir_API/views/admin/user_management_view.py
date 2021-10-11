@@ -76,3 +76,9 @@ class UserManagementView(ViewSet):
         input= cattr.structure(request.data, UserManagementSetPfpInput)
         self.user_management_usecase.set_user_pfp(id, input)
         return Response(data={'message': 'user\'s profile picture has been successfully changed!'})
+
+    @swagger_auto_schema(responses=create_swagger_output(None), tags=['admin', 'admin-management'])
+    def delete_user_picture(self, request, id=None):
+        '''DELETE: deletes profile picture of the user with the given id'''
+        self.user_management_usecase.delete_user_pfp(id)
+        return Response(data={'message': 'user\'s profile picture has been successfully deleted!'})

@@ -25,6 +25,11 @@ class ProfileUsecase(ABC):
         pass
 
     @abstractmethod
+    def delete_photo(self, id: int) -> None:
+        ''' allows user to delete his/her profile picture '''
+        pass
+
+    @abstractmethod
     def logout(self, id: int) -> None:
         ''' logs out '''
         pass
