@@ -51,3 +51,8 @@ class MemberFoodUsecase(ABC):
     def find_all_with_tag(self, tag_id: int) -> List[FoodBriefOutput]:
         '''Finds all foods which have a specific tag and returns a list of FoodBriefOutput.'''
         pass
+
+    @abstractmethod
+    def get_favorite_foods(self, user_id: int) -> List[FoodBriefOutput]:
+        '''Finds the user favourite foods and returns a list of FoodBriefOutput.'''
+        pass

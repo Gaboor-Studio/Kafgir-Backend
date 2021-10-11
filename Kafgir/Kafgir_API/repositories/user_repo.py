@@ -39,3 +39,7 @@ class UserRepository(ABC):
     @abstractmethod
     def delete_by_id(self, id: int):
         pass
+
+    @abstractmethod
+    def get_favorite_foods(self, id: int) -> QuerySet:
+        pass
