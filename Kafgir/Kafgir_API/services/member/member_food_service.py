@@ -7,7 +7,7 @@ from ...models.comment import Comment
 from ...models.user import User
 from ...models.shopping_list_item import ShoppingListItem
 from ...models.tag import Tag
-from ...exceptions.not_found import FoodNotFoundException,TagNotFoundException,PageNotFoundException
+from ...exceptions.not_found import FoodNotFoundException,TagNotFoundException,PageNotFoundException, UserNotFoundException
 from ...repositories.food_repo import FoodRepository
 from ...repositories.tag_repo import TagRepository
 from ...repositories.shopping_list_repo import ShoppingListRepository
@@ -106,15 +106,72 @@ class MemberFoodService(MemberFoodUsecase):
         except Food.DoesNotExist:
             raise FoodNotFoundException(detail=f'Food(id={id}) not found!')
 
-    def find_all_with_tag(self, tag_id: int) -> List[FoodBriefOutput]:
+    def find_all_with_tag(self, tag_id: int, pagination_data: PaginationData) -> PaginationOutput:
         '''Finds all foods which have a specific tag and returns a list of FoodBriefOutput.'''
-        # Check if the tah exist
+        # Check if the tag exist
         try:
             tag = self.tag_repo.find_by_id(tag_id)
 
             # Find and return all foods in the tag
             foods = self.food_repo.find_all_by_tag_ordered_by_rating(tag.id)
-            return list(map(self.food_brief_mapper.from_model, foods))
+            # Paginate favorite foods
+            try:
+                paginated_foods, pages = PaginatorUtil.paginate_query_set(foods, pagination_data)
+
+                # Create pagination output
+                data = list(map(self.food_brief_mapper.from_model, paginated_foods))
+
+                # Create pagination output
+                output = PaginatorUtil.create_pagination_output(data, pages, pagination_data.page)
+
+                return output
+            except:
+                raise PageNotFoundException(detail= f'Page({pagination_data.page}) not found!')
+
         except Tag.DoesNotExist:
             raise TagNotFoundException(detail=f'Tag(id= {tag_id}) not found!')
     
+    def find_favorite_foods(self, user_id: int, pagination_data: PaginationData) -> PaginationOutput:
+        '''Finds the user favourite foods and returns a PaginationOutput.'''
+        # Check if the user exist
+        try:
+            # Find and return all favorite foods
+            favorite_foods = self.user_repo.get_favorite_foods(user_id)
+            # Paginate favorite foods
+            try:
+                paginated_foods, pages = PaginatorUtil.paginate_query_set(favorite_foods, pagination_data)
+
+                # Create pagination output
+                data = list(map(self.food_brief_mapper.from_model, paginated_foods))
+
+                # Create pagination output
+                output = PaginatorUtil.create_pagination_output(data, pages, pagination_data.page)
+
+                return output
+            except:
+                raise PageNotFoundException(detail= f'Page({pagination_data.page}) not found!')
+
+        except User.DoesNotExist:
+            raise UserNotFoundException(detail=f'User(id= {user_id}) not found!')
+
+    def add_favorite_food(self, user_id: int, food_id: int) -> None:
+        '''Adds a favorite food to user'''
+        # Check if the user exist
+        try:
+            # Find and return all favorite foods
+            user = self.user_repo.get_user_by_id(user_id)
+
+            # Checking if the food exists
+            try:
+                food = self.food_repo.find_by_id(food_id)
+
+                # Adding  a favorite food to user
+                user.favorite_of.add(food)
+                
+                user.save()
+
+            except Food.DoesNotExist:
+                raise FoodNotFoundException(detail=f'Food(id={id}) not found!')
+
+        except User.DoesNotExist:
+            raise UserNotFoundException(detail=f'User(id= {user_id}) not found!')

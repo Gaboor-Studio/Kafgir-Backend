@@ -34,5 +34,5 @@ class UserRepositoryImpl(UserRepository):
         self.user_model.objects.filter(id=id).delete()
 
     def get_favorite_foods(self, id: int) -> QuerySet:
-        return self.user_model.objects.get(id=id).favorite_foods.all()
+        return self.user_model.objects.get(id=id).favorite_of.all()
 

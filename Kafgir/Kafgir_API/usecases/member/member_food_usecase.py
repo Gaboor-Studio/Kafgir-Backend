@@ -30,6 +30,11 @@ class MemberFoodUsecase(ABC):
         pass 
 
     @abstractmethod
-    def get_favorite_foods(self, user_id: int, pagination_data: PaginationData) -> PaginationOutput:
-        '''Finds the user favourite foods and returns a list of FoodBriefOutput.'''
+    def find_favorite_foods(self, user_id: int, pagination_data: PaginationData) -> PaginationOutput:
+        '''Finds the user favourite foods and returns a PaginationOutput.'''
+        pass
+
+    @abstractmethod
+    def add_favorite_food(self, user_id: int, food_id: int) -> None:
+        '''Adds a favorite food to user'''
         pass

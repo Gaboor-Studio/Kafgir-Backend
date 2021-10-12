@@ -89,14 +89,43 @@ class MemberFoodView(ViewSet):
         serialized_output = cattr.unstructure(output)
         return Response(data=serialized_output, status=status.HTTP_200_OK)
 
-    @swagger_auto_schema(manual_parameters=test_param, responses=create_swagger_output(FoodBriefOutput, many=True), tags=['member','food'])
+    @swagger_auto_schema(manual_parameters=test_param, responses=create_swagger_output(FoodBriefOutput, many=True, paginated=True), tags=['member','food'])
     def get_all_foods_with_tag(self, request):
-        ''' Gets all foods in a tag.'''
+        ''' Gets all foods in a tag. Receives in paginated form .'''
         # Checking if tagId is in query params
         tag_id = request.GET.get('tagId')        
         if tag_id is None:
             raise TagIdMissingException()
+        
+        # Get pagination data from request
+        pagination_data = PaginationData(request)
 
-        outputs = self.member_food_usecase.find_all_with_tag(tag_id)
-        serialized_outputs = list(map(cattr.unstructure, outputs))
+        outputs = self.member_food_usecase.find_all_with_tag(tag_id, pagination_data)
+        serialized_outputs = list(map(cattr.unstructure, outputs.data))
         return Response(data=serialized_outputs, status=status.HTTP_200_OK)
+
+    @swagger_auto_schema( responses=create_swagger_output(FoodBriefOutput, many=True, paginated=True), tags=['member','food'])
+    def get_favorite_foods(self, request):
+        ''' Gets all favorite foods paginated .'''
+
+        # Get pagination data from request
+        pagination_data = PaginationData(request)
+        
+        if request.user.is_authenticated:
+            # Finding user
+            user_id = request.user.id
+
+            outputs = self.member_food_usecase.find_favorite_foods(user_id, pagination_data)
+            serialized_outputs = list(map(cattr.unstructure, outputs.data))
+            return Response(data=serialized_outputs, status=status.HTTP_200_OK)
+
+    @swagger_auto_schema(responses=create_swagger_output(None), tags=['member','food'])
+    def add_favorite_food(self, request, food_id=None):
+        '''Adds a favorite food to user'''
+
+        if request.user.is_authenticated:
+            # Finding user
+            user_id = request.user.id
+
+            self.member_food_usecase.add_favorite_food(food_id=food_id, user_id=user_id)
+            return Response(data=None, status=status.HTTP_200_OK)
