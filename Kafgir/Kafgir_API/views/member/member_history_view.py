@@ -40,7 +40,7 @@ class MemberHistoryView(ViewSet):
     @swagger_auto_schema(responses=create_swagger_output(None), tags=['member', 'history'])
     def remove_history(self, request, hid=None):
         ''' This method removes a single record from user's history. '''
-        self.member_history_usecase.remove_history(hid)
+        self.member_history_usecase.remove_history(request.user.id, hid)
         return Response(data={'message': 'history was successfully removed!'}, status=status.HTTP_200_OK)
 
     @swagger_auto_schema(responses=create_swagger_output(None), tags=['member', 'history'])

@@ -94,3 +94,8 @@ class CommentAlreadyExists(APIException):
     status_code = 400
     default_detail = 'A comment on this model already exists by this user.'
     default_code = 'bad_request'
+
+class MissingOwnership(APIException):
+    status_code = 400
+    default_detail = 'You don\'t have the permission to do this action to someone else\'s property.'
+    default_code = 'bad_request'

@@ -11,6 +11,7 @@ from ...models.user import User
 from ...models.tag import Tag
 from ...exceptions.not_found import UserNotFoundException, TagNotFoundException, HistoryNotFoundException
 from ...exceptions.common import CannotParseToInt
+from ...exceptions.bad_request import MissingOwnership
 
 DEFAULT_HISTORY_COUNT = 5
 
@@ -57,14 +58,18 @@ class MemberHistoryService(MemberHistoryUsecase):
 
         return list(map(self.history_mapper.from_model, self.history_repo.get_user_history(uid, count)))
 
-    def remove_history(self, hid: int) -> None:
+    def remove_history(self, uid: int, hid: int) -> None:
         ''' This method deletes a history record. '''
 
         try:
             history = self.history_repo.get_history_by_id(hid)
-            self.history_repo.delete_history(history)
         except History.DoesNotExist:
             raise HistoryNotFoundException(detail=f'history with id (id={hid}) does not exist.')
+
+        if history.user.id != uid:
+            raise MissingOwnership()
+
+        self.history_repo.delete_history(history)
 
     def remove_all_history(self, uid: int) -> None:
         ''' This method deletes all history records that belong to the user with the id of (uid). '''
